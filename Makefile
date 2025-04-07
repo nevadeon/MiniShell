@@ -4,8 +4,9 @@ TEST_BIN := tests
 # Compiler, flags and args
 CC := cc
 CFLAGS = -O3 -Wall -Wextra -I$(INC_DIR)
-LDFLAGS =
-VALGRIND_FLAGS := --quiet --leak-check=full --show-leak-kinds=all
+LDFLAGS = -lreadline
+VALGRIND_FLAGS := --quiet --leak-check=full --show-leak-kinds=all --track-origins=yes --suppressions=./rl.supp
+TEST_ARGUMENTS = 
 GDB_FLAGS := --quiet --args
 GDB_VALGRIND_ARGS :=
 
@@ -27,7 +28,7 @@ TEST_LINK_OBJ := $(filter-out $(OBJ_DIR)/main.o, $(OBJ)) $(TEST_OBJ)
 # ============================================================================ #
 all: $(NAME)
 
-$(NAME): $(LIBFT) $(OBJ)
+$(NAME): $(OBJ)
 	@$(CC) $(CFLAGS) -o $@ $(OBJ) $(LDFLAGS)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
@@ -44,15 +45,6 @@ fclean: clean
 	@rm -f $(NAME)
 
 # ============================================================================ #
-#        Library rules                                                         #
-# ============================================================================ #
-$(LIBFT):
-	@$(MAKE) -s -C $(LIBFT_DIR)
-
-libre:
-	@$(MAKE) -s -C $(LIBFT_DIR) re
-
-# ============================================================================ #
 #        Test rules                                                            #
 # ============================================================================ #
 test: CFLAGS += -DINCLUDE_TEST_HEADER
@@ -67,11 +59,11 @@ $(OBJ_DIR)/$(TEST_DIR)/%.o: $(TEST_DIR)/%.c
 	@$(CC) $(CFLAGS) -c $< -o $@
 
 valgrind: CFLAGS += -g
-valgrind: libtest re
+valgrind: re
 	valgrind $(VALGRIND_FLAGS) ./$(NAME) $(GDB_VALGRIND_ARGS)
 
 gdb: CFLAGS += -g
-gdb: libtest re
+gdb: re
 	gdb $(GDB_FLAGS) ./$(NAME) $(GDB_VALGRIND_ARGS)
 
 .PHONY: all clean fclean lclean re libre libtest test valgrind gdb
