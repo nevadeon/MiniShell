@@ -1,4 +1,4 @@
-NAME := so_long
+NAME := minishell
 TEST_BIN := tests
 
 # Compiler, flags and args
