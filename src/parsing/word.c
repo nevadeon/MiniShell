@@ -1,35 +1,61 @@
 #include "minishell.h"
 
-static ssize_t	_count_chars_until(char *input, ssize_t pos, char until)
+static bool	_is_ope(char *input, ssize_t *i)
 {
-	while (input[pos] && input[pos] != until)
-		pos++;
-	if (input[pos] != until)
-		return (-1);
-	return (pos);
+	bool	ope;
+	if ((*i) < 0)
+		return (false);
+	ope = (input[(*i)] == '|' || input[(*i)] == '<' || input[(*i)] == '>');
+	if (ope && (*i) == 0)
+		(*i)++;
+	if (ope && (*i) == 1 && (input[(*i)] == '<' || input[(*i)] == '>'))
+		(*i)++;
+	return (ope);
+}
+
+static void	_handle_escape(char *input, ssize_t *len, bool *escape, char c)
+{
+	while (input[(*len)] && (input[(*len)] == c || *escape))
+	{
+		if (input[(*len)] == '"')
+			*escape = !*escape;
+		(*len)++;
+	}
 }
 
 static ssize_t	_get_word_len(char *input)
 {
 	ssize_t	len;
-	ssize_t	tmp;
-	char	c;
+	bool	escape;
 
 	len = 0;
-	c = 0;
-	while (input[len] && !isspace(input[len]))
+	escape = false;
+	while (input[len] && !isspace(input[len]) && !_is_ope(input, &len))
 	{
-		if (input[len] == '"' || input[len] == '\'')
-		{
-			c = input[len];
-			tmp = _count_chars_until(input, len + 1, c);
-			if (tmp == -1)
-				return (fprintf(stderr, "%c is not closed\n", c), -1);
-			len += tmp;
-		}
+		_handle_escape(input, &len, &escape, '\'');
+		_handle_escape(input, &len, &escape, '"');
 		len++;
 	}
+	if (escape)
+		return (fprintf(stderr, "quote error\n"), exit(EXIT_FAILURE), 0);
 	return (len);
+}
+
+static void	_remove_quotes(char *str)
+{
+	char	*src;
+	char	*dst;
+
+	src = str;
+	dst = str;
+	while (*src)
+	{
+		if (*src == '"' || *src == '\'')
+			src++;
+		else
+			*dst++ = *src++;
+	}
+	*dst = '\0';
 }
 
 char	*get_next_word(char **input)
@@ -42,11 +68,12 @@ char	*get_next_word(char **input)
 	len = _get_word_len(*input);
 	if (len < 0)
 		return (NULL);
-	word = umgc_alloc(E_LFT_FEATURE, 2 * sizeof(char));
+	word = umgc_alloc(E_LFT_FEATURE, (len + 1) * sizeof(char));
 	str_memcpy(word, *input, len);
 	*input += len;
 	word[len] = '\0';
 	if (str_len(word) == 0)
 		return (word);
+	_remove_quotes(word);
 	return (word);
 }
