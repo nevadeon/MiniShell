@@ -98,7 +98,8 @@ void	umgc_free(t_lftime lft)
 		free(tmp);
 		tmp = NULL;
 	}
-	free(mgcs[lft]->arena->arena);
+	if (mgcs[lft]->arena)
+		free(mgcs[lft]->arena->arena);
 	free(mgcs[lft]->arena);
 	free(mgcs[lft]);
 	mgcs[lft] = NULL;
@@ -115,5 +116,4 @@ void	umgc_free_all(void)
 		index++;
 	}
 }
-// add arena
 // add uuid
