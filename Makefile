@@ -66,4 +66,12 @@ gdb: CFLAGS += -g
 gdb: re
 	gdb $(GDB_FLAGS) ./$(NAME) $(GDB_VALGRIND_ARGS)
 
+valgrind_test: CFLAGS += -g -DINCLUDE_TEST_HEADER
+valgrind_test: fclean $(TEST_BIN)
+	valgrind $(VALGRIND_FLAGS) ./$(TEST_BIN) $(GDB_VALGRIND_ARGS)
+
+gdb_test: CFLAGS += -g -DINCLUDE_TEST_HEADER
+gdb_test: fclean $(TEST_BIN)
+	gdb $(GDB_FLAGS) ./$(TEST_BIN) $(GDB_VALGRIND_ARGS)
+
 .PHONY: all clean fclean lclean re libre libtest test valgrind gdb
