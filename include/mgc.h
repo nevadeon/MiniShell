@@ -7,9 +7,9 @@
 
 typedef enum E_LIFETIME
 {
-	E_FUNC = 0,
-	E_PROG = 1,
-	E_FEATURE = 2,
+	E_LFT_FUNC = 0,
+	E_LFT_PROG = 1,
+	E_LFT_FEATURE = 2,
 	E_LFT_LAST_INDEX = 3
 }	t_lftime;
 
