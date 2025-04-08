@@ -8,4 +8,6 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 
+void	handle_command(char *input);
+
 #endif

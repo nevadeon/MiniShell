@@ -30,7 +30,7 @@ int	main(int argc, char **argv,__attribute__((unused)) char **envp)
 		mgc_add_block(E_LFT_FEATURE, input);
 		if (str_equals(input, "exit"))
 			break ;
-		// handle_command(&input);
+		handle_command(input);
 	}
 	if (argc > 1)
 		printf("handle command %s\n", argv[0]);
