@@ -27,14 +27,14 @@ int	main(int argc, char **argv,__attribute__((unused)) char **envp)
 		input = readline(_readline_prompt(prompt, PATH_MAX + 20));
 		if (input[0] != '\0')
 			add_history(input);
-		mgc_add_block(E_LFT_FEATURE, input);
+		umgc_add_block(E_LFT_FEATURE, input);
 		if (str_equals(input, "exit"))
 			break ;
 		handle_command(input);
 	}
 	if (argc > 1)
 		printf("handle command %s\n", argv[0]);
-	mgc_free_all();
+	umgc_free_all();
 	rl_clear_history();
 	return (0);
 }

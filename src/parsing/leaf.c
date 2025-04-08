@@ -17,7 +17,7 @@ static t_ast	*_create_leaf(char *s, t_ast *prev)
 {
 	t_ast	*leaf;
 
-	leaf = mgc_alloc(E_LFT_FEATURE, 1, sizeof(t_ast));
+	leaf = umgc_alloc(E_LFT_FEATURE, 1 * sizeof(t_ast));
 	leaf->type = E_NODE_LEAF;
 	if (_is_filename(prev))
 	{
@@ -41,7 +41,7 @@ static t_ast	*_add_arg(t_ast *prev, char *word)
 	prev->s_leaf.s_func.nb_args++;
 	if (!prev->s_leaf.s_func.args)
 	{
-		prev->s_leaf.s_func.args = mgc_alloc(E_LFT_FEATURE, 1, sizeof(t_args));
+		prev->s_leaf.s_func.args = umgc_alloc(E_LFT_FEATURE, 1 * sizeof(t_args));
 		prev->s_leaf.s_func.args->next = NULL;
 		prev->s_leaf.s_func.args->content = word;
 		return (prev);
@@ -49,7 +49,7 @@ static t_ast	*_add_arg(t_ast *prev, char *word)
 	current = prev->s_leaf.s_func.args;
 	while (current->next)
 		current = current->next;
-	current->next = mgc_alloc(E_LFT_FEATURE, 1, sizeof(t_args));
+	current->next = umgc_alloc(E_LFT_FEATURE, 1 * sizeof(t_args));
 	current->next->next = NULL;
 	current->next->content = word;
 	return (prev);

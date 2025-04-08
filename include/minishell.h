@@ -1,7 +1,7 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include "mgc.h"
+# include "umgc.h"
 # include "str.h"
 # include <unistd.h>
 # include <limits.h>

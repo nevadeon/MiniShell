@@ -42,7 +42,7 @@ char	*get_next_word(char **input)
 	len = _get_word_len(*input);
 	if (len < 0)
 		return (NULL);
-	word = mgc_alloc(E_LFT_FEATURE, 2, sizeof(char));
+	word = umgc_alloc(E_LFT_FEATURE, 2 * sizeof(char));
 	str_memcpy(word, *input, len);
 	*input += len;
 	word[len] = '\0';
