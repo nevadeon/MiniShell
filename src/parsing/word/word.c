@@ -13,15 +13,6 @@ static bool	_is_ope(char *input, ssize_t *i)
 	return (ope);
 }
 
-static void	_handle_escape(char *input, ssize_t *len, bool *escape, char c)
-{
-	while (input[(*len)] && (input[(*len)] == c || *escape))
-	{
-		if (input[(*len)] == '"')
-			*escape = !*escape;
-		(*len)++;
-	}
-}
 
 static ssize_t	_get_word_len(char *input)
 {
@@ -32,8 +23,8 @@ static ssize_t	_get_word_len(char *input)
 	escape = false;
 	while (input[len] && !isspace(input[len]) && !_is_ope(input, &len))
 	{
-		_handle_escape(input, &len, &escape, '\'');
-		_handle_escape(input, &len, &escape, '"');
+		handle_escape(input, &len, &escape, '\'');
+		handle_escape(input, &len, &escape, '"');
 		len++;
 	}
 	if (escape)

@@ -6,16 +6,16 @@
 # include <stdlib.h>
 # include <stdbool.h>
 
-typedef struct	s_list
+typedef struct	s_strlist
 {
 	char	*content;
-	struct s_list *next;
-}	t_list, t_args;
+	struct s_strlist *next;
+}	t_strlist, t_args;
 
 typedef struct	s_dir
 {
 	int		nb_dir;
-	t_list	*head;
+	t_strlist	*head;
 }	t_dir;
 
 typedef enum e_leaf_type
