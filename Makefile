@@ -3,7 +3,7 @@ TEST_BIN := tests
 
 # Compiler, flags and args
 CC := cc
-CFLAGS = -O3 -Wall -Wextra -I$(INC_DIR)
+CFLAGS = -Wall -Wextra -I$(INC_DIR)
 LDFLAGS = -lreadline
 VALGRIND_FLAGS := --quiet --leak-check=full --show-leak-kinds=all --track-origins=yes --suppressions=./rl.supp
 TEST_ARGUMENTS = 
