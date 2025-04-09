@@ -41,7 +41,8 @@ void	expand_variable(char **word)
 				index++;
 			var.name_end = index;
 			var.end = var.name_end + (var.bracketed && (*word)[index] == '}');
-			_override_var(word, var);
+			if (index != var.start + 1)
+				_override_var(word, var);
 		}
 	} while (found);
 }
