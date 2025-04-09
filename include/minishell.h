@@ -9,6 +9,6 @@
 # include <readline/history.h>
 
 void	handle_command(char *input);
-void	handle_escape(char *input, ssize_t *len, bool *escape, char c);
+bool	handle_escape(char *input, size_t *len, char c);
 
 #endif

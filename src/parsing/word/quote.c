@@ -1,11 +1,20 @@
 #include "minishell.h"
 
-void	handle_escape(char *input, ssize_t *len, bool *escape, char c)
+bool	handle_escape(char *input, size_t *len, char c)
 {
-	while (input[(*len)] && (input[(*len)] == c || *escape))
+	bool	escape;
+
+	escape = false;
+	while (input[(*len)] && (input[(*len)] == c || escape))
 	{
 		if (input[(*len)] == '"')
-			*escape = !*escape;
+			escape = !escape;
 		(*len)++;
 	}
+	if (escape)
+	{
+		fprintf(stderr, "quote error\n");
+		exit(EXIT_FAILURE);
+	}
+	return (true);
 }

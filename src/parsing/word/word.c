@@ -1,10 +1,9 @@
 #include "minishell.h"
 
-static bool	_is_ope(char *input, ssize_t *i)
+static bool	_is_ope(char *input, size_t *i)
 {
 	bool	ope;
-	if ((*i) < 0)
-		return (false);
+
 	ope = (input[(*i)] == '|' || input[(*i)] == '<' || input[(*i)] == '>');
 	if (ope && (*i) == 0)
 		(*i)++;
@@ -14,21 +13,17 @@ static bool	_is_ope(char *input, ssize_t *i)
 }
 
 
-static ssize_t	_get_word_len(char *input)
+static size_t	_get_word_len(char *input)
 {
-	ssize_t	len;
-	bool	escape;
+	size_t	len;
 
 	len = 0;
-	escape = false;
-	while (input[len] && !isspace(input[len]) && !_is_ope(input, &len))
-	{
-		handle_escape(input, &len, &escape, '\'');
-		handle_escape(input, &len, &escape, '"');
+	while (input[len] 
+		&& !isspace(input[len]) 
+		&& !_is_ope(input, &len)
+		&& handle_escape(input, &len, '"')
+		&& handle_escape(input, &len, '\''))
 		len++;
-	}
-	if (escape)
-		return (fprintf(stderr, "quote error\n"), exit(EXIT_FAILURE), 0);
 	return (len);
 }
 
