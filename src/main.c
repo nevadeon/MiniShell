@@ -22,6 +22,7 @@ int	main(int argc, char **argv,__attribute__((unused)) char **envp)
 	char		*input;
 	char		prompt[PATH_MAX + 20];
 
+	env_set(envp);
 	while (argc == 1)
 	{
 		input = readline(_readline_prompt(prompt, PATH_MAX + 20));
