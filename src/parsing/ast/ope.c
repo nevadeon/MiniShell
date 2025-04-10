@@ -25,7 +25,7 @@ static t_ast	*_create_ope(char *s)
 {
 	t_ast	*ope;
 
-	ope = umgc_alloc(E_LFT_FEATURE, 1 * sizeof(t_ast));
+	ope = mem_alloc(E_LFT_TASK, 1 * sizeof(t_ast));
 	ope->type = E_NODE_OPE;
 	ope->s_ope.type = _string_to_ope_type(s);
 	ope->s_ope.left = NULL;

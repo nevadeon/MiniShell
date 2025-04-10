@@ -1,23 +1,23 @@
 #include "ast.h"
 
 static inline bool _is_filename(t_ast *node)
-{ 
+{
 	return (
-		node 
+		node
 		&& node->type == E_NODE_OPE && node->s_ope.type != E_OPE_PIPE
 		&& (
 			!node->s_ope.left ||
 			node->s_ope.left->type != E_NODE_LEAF ||
 			node->s_ope.left->s_leaf.type != E_LEAF_FILENAME
 		)
-	); 
+	);
 }
 
 static t_ast	*_create_leaf(char *s, t_ast *prev)
 {
 	t_ast	*leaf;
 
-	leaf = umgc_alloc(E_LFT_FEATURE, 1 * sizeof(t_ast));
+	leaf = mem_alloc(E_LFT_TASK, 1 * sizeof(t_ast));
 	leaf->type = E_NODE_LEAF;
 	if (_is_filename(prev))
 	{
@@ -41,7 +41,7 @@ static t_ast	*_add_arg(t_ast *prev, char *word)
 	prev->s_leaf.s_func.nb_args++;
 	if (!prev->s_leaf.s_func.args)
 	{
-		prev->s_leaf.s_func.args = umgc_alloc(E_LFT_FEATURE, 1 * sizeof(t_args));
+		prev->s_leaf.s_func.args = mem_alloc(E_LFT_TASK, 1 * sizeof(t_args));
 		prev->s_leaf.s_func.args->next = NULL;
 		prev->s_leaf.s_func.args->content = word;
 		return (prev);
@@ -49,7 +49,7 @@ static t_ast	*_add_arg(t_ast *prev, char *word)
 	current = prev->s_leaf.s_func.args;
 	while (current->next)
 		current = current->next;
-	current->next = umgc_alloc(E_LFT_FEATURE, 1 * sizeof(t_args));
+	current->next = mem_alloc(E_LFT_TASK, 1 * sizeof(t_args));
 	current->next->next = NULL;
 	current->next->content = word;
 	return (prev);

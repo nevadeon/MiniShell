@@ -7,7 +7,7 @@ static void	_override_var(char **word, t_var var)
 	size_t	var_name_len;
 
 	var_name_len = (var.name_end - var.name_start) + 1;
-	var_name = umgc_alloc(E_LFT_FEATURE, ((var_name_len) + 1) * sizeof(char));
+	var_name = mem_alloc(E_LFT_TASK, ((var_name_len) + 1) * sizeof(char));
 	var_name = str_memcpy(var_name, *word + var.name_start, var_name_len - 1);
 	var_name[var_name_len - 1] = '\0';
 	str_replace(word, env_get_var_value(var_name), var.start, var.end);

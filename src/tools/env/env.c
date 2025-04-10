@@ -63,7 +63,7 @@ char	*env_set_var_value(char *var_name, char *var_value)
 			return (env[i] = new_var, env[i]);
 		i++;
 	}
-	new_env = umgc_alloc(sizeof(char *), (i + 2));
+	new_env = mem_alloc(E_LFT_PROG, sizeof(char *) * (i + 2));
 	str_memcpy(new_env, env, sizeof(char *) * i);
 	new_env[i] = new_var;
 	new_env[i + 1] = NULL;

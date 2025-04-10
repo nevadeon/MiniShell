@@ -1,7 +1,7 @@
 #ifndef NUMBER_H
 # define NUMBER_H
 
-# include "umgc.h"
+# include "mem.h"
 
 char	*num_itoa(int nb);
 

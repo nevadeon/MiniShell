@@ -18,8 +18,8 @@ static size_t	_get_word_len(char *input)
 	size_t	len;
 
 	len = 0;
-	while (input[len] 
-		&& !isspace(input[len]) 
+	while (input[len]
+		&& !isspace(input[len])
 		&& !_is_ope(input, &len)
 		&& handle_escape(input, &len, '"')
 		&& handle_escape(input, &len, '\''))
@@ -54,7 +54,7 @@ char	*get_next_word(char **input)
 	len = _get_word_len(*input);
 	if (len < 0)
 		return (NULL);
-	word = umgc_alloc(E_LFT_FEATURE, (len + 1) * sizeof(char));
+	word = mem_alloc(E_LFT_TASK, (len + 1) * sizeof(char));
 	str_memcpy(word, *input, len);
 	*input += len;
 	word[len] = '\0';

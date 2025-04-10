@@ -25,7 +25,7 @@ char	*num_itoa(int n)
 
 	n_cpy = (long)n;
 	size = _count_digit(n) + (n < 0);
-	r = (char *)umgc_alloc(E_LFT_FUNC, sizeof(char) * (size + 1));
+	r = (char *)mem_alloc(E_LFT_TASK, sizeof(char) * (size + 1));
 	if (!r)
 		return (NULL);
 	r[0] = '-';

@@ -9,7 +9,7 @@ static char	*_readline_prompt(char *buf, size_t size)
 
 	if (getcwd(cwd, sizeof(cwd)) == NULL)
 		cwd[0] = '\0';
-	n = snprintf(buf, size, 
+	n = snprintf(buf, size,
 		"\033[1;32mminishell\033[0m \033[1;35m%s\033[0m \033[1;32m# \033[0m",
 		cwd);
 	if (n < 0 || (size_t)n >= size)
@@ -28,14 +28,14 @@ int	main(int argc, char **argv,__attribute__((unused)) char **envp)
 		input = readline(_readline_prompt(prompt, PATH_MAX + 20));
 		if (input[0] != '\0')
 			add_history(input);
-		umgc_add_block(E_LFT_FEATURE, input);
+		mem_add_block(E_LFT_TASK, input);
 		if (str_equals(input, "exit"))
 			break ;
 		handle_command(input);
 	}
 	if (argc > 1)
 		printf("handle command %s\n", argv[0]);
-	umgc_free_all();
+	mem_free_all();
 	rl_clear_history();
 	return (0);
 }

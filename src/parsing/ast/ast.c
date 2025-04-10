@@ -4,7 +4,7 @@ t_ast_data	*init_ast_data(char *input)
 {
 	t_ast_data	*ast_data;
 
-	ast_data = umgc_alloc(E_LFT_FEATURE, 1 * sizeof(t_ast_data));
+	ast_data = mem_alloc(E_LFT_TASK, 1 * sizeof(t_ast_data));
 	ast_data->input = input;
 	ast_data->last_ope = NULL;
 	ast_data->prev = NULL;
