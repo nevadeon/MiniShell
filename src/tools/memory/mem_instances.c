@@ -10,11 +10,12 @@ void	mem_free_instance(t_lifetime lft)
 	t_list	**mgc_head;
 	t_arena	*arena;
 
-	mgc_head = get_mgc_head(lft);
 	arena = get_arena(lft);
 	lst_clear((t_list **)&arena->head, _del_node);
-	lst_clear((t_list **)mgc_head, _del_node);
 	arena->head = NULL;
+	arena->used_memory = 0;
+	mgc_head = get_mgc_head(lft);
+	lst_clear((t_list **)mgc_head, _del_node);
 	*mgc_head = NULL;
 }
 
