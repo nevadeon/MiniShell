@@ -6,9 +6,8 @@ CC := cc
 CFLAGS = -Wall -Wextra -I$(INC_DIR)
 LDFLAGS = -lreadline
 VALGRIND_FLAGS := --quiet --leak-check=full --show-leak-kinds=all --track-origins=yes --suppressions=./rl.supp
-TEST_ARGUMENTS = 
 GDB_FLAGS := --quiet --args
-GDB_VALGRIND_ARGS :=
+GDB_VALGRIND_ARGS =
 
 # Directories
 INC_DIR := include
@@ -68,10 +67,10 @@ gdb: re
 
 valgrind_test: CFLAGS += -g -DINCLUDE_TEST_HEADER
 valgrind_test: fclean $(TEST_BIN)
-	valgrind $(VALGRIND_FLAGS) ./$(TEST_BIN) $(GDB_VALGRIND_ARGS)
+	valgrind $(VALGRIND_FLAGS) ./$(TEST_BIN)
 
 gdb_test: CFLAGS += -g -DINCLUDE_TEST_HEADER
 gdb_test: fclean $(TEST_BIN)
-	gdb $(GDB_FLAGS) ./$(TEST_BIN) $(GDB_VALGRIND_ARGS)
+	gdb $(GDB_FLAGS) ./$(TEST_BIN)
 
-.PHONY: all clean fclean lclean re libre libtest test valgrind gdb
+.PHONY: all re clean fclean test valgrind gdb valgrind_test gdb_test

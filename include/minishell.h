@@ -10,6 +10,10 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 
+# ifdef INCLUDE_TEST_HEADER
+#  include "test.h"
+# endif
+
 typedef struct s_var
 {
 	size_t	start;
