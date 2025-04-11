@@ -3,8 +3,9 @@
 
 # include "str.h"
 # include "mem.h"
+# include <stdio.h>
 # include <stdlib.h>
-# include <stdbool.h>
+# include <stdbool.h> //header inutile ??
 
 typedef struct	s_strlist
 {

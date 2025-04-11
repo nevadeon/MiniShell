@@ -1,9 +1,7 @@
 #ifndef MEM_H
 # define MEM_H
 
-# include <stdio.h>
 # include <stdlib.h>
-# include <stdbool.h>
 # include "define.h"
 # include "list.h"
 
