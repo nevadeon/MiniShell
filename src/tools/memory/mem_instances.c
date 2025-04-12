@@ -1,4 +1,5 @@
 #include "mem.h"
+#include "list.h"
 
 static void	_del_node(void *content)
 {

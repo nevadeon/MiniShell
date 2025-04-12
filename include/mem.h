@@ -3,9 +3,10 @@
 
 # include <stdlib.h>
 # include "int.h"
-# include "list.h"
 
 # define ARENA_BLOCK_SIZE 4096
+
+typedef struct s_list t_list;
 
 typedef enum E_LIFETIME
 {

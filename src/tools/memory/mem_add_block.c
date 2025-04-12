@@ -1,4 +1,5 @@
 #include "mem.h"
+#include "list.h"
 
 t_list	**get_mgc_head(t_lifetime lft)
 {
