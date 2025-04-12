@@ -2,7 +2,7 @@
 # define MEM_H
 
 # include <stdlib.h>
-# include "define.h"
+# include "int.h"
 # include "list.h"
 
 # define ARENA_BLOCK_SIZE 4096
