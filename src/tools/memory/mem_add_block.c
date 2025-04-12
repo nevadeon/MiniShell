@@ -10,7 +10,19 @@ t_list	**get_mgc_head(t_lifetime lft)
 	return (&mgc_heads[lft]);
 }
 
+static t_list	*_lst_new(void *content)
+{
+	t_list	*new_node;
+
+	new_node = malloc(sizeof(t_list));
+	if (!new_node)
+		return (NULL);
+	new_node->content = content;
+	new_node->next = NULL;
+	return (new_node);
+}
+
 void	mem_add_block(t_lifetime lft, void *ptr)
 {
-	lst_add_front(get_mgc_head(lft), lst_new(ptr));
+	lst_add_front(get_mgc_head(lft), _lst_new(ptr));
 }

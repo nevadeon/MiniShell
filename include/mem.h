@@ -8,7 +8,7 @@
 
 typedef struct s_list t_list;
 
-typedef enum E_LIFETIME
+typedef enum e_lifetime
 {
 	E_LFT_FUNC = 0,
 	E_LFT_PROG = 1,

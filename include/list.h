@@ -1,7 +1,7 @@
 #ifndef LIST_H
 # define LIST_H
 
-# include <stdlib.h>
+typedef enum e_lifetime t_lifetime;
 
 typedef struct s_list
 {
@@ -11,7 +11,7 @@ typedef struct s_list
 
 typedef void	(*t_delete_function)(void *);
 
-t_list	*lst_new(void *content);
+t_list	*lst_new(t_lifetime lft, void *content);
 void	lst_add_front(t_list **list, t_list *new_node);
 
 #endif
