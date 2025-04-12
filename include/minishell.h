@@ -27,5 +27,6 @@ typedef struct s_var
 void	handle_command(char *input);
 bool	handle_escape(char *input, size_t *len, char c);
 void	expand(char **word);
+void	expand_tilde(char **word);
 
 #endif
