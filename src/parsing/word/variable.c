@@ -12,7 +12,6 @@ static void	_override_var(char **word, t_var var)
 	var_name = str_memcpy(var_name, *word + var.name_start, var_name_len - 1);
 	var_name[var_name_len - 1] = '\0';
 	var_name_value = env_get_var_value(var_name);
-	mem_add_block(E_LFT_TASK, var_name_value);
 	str_replace(word, var_name_value, var.start, var.end);
 }
 
