@@ -5,6 +5,7 @@
 # include "str.h"
 # include "env.h"
 # include "char.h"
+# include <stdio.h>
 # include <unistd.h>
 # include <limits.h>
 # include <readline/readline.h>
