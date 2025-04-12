@@ -46,8 +46,8 @@ void	*mem_alloc(t_lifetime lft, size_t size)
 			lst_add_front((t_list **)head, _lst_new_block(ARENA_BLOCK_SIZE));
 		used_memory = 0;
 	}
-	if ((used_memory & sizeof(void *) - 1) != 0)
-		used_memory += sizeof(void *) - (used_memory & sizeof(void *) - 1);
+	if ((used_memory & (sizeof(void *) - 1)) != 0)
+		used_memory += sizeof(void *) - (used_memory & (sizeof(void *) - 1));
 	used_memory += size;
 	arena->used_memory = used_memory;
 	return ((*head)->block + used_memory - size);
