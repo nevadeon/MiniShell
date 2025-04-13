@@ -2,25 +2,16 @@
 #include "sort.h"
 #include "list.h"
 
-static int	ascii_sort(void *a, void *b)
+static t_dir	_explore_directory(void)
 {
-	const char	*str1;
-	const char	*str2;
-
-	str1 = (const char *)a;
-	str2 = (const char *)b;
-	return (strcmp(str1, str2));
-}
-
-t_dir	explore_directory(void)
-{
-	t_list	*list;
-	struct dirent *ent;
-	struct stat st;
-	int count = 0;
-
+	t_list			*list;
+	struct dirent	*ent;
+	struct stat		st;
+	int				count = 0;
+	DIR				*rep;
+	
+	rep = opendir(".");
 	list = NULL;
-	DIR *rep = opendir(".");
 	if (rep == NULL)
 	{
 		perror("Erreur lors de l'ouverture du répertoire");
@@ -28,20 +19,19 @@ t_dir	explore_directory(void)
 	}
 	while ((ent = readdir(rep)) != NULL)
 	{
-
 		if (ent->d_name[0] == '.' && (ent->d_name[1] == '\0' || (ent->d_name[1] == '.' && ent->d_name[2] == '\0')))
 			continue;
 		if (stat(ent->d_name, &st) == 0)
 		{
 			count++;
-			lst_add_back(&list, create_node(strdup(ent->d_name)));
+			lst_add_back(&list, lst_new(E_LFT_TASK, strdup(ent->d_name)));
 		}
 	}
 	closedir(rep);
 	return ((t_dir) {.head = ft_qsort(list, ascii_sort), .nb_dir = count});
 }
 
-bool	match(const char *pattern, const char *str)
+static bool	_match(const char *pattern, const char *str)
 {
 	if (*pattern == '\0')
 		return *str == '\0';
@@ -53,7 +43,7 @@ bool	match(const char *pattern, const char *str)
 			return (true);
 		while (*str)
 		{
-			if (match(pattern, str))
+			if (_match(pattern, str))
 				return (true);
 			str++;
 		}
@@ -62,21 +52,20 @@ bool	match(const char *pattern, const char *str)
 	else 
 	{
 		if (*pattern == *str)
-			return (match(pattern + 1, str + 1));
+			return (_match(pattern + 1, str + 1));
 		else
 			return (false);
 	}
 }
 
-
-char	*compute_pattern(char *pattern)
+static char	*_compute_pattern(char *pattern)
 {
 	t_dir	dir;
 	t_list	*current;
 	char	*file_n;
 	char	*rep;
 
-	dir = explore_directory();
+	dir = _explore_directory();
 	current = dir.head;
 	rep = NULL;
 	while (current)
@@ -87,7 +76,7 @@ char	*compute_pattern(char *pattern)
 			current = current->next;
 			continue ;
 		}
-		if (match(pattern, file_n))
+		if (_match(pattern, file_n))
 		{
 			if (!rep)
 				rep = file_n;
@@ -122,7 +111,7 @@ void	expand_wildcard(char **word)
 	index = 0;
 	while ((*word)[index] && !isspace((*word)[index]))
 		index++;
-	w = compute_pattern(*word);
+	w = _compute_pattern(*word);
 	if (!w)
 		w = "";
 	str_replace(E_LFT_TASK, (t_replace) {word, w, 0, index });
