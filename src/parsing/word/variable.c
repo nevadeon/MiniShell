@@ -53,5 +53,5 @@ void	expand(char **word)
 {
 	expand_variable(word);
 	expand_tilde(word);
-	// expand_wildcard(str);
+	expand_wildcard(word);
 }
