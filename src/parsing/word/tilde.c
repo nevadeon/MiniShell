@@ -7,6 +7,6 @@ void	expand_tilde(char **word)
 	if ((*word)[0] == '~' && ((*word)[1] == '\0' || (*word)[1] == '/'))
 	{
 		var_name_value = env_get_var_value("HOME");
-		str_replace(word, var_name_value, 0, 1);
+		str_replace(E_LFT_TASK, (t_replace) { word, var_name_value, 0, 1 });
 	}
 }

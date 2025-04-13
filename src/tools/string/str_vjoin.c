@@ -15,7 +15,7 @@ static size_t	_get_length(size_t nb_args, va_list lst)
 	return (length);
 }
 
-char	*str_vjoin(size_t nb_args, ...)
+char	*str_vjoin(t_lifetime lft, size_t nb_args, ...)
 {
 	char	*r;
 	size_t	length;
@@ -26,7 +26,7 @@ char	*str_vjoin(size_t nb_args, ...)
 	va_start(lst, nb_args);
 	length = _get_length(nb_args, lst);
 	va_end(lst);
-	r = calloc(length + 1, sizeof(char));
+	r = mem_alloc(lft, length + 1 * sizeof(char));
 	va_start(lst, nb_args);
 	total = 0;
 	while (nb_args > 0)

@@ -55,7 +55,7 @@ char	*env_set_var_value(char *var_name, char *var_value)
 
 	len = str_len(var_name);
 	env = env_get();
-	new_var = str_vjoin(3, var_name, "=", var_value);
+	new_var = str_vjoin(E_LFT_TASK, 3, var_name, "=", var_value);
 	i = 0;
 	while (env[i])
 	{

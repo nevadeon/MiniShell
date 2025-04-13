@@ -12,7 +12,7 @@ static void	_override_var(char **word, t_var var)
 	var_name = str_memcpy(var_name, *word + var.name_start, var_name_len - 1);
 	var_name[var_name_len - 1] = '\0';
 	var_name_value = env_get_var_value(var_name);
-	str_replace(word, var_name_value, var.start, var.end);
+	str_replace(E_LFT_TASK, (t_replace) {word, var_name_value, var.start, var.end});
 }
 
 static bool	_is_valid_var_name(char *word, size_t index, size_t var_name_start)
