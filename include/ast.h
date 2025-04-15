@@ -1,11 +1,11 @@
 #ifndef AST_H
 # define AST_H
 
-# include "str.h"
-# include "mem.h"
 # include <stdio.h>
 # include <stdlib.h>
-# include <stdbool.h> //header inutile ??
+# include <stdbool.h>
+
+typedef struct s_list t_list;
 
 typedef struct	s_strlist
 {
@@ -16,7 +16,7 @@ typedef struct	s_strlist
 typedef struct	s_dir
 {
 	int		nb_dir;
-	t_strlist	*head;
+	t_list	*head;
 }	t_dir;
 
 typedef enum e_leaf_type

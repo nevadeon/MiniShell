@@ -1,4 +1,7 @@
 #include "env.h"
+#include "str.h"
+#include "num.h"
+#include "mem.h"
 
 static void	**_env(void)
 {

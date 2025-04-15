@@ -1,4 +1,6 @@
 #include "ast.h"
+#include "str.h"
+#include "mem.h"
 
 t_ast_data	*init_ast_data(char *input)
 {

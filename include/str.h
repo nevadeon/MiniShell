@@ -4,7 +4,8 @@
 # include <stdbool.h>
 # include <stdlib.h>
 # include <stdarg.h>
-# include "mem.h"
+
+typedef enum e_lifetime t_lifetime;
 
 typedef struct	s_replace
 {

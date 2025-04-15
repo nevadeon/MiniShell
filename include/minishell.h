@@ -1,28 +1,26 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include "mem.h"
-# include "str.h"
-# include "env.h"
-# include "char.h"
-# include "list.h"
-# include <stdio.h>
+# include <readline/readline.h>
+# include <readline/history.h>
+# include <sys/stat.h>
 # include <unistd.h>
 # include <limits.h>
 # include <dirent.h>
-# include <sys/stat.h>
-# include <readline/readline.h>
-# include <readline/history.h>
+# include <stdio.h>
+# include "ast.h"
+# include "char.h"
+# include "env.h"
+# include "int.h"
+# include "list.h"
+# include "mem.h"
+# include "num.h"
+# include "sort.h"
+# include "str.h"
 
 # ifdef INCLUDE_TEST_HEADER
 #  include "test.h"
 # endif
-
-typedef struct	s_dir
-{
-	int		nb_dir;
-	t_list	*head;
-}	t_dir;
 
 typedef struct s_var
 {

@@ -1,4 +1,5 @@
 #include "str.h"
+#include "mem.h"
 
 void	str_replace(t_lifetime lft, t_replace data)
 {
