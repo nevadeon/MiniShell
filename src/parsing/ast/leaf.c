@@ -1,4 +1,5 @@
 #include "ast.h"
+#include "mem.h"
 
 static inline bool _is_filename(t_ast *node)
 {

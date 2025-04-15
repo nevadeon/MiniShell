@@ -1,4 +1,5 @@
 #include "str.h"
+#include "mem.h"
 
 static size_t	_get_length(size_t nb_args, va_list lst)
 {

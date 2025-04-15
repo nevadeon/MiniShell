@@ -1,4 +1,5 @@
 #include "num.h"
+#include "mem.h"
 
 static int	_count_digit(long n)
 {

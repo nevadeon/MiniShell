@@ -1,4 +1,6 @@
 #include "ast.h"
+#include "str.h"
+#include "mem.h"
 
 static t_ope_type	_string_to_ope_type(char *word)
 {
