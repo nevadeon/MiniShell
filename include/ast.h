@@ -55,7 +55,6 @@ typedef struct s_ast
 			{
 				struct
 				{
-					char	*cmd;
 					t_args	*args;
 					int		nb_args;
 				}	s_func;
