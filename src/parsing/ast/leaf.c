@@ -13,27 +13,6 @@ static inline bool _is_filename(t_ast *node)
 	);
 }
 
-static t_ast	*_create_leaf(char *s, t_ast *prev)
-{
-	t_ast	*leaf;
-
-	leaf = mem_alloc(E_LFT_TASK, 1 * sizeof(t_ast));
-	leaf->type = E_NODE_LEAF;
-	if (_is_filename(prev))
-	{
-		leaf->s_leaf.type = E_LEAF_FILENAME;
-		leaf->s_leaf.filename = s;
-	}
-	else
-	{
-		leaf->s_leaf.type = E_LEAF_FUNC;
-		leaf->s_leaf.s_func.cmd = s;
-		leaf->s_leaf.s_func.nb_args = 0;
-		leaf->s_leaf.s_func.args = NULL;
-	}
-	return (leaf);
-}
-
 static t_ast	*_add_arg(t_ast *prev, char *word)
 {
 	t_args	*current;
@@ -53,6 +32,29 @@ static t_ast	*_add_arg(t_ast *prev, char *word)
 	current->next->next = NULL;
 	current->next->content = word;
 	return (prev);
+}
+
+static t_ast	*_create_leaf(char *s, t_ast *prev)
+{
+	t_ast	*leaf;
+
+	leaf = mem_alloc(E_LFT_TASK, 1 * sizeof(t_ast));
+	leaf->type = E_NODE_LEAF;
+	if (_is_filename(prev))
+	{
+		leaf->s_leaf.type = E_LEAF_FILENAME;
+		leaf->s_leaf.filename = s;
+	}
+	else
+	{
+		leaf->s_leaf.s_func.args = NULL;
+		leaf->s_leaf.type = E_LEAF_FUNC;
+		leaf->s_leaf.s_func.nb_args = -1;
+		if (!prev)
+			prev = leaf;
+		_add_arg(prev, s);
+	}
+	return (leaf);
 }
 
 static inline bool	_is_arg(t_ast_data *data)
