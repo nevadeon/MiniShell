@@ -34,7 +34,7 @@ static t_dir	_explore_directory(void)
 static bool	_match(const char *pattern, const char *str)
 {
 	if (*pattern == '\0')
-		return *str == '\0';
+		return (*str == '\0');
 	if (*pattern == '*')
 	{
 		while (*pattern == '*')
