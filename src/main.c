@@ -17,7 +17,7 @@ static char	*_readline_prompt(char *buf, size_t size)
 	return (buf);
 }
 
-int	main(int argc, char **argv,__attribute__((unused)) char **envp)
+int	main(int argc, char **argv, char **envp)
 {
 	char		*input;
 	char		prompt[PATH_MAX + 20];
