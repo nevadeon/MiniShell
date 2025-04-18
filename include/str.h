@@ -23,5 +23,6 @@ char	*str_vjoin(t_lifetime lft, size_t nb_args, ...);
 void	str_replace(t_lifetime lft, t_replace data);
 int		str_cmp(const char *s1, const char *s2);
 char	**str_split(t_lifetime lft, char const *s, char c);
+char	*str_chr(const char *s, int c);
 
 #endif
