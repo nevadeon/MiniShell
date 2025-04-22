@@ -12,6 +12,7 @@
 # include "ast.h"
 # include "char.h"
 # include "env.h"
+# include "executing.h"
 # include "int.h"
 # include "list.h"
 # include "mem.h"
