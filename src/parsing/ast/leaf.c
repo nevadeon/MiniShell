@@ -16,12 +16,12 @@ static inline bool _is_filename(t_ast *node)
 
 static t_ast	*_add_arg(t_ast *prev, char *word)
 {
-	t_args	*current;
+	t_str_list	*current;
 
 	prev->s_leaf.s_func.nb_args++;
 	if (!prev->s_leaf.s_func.args)
 	{
-		prev->s_leaf.s_func.args = mem_alloc(E_LFT_TASK, 1 * sizeof(t_args));
+		prev->s_leaf.s_func.args = mem_alloc(E_LFT_TASK, 1 * sizeof(t_str_list));
 		prev->s_leaf.s_func.args->next = NULL;
 		prev->s_leaf.s_func.args->content = word;
 		return (prev);
@@ -29,7 +29,7 @@ static t_ast	*_add_arg(t_ast *prev, char *word)
 	current = prev->s_leaf.s_func.args;
 	while (current->next)
 		current = current->next;
-	current->next = mem_alloc(E_LFT_TASK, 1 * sizeof(t_args));
+	current->next = mem_alloc(E_LFT_TASK, 1 * sizeof(t_str_list));
 	current->next->next = NULL;
 	current->next->content = word;
 	return (prev);

@@ -7,11 +7,11 @@
 
 typedef struct s_list t_list;
 
-typedef struct	s_strlist
+typedef struct	s_str_list
 {
-	char	*content;
-	struct s_strlist *next;
-}	t_strlist, t_args;
+	struct s_str_list	*next;
+	char				*content;
+}	t_str_list;
 
 typedef struct	s_dir
 {
@@ -55,8 +55,8 @@ typedef struct s_ast
 			{
 				struct
 				{
-					t_args	*args;
-					int		nb_args;
+					t_str_list	*args;
+					int			nb_args;
 				}	s_func;
 				char	*filename;
 			};
