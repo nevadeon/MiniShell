@@ -31,7 +31,8 @@ int	main(int argc, char **argv, char **envp)
 		mem_add_block(E_LFT_TASK, input);
 		if (str_equals(input, "exit"))
 			break ;
-		handle_command(input);
+		// handle_command(input);
+		print_ast(create_ast_by_hand(), 0);
 	}
 	if (argc > 1)
 		printf("handle command %s\n", argv[0]);
