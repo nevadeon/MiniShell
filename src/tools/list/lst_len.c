@@ -2,7 +2,7 @@
 
 int	lst_len(t_list *list)
 {
-	int len;
+	int	len;
 
 	len = 0;
 	while (list)

@@ -3,7 +3,7 @@
 
 t_arena	*get_arena(t_lifetime lft)
 {
-	static t_arena arenas[E_LFT_LAST_INDEX] = {0};
+	static t_arena	arenas[E_LFT_LAST_INDEX] = {0};
 
 	if (lft >= E_LFT_LAST_INDEX || lft < 0)
 		exit(666);

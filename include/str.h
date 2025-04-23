@@ -5,9 +5,9 @@
 # include <stdlib.h>
 # include <stdarg.h>
 
-typedef enum e_lifetime t_lifetime;
+typedef enum e_lifetime	t_lifetime;
 
-typedef struct	s_replace
+typedef struct s_replace
 {
 	char	**str;
 	char	*rep;

@@ -7,9 +7,10 @@ static t_dir	_explore_directory(void)
 	t_list			*list;
 	struct dirent	*ent;
 	struct stat		st;
-	int				count = 0;
+	int				count;
 	DIR				*rep;
-	
+
+	count = 0;
 	rep = opendir(".");
 	list = NULL;
 	if (rep == NULL)
@@ -20,7 +21,7 @@ static t_dir	_explore_directory(void)
 	while ((ent = readdir(rep)) != NULL)
 	{
 		if (ent->d_name[0] == '.' && (ent->d_name[1] == '\0' || (ent->d_name[1] == '.' && ent->d_name[2] == '\0')))
-			continue;
+			continue ;
 		if (stat(ent->d_name, &st) == 0)
 		{
 			count++;
@@ -28,7 +29,7 @@ static t_dir	_explore_directory(void)
 		}
 	}
 	closedir(rep);
-	return ((t_dir) {.head = ft_qsort(list, ascii_sort), .nb_dir = count});
+	return ((t_dir){.head = ft_qsort(list, ascii_sort), .nb_dir = count});
 }
 
 static bool	_match(const char *pattern, const char *str)
@@ -49,7 +50,7 @@ static bool	_match(const char *pattern, const char *str)
 		}
 		return (false);
 	}
-	else 
+	else
 	{
 		if (*pattern == *str)
 			return (_match(pattern + 1, str + 1));
@@ -94,7 +95,7 @@ void	expand_wildcard(char **word)
 	bool	expand_double;
 	bool	expand_single;
 	char	*w;
-	
+
 	index = 0;
 	expand_double = true;
 	expand_single = true;
@@ -114,5 +115,5 @@ void	expand_wildcard(char **word)
 	w = _compute_pattern(*word);
 	if (!w)
 		w = "";
-	str_replace(E_LFT_TASK, (t_replace) {word, w, 0, index });
+	str_replace(E_LFT_TASK, (t_replace){word, w, 0, index});
 }

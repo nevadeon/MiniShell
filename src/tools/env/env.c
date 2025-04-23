@@ -54,7 +54,7 @@ char	*env_set_var_value(char *var_name, char *var_value)
 	char	*new_var;
 	int		i;
 	int		len;
-	char 	**new_env;
+	char	**new_env;
 
 	len = str_len(var_name);
 	env = env_get();

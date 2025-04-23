@@ -12,7 +12,6 @@ static bool	_is_ope(char *input, size_t *i)
 	return (ope);
 }
 
-
 static size_t	_get_word_len(char *input)
 {
 	size_t	len;

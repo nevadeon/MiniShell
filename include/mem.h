@@ -6,7 +6,7 @@
 
 # define ARENA_BLOCK_SIZE 4096
 
-typedef struct s_list t_list;
+typedef struct s_list	t_list;
 
 typedef enum e_lifetime
 {

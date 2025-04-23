@@ -1,15 +1,15 @@
 #include "ast.h"
 #include "mem.h"
 
-static inline bool _is_filename(t_ast *node)
+static inline bool	_is_filename(t_ast *node)
 {
 	return (
 		node
 		&& node->type == E_NODE_OPE && node->s_ope.type != E_OPE_PIPE
 		&& (
-			!node->s_ope.left ||
-			node->s_ope.left->type != E_NODE_LEAF ||
-			node->s_ope.left->s_leaf.type != E_LEAF_FILENAME
+			!node->s_ope.left
+			|| node->s_ope.left->type != E_NODE_LEAF
+			|| node->s_ope.left->s_leaf.type != E_LEAF_FILENAME
 		)
 	);
 }

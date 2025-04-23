@@ -1,5 +1,5 @@
-#ifndef DEFINE_H
-# define DEFINE_H
+#ifndef INT_H
+# define INT_H
 
 # include <stdint.h>
 

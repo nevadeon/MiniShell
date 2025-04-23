@@ -1,10 +1,10 @@
 #include "minishell.h"
 
-static t_list *_merge_sorted_lists(t_list *smaller, t_list *equal, t_list *greater)
+static t_list	*_merge_sorted_lists(t_list *smaller, t_list *equal, t_list *greater)
 {
 	t_list	*result;
 	t_list	*tmp;
-	
+
 	result = smaller;
 	if (smaller)
 	{
@@ -27,13 +27,13 @@ static t_list *_merge_sorted_lists(t_list *smaller, t_list *equal, t_list *great
 	return (result);
 }
 
-static void _partition_list(t_list *list, t_list *pivot, int (*f)(void *, void *),
+static void	_partition_list(t_list *list, t_list *pivot, int (*f)(void *, void *),
 						t_list **smaller, t_list **equal, t_list **greater)
 {
 	t_list	*current;
 	t_list	*next;
 	int		cmp_result;
-	
+
 	current = list;
 	*smaller = NULL;
 	*equal = NULL;
