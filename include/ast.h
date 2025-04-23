@@ -76,7 +76,7 @@ typedef struct s_ast_data
 
 t_ast_data	*init_ast_data(char *input);
 t_ast		*create_ast(t_ast_data *data);
-t_ast		*create_ast_by_hand();
+t_ast		*create_ast_by_hand(void);
 t_ast		*handle_ope(t_ast_data *data, char *word);
 t_ast		*handle_leaf(t_ast_data *data, char *word);
 char		*get_next_word(char **input);

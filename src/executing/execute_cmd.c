@@ -2,10 +2,10 @@
 
 void	exec_cmd(char **env_paths, t_str_list *arg_list)
 {
-	char **args;
-	char *cmd_name;
-	char *path;
-	int	i;
+	char	**args;
+	char	*cmd_name;
+	char	*path;
+	int		i;
 
 	args = (char **) lst_to_array(E_LFT_FUNC, (t_list *)arg_list);
 	cmd_name = args[CMD_NAME_INDEX];

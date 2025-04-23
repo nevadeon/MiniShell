@@ -7,7 +7,7 @@ void	lst_add_back(t_list **list, t_list *new_node)
 	if (!*list)
 	{
 		*list = new_node;
-		return;
+		return ;
 	}
 	current = *list;
 	while (current->next)

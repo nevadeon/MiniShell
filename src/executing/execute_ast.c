@@ -2,7 +2,7 @@
 
 static void _execute_ast(t_ast *ast, t_exec_data data);
 
-static void _execute_ope(t_ast *ast, t_exec_data data)
+static void	_execute_ope(t_ast *ast, t_exec_data data)
 {
 	data.last_ope = ast;
 	if (ast->s_ope.type == E_OPE_PIPE)
@@ -17,7 +17,7 @@ static void _execute_ope(t_ast *ast, t_exec_data data)
 	}
 }
 
-static void _execute_leaf(t_ast *ast, t_exec_data data)
+static void	_execute_leaf(t_ast *ast, t_exec_data data)
 {
 	pid_t	pid;
 
@@ -52,7 +52,7 @@ static void _execute_leaf(t_ast *ast, t_exec_data data)
 	}
 }
 
-static void _execute_ast(t_ast *ast, t_exec_data data)
+static void	_execute_ast(t_ast *ast, t_exec_data data)
 {
 	if (!ast)
 		return ;
