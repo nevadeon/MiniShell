@@ -1,6 +1,6 @@
 #include "ast.h"
 
-static void	_print_args(t_args *current)
+static void	_print_args(t_strlist *current)
 {
 	if (!current)
 		return ;
@@ -15,10 +15,12 @@ static void	_print_leaf(t_ast *ast)
 		printf("type : filename, name %s", ast->s_leaf.filename);
 	else
 	{
-		printf("type : func, name %s", ast->s_leaf.s_func.args->content);
-		if (ast->s_leaf.s_func.nb_args != 0)
-			printf(", args [%d]: ", ast->s_leaf.s_func.nb_args);
-		_print_args(ast->s_leaf.s_func.args->next);
+		printf("type : func, name %s", ast->s_leaf.func->content);
+		if (ast->s_leaf.func->next)
+		{
+			printf(", args: ");
+			_print_args(ast->s_leaf.func->next);
+		}
 	}
 	printf("\n");
 }
