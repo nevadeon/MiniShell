@@ -28,6 +28,8 @@ typedef struct s_arena
 	size_t			used_memory;
 }	t_arena;
 
+typedef void	(*t_delete_function)(void *);
+
 void			*mem_alloc(t_lifetime lft, size_t size);
 void			mem_add_block(t_lifetime lft, void *ptr);
 void			mem_free_instance(t_lifetime lft);

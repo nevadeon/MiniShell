@@ -8,7 +8,7 @@
 static t_ast	*_create_leaf_by_hand(int count, ...)
 {
 	t_ast		*leaf;
-	t_str_list	*args;
+	t_strlist	*args;
 	va_list		strings;
 
 	leaf = malloc(sizeof(t_ast));
@@ -16,13 +16,13 @@ static t_ast	*_create_leaf_by_hand(int count, ...)
 	leaf->s_leaf.type = E_LEAF_FUNC;
 
 	va_start(strings, count);
-	args = (t_str_list *)lst_new(E_LFT_TASK, strdup(va_arg(strings, char *)));
+	args = (t_strlist *)lst_new(E_LFT_TASK, strdup(va_arg(strings, char *)));
 	int i = 0;
 	while (++i < count)
 		lst_add_back((t_list **)&args, lst_new(E_LFT_TASK, strdup(va_arg(strings, char *))));
 	va_end(strings);
 
-	leaf->s_leaf.s_func.args = args;
+	leaf->s_leaf.func = args;
 	return (leaf);
 }
 
