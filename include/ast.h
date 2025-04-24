@@ -9,8 +9,8 @@ typedef struct s_list	t_list;
 
 typedef struct s_strlist
 {
-	char				*content;
 	struct s_strlist	*next;
+	char				*content;
 }	t_strlist;
 
 typedef struct s_dir
