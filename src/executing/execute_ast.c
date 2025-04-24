@@ -43,7 +43,7 @@ static void	_execute_leaf(t_ast *ast, t_exec_data data)
 				close(data.pipefd[0]);
 			}
 		}
-		exec_cmd(data.env_paths, ast->s_leaf.s_func.args);
+		exec_cmd(data.env_paths, ast->s_leaf.func);
 		exit(666);
 	}
 	else
