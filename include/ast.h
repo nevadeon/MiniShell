@@ -5,15 +5,15 @@
 # include <stdlib.h>
 # include <stdbool.h>
 
-typedef struct s_list t_list;
+typedef struct s_list	t_list;
 
-typedef struct	s_strlist
+typedef struct s_strlist
 {
-	char	*content;
-	struct s_strlist *next;
-}	t_strlist, t_args;
+	char				*content;
+	struct s_strlist	*next;
+}	t_strlist;
 
-typedef struct	s_dir
+typedef struct s_dir
 {
 	int		nb_dir;
 	t_list	*head;
@@ -53,12 +53,8 @@ typedef struct s_ast
 			t_leaf_type	type;
 			union
 			{
-				struct
-				{
-					t_args	*args;
-					int		nb_args;
-				}	s_func;
-				char	*filename;
+				t_strlist	*func;
+				char		*filename;
 			};
 		}	s_leaf;
 		struct

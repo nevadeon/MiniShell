@@ -16,22 +16,16 @@ static inline bool _is_filename(t_ast *node)
 
 static t_ast	*_add_arg(t_ast *prev, char *word)
 {
-	t_args	*current;
+	t_strlist	*current;
 
-	prev->s_leaf.s_func.nb_args++;
-	if (!prev->s_leaf.s_func.args)
-	{
-		prev->s_leaf.s_func.args = mem_alloc(E_LFT_TASK, 1 * sizeof(t_args));
-		prev->s_leaf.s_func.args->next = NULL;
-		prev->s_leaf.s_func.args->content = word;
-		return (prev);
-	}
-	current = prev->s_leaf.s_func.args;
+	current = prev->s_leaf.func;
+	if (!current)
+		exit(EXIT_FAILURE); // TODO HANDLE AST ERRORS
 	while (current->next)
 		current = current->next;
-	current->next = mem_alloc(E_LFT_TASK, 1 * sizeof(t_args));
-	current->next->next = NULL;
+	current->next = mem_alloc(E_LFT_TASK, 1 * sizeof(t_strlist));
 	current->next->content = word;
+	current->next->next = NULL;
 	return (prev);
 }
 
@@ -48,12 +42,10 @@ static t_ast	*_create_leaf(char *s, t_ast *prev)
 	}
 	else
 	{
-		leaf->s_leaf.s_func.args = NULL;
 		leaf->s_leaf.type = E_LEAF_FUNC;
-		leaf->s_leaf.s_func.nb_args = -1;
-		if (!prev)
-			prev = leaf;
-		_add_arg(prev, s);
+		leaf->s_leaf.func = mem_alloc(E_LFT_TASK, 1 * sizeof(t_strlist));
+		leaf->s_leaf.func->content = s;
+		leaf->s_leaf.func->next = NULL;
 	}
 	return (leaf);
 }
