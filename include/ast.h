@@ -19,29 +19,34 @@ typedef struct s_dir
 	t_list	*head;
 }	t_dir;
 
-typedef enum e_leaf_type
-{
-	E_LEAF_FUNC,
-	E_LEAF_FILENAME,
-	E_LEAF_LAST_INDEX
-}	t_leaf_type;
-
 typedef enum e_node_type
 {
 	E_NODE_OPE,
-	E_NODE_LEAF,
+	E_NODE_CMD,
 	E_NODE_LAST_INDEX
 }	t_node_type;
 
 typedef enum e_ope_type
 {
 	E_OPE_PIPE,
-	E_OPE_REDIR_IN,
-	E_OPE_HEREDOC,
-	E_OPE_REDIR_OUT,
-	E_OPE_APPEND,
 	E_OPE_LAST_INDEX
 }	t_ope_type;
+
+typedef enum e_redir_type
+{
+	E_REDIR_OUT_TRUNCATE,
+	E_REDIR_OUT_APPEND,
+	E_REDIR_IN_FILE,
+	E_REDIR_IN_HEREDOC,
+	E_REDIR_LAST_INDEX
+}	t_redir_type;
+
+typedef struct s_redir_list
+{
+	struct s_redir_list	*next;
+	char				*content;
+	t_redir_type		type;
+}	t_redir_list;
 
 typedef struct s_ast
 {
@@ -50,13 +55,10 @@ typedef struct s_ast
 	{
 		struct
 		{
-			t_leaf_type	type;
-			union
-			{
-				t_strlist	*func;
-				char		*filename;
-			};
-		}	s_leaf;
+			t_strlist		*args;
+			t_redir_list	*redir_in;
+			t_redir_list	*redir_out;
+		}	s_cmd;
 		struct
 		{
 			t_ope_type		type;
