@@ -1,18 +1,16 @@
 #include "test.h"
 
-void	test_memory(void)
+bool	test_memory(void)
 {
-	char *s;
-	int i;
+	int	i;
 
 	i = 0;
-	while(++i <= 20)
+	while (++i <= 20)
 	{
 		s = mem_alloc(E_LFT_PROG, ARENA_BLOCK_SIZE / 4);
 		s = mem_alloc(E_LFT_TASK, ARENA_BLOCK_SIZE / 4);
 		s = mem_alloc(E_LFT_FUNC, ARENA_BLOCK_SIZE / 4);
 	}
-
 	s = mem_alloc(E_LFT_PROG, ARENA_BLOCK_SIZE + 1);
 	s = mem_alloc(E_LFT_TASK, ARENA_BLOCK_SIZE + 1);
 	s = mem_alloc(E_LFT_FUNC, ARENA_BLOCK_SIZE + 1);
@@ -40,13 +38,14 @@ void	test_memory(void)
 	assert(((ptr1 - arena_origin) % sizeof(void *)) == 0);
 	assert(((ptr2 - arena_origin) % sizeof(void *)) == 0);
 
-	mem_add_block(E_LFT_PROG, strdup("plouc1"));
-	mem_add_block(E_LFT_PROG, strdup("plouc2"));
-	mem_add_block(E_LFT_TASK, strdup("plouc3"));
-	mem_add_block(E_LFT_TASK, strdup("plouc4"));
-	mem_add_block(E_LFT_FUNC, strdup("plouc5"));
-	mem_add_block(E_LFT_FUNC, strdup("plouc6"));
+	mem_add_block(E_LFT_PROG, strdup("test-1"));
+	mem_add_block(E_LFT_PROG, strdup("test-2"));
+	mem_add_block(E_LFT_TASK, strdup("test-3"));
+	mem_add_block(E_LFT_TASK, strdup("test-4"));
+	mem_add_block(E_LFT_FUNC, strdup("test-5"));
+	mem_add_block(E_LFT_FUNC, strdup("test-6"));
 	mem_free_all();
 
-	printf("All memory tests passed 🗸\n");
+	printf("All memory tests passed 🥰\n");
+	return (EXIT_SUCCESS);
 }
