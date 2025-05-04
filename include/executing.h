@@ -34,7 +34,7 @@ typedef struct s_exec_data
 
 void		execute_ast(t_ast *ast);
 void		exec_cmd(char **env_paths, t_strlist *arg_list);
-void		dupe_close(int source_fd, int dest_fd);
+void		dup_close(int source_fd, int dest_fd);
 t_pid_list	*lst_pid_new(pid_t pid);
 
 #endif
