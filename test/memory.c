@@ -2,7 +2,8 @@
 
 bool	test_memory(void)
 {
-	int	i;
+	int		i;
+	__attribute__((unused)) char	*s;
 
 	i = 0;
 	while (++i <= 20)
