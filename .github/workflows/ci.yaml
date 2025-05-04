@@ -1,0 +1,30 @@
+name: CI-TESTS
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  
+jobs:
+  build:
+    name: build and test
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Pull
+        uses: actions/checkout@v4
+
+      - name: Installing gcc
+        uses: egor-tensin/setup-gcc@v1
+        with:
+          version: latest
+          platform: x64
+
+      - name: Compilation
+        run: |
+          make re
+    
+      - name: Tests
+        run: |
+          make test

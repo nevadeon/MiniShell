@@ -3,5 +3,5 @@
 int main(void)
 {
 	test_memory();
-	return (0);
+	return (EXIT_SUCCESS);
 }
