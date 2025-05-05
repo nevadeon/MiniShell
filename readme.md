@@ -1,85 +1,135 @@
-### Types de commit
+# Minishell
 
-- **feat**
-  Utilisé pour introduire une nouvelle fonctionnalité dans le code.
-  *Exemple :* `feat(auth): ajout de la connexion via OAuth`.
+## 📌 Project Overview
 
-- **fix**
-  Sert à corriger un bug ou un comportement inattendu.
-  *Exemple :* `fix(form): correction d'une erreur de validation`.
+**Minishell** is a group project developed as part of the curriculum at **42 Le Havre**, by two students: [nevadeon](https://github.com/nevadeon) and [Weldd2](https://github.com/Weldd2). This project aims to recreate a simplified version of a Unix shell, providing us with an opportunity to delve deep into the fundamentals of process handling, input parsing, and command execution at the core of operating systems.
 
-- **docs**
-  Changements liés à la documentation. Cela peut inclure la mise à jour ou l’ajout de documents, sans modification du code source.
-  *Exemple :* `docs(readme): mise à jour de la procédure d'installation`.
+Inspired by the early days of computing, this shell replicates a time when user interfaces were minimal, and interaction with machines was entirely command-line based. By building Minishell, we revisit these foundational challenges and recreate a crucial layer of abstraction between the user and the kernel.
 
-- **style**
-  Modifications relatives à la mise en forme du code (indentation, espaces, ponctuation, etc.) qui n'affectent pas la logique ou le comportement du code.
-  *Exemple :* `style: reformattage du code selon les normes de linting`.
+## 🧠 Context and Objectives
 
-- **refactor**
-  Modifications du code qui n’ajoutent pas de fonctionnalité ni ne corrigent de bug, mais qui améliorent la structure ou la lisibilité du code.
-  *Exemple :* `refactor: simplification de la logique d'authentification`.
+The objective is to write a robust shell in **C**, adhering strictly to the rules of memory management, process control, and command parsing. The program must:
 
-- **perf**
-  Changements destinés à améliorer les performances du logiciel sans modifier son comportement observable.
-  *Exemple :* `perf: optimisation de l'algorithme de traitement des données`.
+* Display a dynamic prompt and read user commands interactively.
+* Parse and execute both built-in commands and external binaries.
+* Support redirections (`<`, `>`, `<<`, `>>`), pipes, and environment variable expansions.
+* Handle Unix signals correctly (`Ctrl-C`, `Ctrl-D`, `Ctrl-\`) in interactive mode.
+* Implement shell-specific behaviors for quotes, history, and error management.
 
-- **test**
-  Tout ajout ou modification dans les tests, qu'il s'agisse de tests unitaires, d'intégration ou autres.
-  *Exemple :* `test: ajout de tests pour la fonction de calcul`.
+The shell must closely mimic **bash** behavior for all the required features, without adding unnecessary or unsupported functionality.
 
-- **build**
-  Changements qui affectent le système de build ou les dépendances externes (configuration de Maven, Gradle, npm, etc.).
-  *Exemple :* `build: mise à jour de la version de Node.js dans le package.json`.
+## 🧾 Constraints and Technical Requirements
 
-- **ci**
-  Modifications portant sur l'intégration continue ou les scripts de déploiement.
-  *Exemple :* `ci: correction du script de déploiement sur le serveur de test`.
+* Language: **C**
+* Coding style: **42 Norm** (zero tolerance for norm errors, including in bonus files).
+* Error handling: No crashes, segmentation faults, or undefined behavior.
+* Memory: All dynamically allocated memory must be properly freed — **no leaks allowed**.
+* Compilation: A Makefile must be provided, supporting standard rules (`all`, `clean`, `fclean`, `re`, and `bonus` if applicable), with flags `-Wall -Wextra -Werror`.
+* Libraries allowed: Only standard system calls and `readline`, along with the custom `libft`.
 
-- **chore**
-  Modifications de tâches de maintenance, de configurations diverses ou d'autres changements qui ne touchent pas directement au code source (mise à jour des outils, tâches d'automatisation, etc.).
-  *Exemple :* `chore: nettoyage des fichiers temporaires après build`.
+## 📂 Project Structure
 
-- **revert**
-  Utilisé pour annuler un commit précédent.
-  *Exemple :* `revert: retour sur le commit [hash] à cause de problèmes de performance`.
+The mandatory part includes:
 
-### Structure d’un message de commit
+* Custom prompt
+* Built-in command support
+* Execution of external programs with `PATH` resolution
+* Redirection and piping
+* Environment variable expansion
+* Signal handling
+* History management
 
-Un commit suivant cette convention est structuré de la façon suivante :
+Any bonus features (such as wildcard expansion or advanced parsing) must be explicitly separated and included only via the `bonus` rule in the Makefile.
 
-**En-tête**
-   Commence par le type suivi d’un deux-points et éventuellement d’un scope entre parenthèses.
-   *Exemple :* `feat(auth): ajout de la fonctionnalité de double authentification`.
+## 🫀 Commit Types
 
-### Structure d'un fichier header `.h`
+* **feat**
+  Used to introduce a brand‑new feature.
+  *Example:* `feat(auth): add OAuth login support`
 
-Pour assurer la cohérence et la lisibilité des headers dans le projet, il est conseillé de respecter l’ordre suivant :
+* **fix**
+  For correcting a bug or unexpected behaviour.
+  *Example:* `fix(form): fix validation error`
 
-- **Inclusions des bibliothèques standard**
-  Inclure d'abord les fichiers headers de la bibliothèque standard C.
-  *Exemple :* `#include <stdlib.h>`
+* **docs**
+  Documentation‑only changes—updating or adding docs without touching source code.
+  *Example:* `docs(readme): update installation steps`
 
-- **Inclusions des headers du projet**
-  Ajouter ensuite les headers internes de votre projet.
-  *Exemple :* `#include "mon_module.h"`
+* **style**
+  Code‑style changes (indentation, spacing, punctuation, etc.) that do **not** affect logic or behaviour.
+  *Example:* `style: reformat code to satisfy linter`
 
-- **Définition de constantes (macros)**
-  Placer ici les `#define` servant de constantes, tailles de buffers, etc.
-  *Exemple :* `#define MA_CONSTANTE 42`
+* **refactor**
+  Code changes that neither add features nor fix bugs but improve structure or readability.
+  *Example:* `refactor: simplify authentication flow`
 
-- **Déclarations anticipées (forward declarations)**
-  Déclarations minimales de types pour éviter les inclusions circulaires.
-  *Exemple :* `typedef enum e_type t_type;`
+* **perf**
+  Changes aimed at improving performance without altering observable behaviour.
+  *Example:* `perf: optimise data‑processing algorithm`
 
-- **Déclarations de types (structs, enums, typedefs)**
-  Définir ici toutes les structures, énumérations et alias de types utilisés.
-  *Exemple :* `typedef struct s_node { int value; t_node *next; } t_node;`
+* **test**
+  Adding or modifying tests—unit, integration, or other.
+  *Example:* `test: add tests for calculation function`
 
-- **Pointeurs de fonctions (typedefs spécifiques)**
-  Déclarer ici les typedefs de pointeurs vers fonctions, si besoin.
-  *Exemple :* `typedef void (*t_delete_function)(void *);`
+* **build**
+  Changes that affect the build system or external dependencies (Maven, Gradle, npm, etc.).
+  *Example:* `build: update Node.js version in package.json`
 
-- **Prototypes des fonctions**
-  Lister enfin les fonctions exposées par ce module.
-  *Exemple :* `void delete_node(t_node *node, t_delete_function del);`
+* **ci**
+  Changes to continuous‑integration configuration or deployment scripts.
+  *Example:* `ci: fix deployment script for staging server`
+
+* **chore**
+  Routine tasks, configuration tweaks, or other maintenance work that doesn’t directly change source code (tool upgrades, automation tasks, etc.).
+  *Example:* `chore: clean up temporary files after build`
+
+* **revert**
+  Reverts a previous commit.
+  *Example:* `revert: roll back commit [hash] due to performance issues`
+
+### Commit‑message format
+
+A commit following this convention is structured as:
+
+**Header**
+Starts with the *type*, optionally followed by a *scope* in parentheses, then a colon.
+*Example:* `feat(auth): add two‑factor authentication`
+
+## 🧠 Header File (`.h`) Structure
+
+To keep project headers consistent and readable, follow this order:
+
+1. **Standard‑library includes**
+   Include C standard headers first.
+   *Example:* `#include <stdlib.h>`
+
+2. **Project header includes**
+   Then include your project’s internal headers.
+   *Example:* `#include "my_module.h"`
+
+3. **Constant (macro) definitions**
+   Place `#define` constants, buffer sizes, etc. here.
+   *Example:* `#define MY_CONSTANT 42`
+
+4. **Forward declarations**
+   Minimal type declarations to avoid circular includes.
+   *Example:* `typedef enum e_type t_type;`
+
+5. **Type declarations (structs, enums, typedefs)**
+   Define all structs, enums, and type aliases used by the module.
+   *Example:*
+
+   ```c
+   typedef struct s_node {
+       int value;
+       struct s_node *next;
+   } t_node;
+   ```
+
+6. **Function‑pointer typedefs**
+   Declare function‑pointer typedefs, if any.
+   *Example:* `typedef void (*t_delete_function)(void *);`
+
+7. **Function prototypes**
+   Finally, list the module’s public function prototypes.
+   *Example:* `void delete_node(t_node *node, t_delete_function del);`
