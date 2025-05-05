@@ -9,6 +9,12 @@ VALGRIND_FLAGS := --quiet --leak-check=full --show-leak-kinds=all --track-origin
 GDB_FLAGS := --quiet --args
 GDB_VALGRIND_ARGS =
 
+# OS detection
+UNAME_P := $(shell uname -p)
+ifeq ($(UNAME_S),Linux)
+    CFLAGS += -DLINUX
+endif
+
 # Directories
 INC_DIR := include
 SRC_DIR := src

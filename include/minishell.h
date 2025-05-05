@@ -6,7 +6,9 @@
 # include <readline/history.h>
 # include <sys/stat.h>
 # include <unistd.h>
-# include <linux/limits.h>
+# ifdef LINUX
+#  include <linux/limits.h>
+# endif
 # include <limits.h>
 # include <dirent.h>
 # include "ast.h"
