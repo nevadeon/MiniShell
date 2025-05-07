@@ -49,6 +49,15 @@ void	handle_leaf(t_ast_data *data, char *word)
 		else
 			lst_add_front((t_list **)data->prev->s_leaf.redir_out, (t_list *)redir_list);
 	}
+	else if (data->prev && data->prev->type == E_NODE_LEAF)
+	{
+		t_strlist	*arg;
+		arg = mem_alloc(E_LFT_TASK, sizeof(t_strlist));
+		arg->content = word;
+		arg->next = NULL;
+		lst_add_back((t_list **)&data->prev->s_leaf.func, (t_list *)arg);
+		leaf = data->prev;
+	}
 	else
 		leaf = _create_leaf(word);
 	if (!data->prev)

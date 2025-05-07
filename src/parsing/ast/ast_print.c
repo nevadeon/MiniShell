@@ -6,23 +6,27 @@ static void	_print_leaf(t_ast *ast)
 	t_redir_list	*rlist;
 
 	list = ast->s_leaf.func;
+	printf("%s", list->content);
+	list = list->next;
+	printf(", args [");
 	while (list)
 	{
-		printf("%s", list->content);
+		printf("%s, ", list->content);
 		list = list->next;
 	}
+	printf("]");
 	rlist = ast->s_leaf.redir_in;
 	printf(", redir_in [");
 	while (rlist)
 	{
-		printf("%s", list->content);
+		printf("%s, ", list->content);
 		list = list->next;
 	}
 	printf("], redir_out [");
 	rlist = ast->s_leaf.redir_out;
 	while (rlist)
 	{
-		printf("%s", list->content);
+		printf("%s, ", list->content);
 		list = list->next;
 	}
 	printf("]");
