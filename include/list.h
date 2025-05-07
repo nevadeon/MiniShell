@@ -1,6 +1,10 @@
 #ifndef LIST_H
 # define LIST_H
 
+# ifndef NULL
+#  define NULL 0
+# endif
+
 typedef enum e_lifetime	t_lifetime;
 
 typedef struct s_list
@@ -14,5 +18,6 @@ void	lst_add_front(t_list **list, t_list *new_node);
 void	lst_add_back(t_list **list, t_list *new_node);
 void	**lst_to_array(t_lifetime lft, t_list *list);
 int		lst_len(t_list *list);
+t_list	*lst_last(t_list *list);
 
 #endif

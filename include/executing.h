@@ -3,6 +3,7 @@
 
 # include <unistd.h>
 # include <sys/wait.h>
+# include <fcntl.h>
 
 # define CMD_NAME_INDEX 0
 
