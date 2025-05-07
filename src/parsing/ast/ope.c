@@ -6,10 +6,6 @@ static t_ope_type	_string_to_ope_type(char *word)
 {
 	static const char	*ope_strings[E_OPE_LAST_INDEX] = {
 		"|",
-		"<",
-		"<<",
-		">",
-		">>"
 	};
 	size_t				index;
 
@@ -35,7 +31,7 @@ static t_ast	*_create_ope(char *s)
 	return (ope);
 }
 
-t_ast	*handle_ope(t_ast_data *data, char *word)
+void	handle_ope(t_ast_data *data, char *word)
 {
 	t_ast	*ope;
 
@@ -49,5 +45,5 @@ t_ast	*handle_ope(t_ast_data *data, char *word)
 		data->prev->s_ope.right = ope;
 	data->prev = ope;
 	data->last_ope = ope;
-	return (create_ast(data));
+	create_ast(data);
 }

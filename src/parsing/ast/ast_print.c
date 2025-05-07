@@ -1,30 +1,31 @@
 #include "ast.h"
 
-static void	_print_args(t_strlist *current)
-{
-	while (current)
-	{
-		printf("%s", current->content);
-		if (current->next)
-			printf(", ");
-		current = current->next;
-	}
-}
-
 static void	_print_leaf(t_ast *ast)
 {
-	if (ast->s_leaf.type == E_LEAF_FILENAME)
-		printf("filename: %s", ast->s_leaf.filename);
-	else
+	t_strlist		*list;
+	t_redir_list	*rlist;
+
+	list = ast->s_leaf.func;
+	while (list)
 	{
-		printf("function: %s", ast->s_leaf.func->content);
-		if (ast->s_leaf.func->next)
-		{
-			printf(", args [");
-			_print_args(ast->s_leaf.func->next);
-			printf("]");
-		}
+		printf("%s", list->content);
+		list = list->next;
 	}
+	rlist = ast->s_leaf.redir_in;
+	printf(", redir_in [");
+	while (rlist)
+	{
+		printf("%s", list->content);
+		list = list->next;
+	}
+	printf("], redir_out [");
+	rlist = ast->s_leaf.redir_out;
+	while (rlist)
+	{
+		printf("%s", list->content);
+		list = list->next;
+	}
+	printf("]");
 	printf("\n");
 }
 
@@ -32,10 +33,6 @@ void	print_ast(t_ast *ast, int indent)
 {
 	static const char	*ope_strings[E_OPE_LAST_INDEX] = {
 		"|",
-		"<",
-		"<<",
-		">",
-		">>",
 	};
 	int					i;
 
