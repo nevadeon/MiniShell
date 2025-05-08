@@ -70,6 +70,13 @@ void	handle_leaf(t_ast_data *data, char *word)
 	else
 	{
 		leaf = _create_leaf(word);
+		if (data->prev->type == E_NODE_OPE)
+		{
+			if (!data->prev->s_ope.left)
+				data->prev->s_ope.left = leaf;
+			else if (!data->prev->s_ope.right)
+				data->prev->s_ope.right = leaf;
+		}
 		data->prev = leaf;
 	}
 	if (!data->root)
