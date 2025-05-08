@@ -34,7 +34,7 @@ static t_redir_type	_is_redir(char *word)
 	return (E_REDIR_LAST_INDEX);
 }
 
-static void	_handle_redir(t_ast_data *data, char *word, t_redir_type type)
+static void	_handle_redir(t_ast_data *data, t_redir_type type)
 {
 	t_redir_list	*redir_list;
 
