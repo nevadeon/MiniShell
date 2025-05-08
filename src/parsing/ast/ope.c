@@ -37,12 +37,12 @@ void	handle_ope(t_ast_data *data, char *word)
 
 	ope = _create_ope(word);
 	if (data->prev && data->prev->type == E_NODE_LEAF)
-		ope->s_ope.left = data->root;
+		ope->s_ope.right = data->root;
 	if (ope->s_ope.type == E_OPE_PIPE || !data->root || !data->last_ope
 		|| data->root->type == E_NODE_LEAF || data->last_ope->s_ope.right)
 		data->root = ope;
 	if (data->prev && data->prev->type == E_NODE_OPE)
-		data->prev->s_ope.right = ope;
+		data->prev->s_ope.left = ope;
 	data->prev = ope;
 	data->last_ope = ope;
 	create_ast(data);
