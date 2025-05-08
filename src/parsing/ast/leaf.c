@@ -11,10 +11,13 @@ static t_ast	*_create_leaf(char *word)
 	leaf = mem_alloc(E_LFT_TASK, sizeof(t_ast));
 	leaf->type = E_NODE_LEAF;
 	leaf->s_leaf.func = NULL;
-	func = mem_alloc(E_LFT_TASK, sizeof(t_strlist));
-	func->content = word;
-	func->next = NULL;
-	lst_add_back((t_list **)&leaf->s_leaf.func, (t_list *)func);
+	if (word != NULL)
+	{
+		func = mem_alloc(E_LFT_TASK, sizeof(t_strlist));
+		func->content = word;
+		func->next = NULL;
+		lst_add_back((t_list **)&leaf->s_leaf.func, (t_list *)func);
+	}
 	return (leaf);
 }
 
@@ -37,6 +40,11 @@ void	handle_leaf(t_ast_data *data, char *word)
 	t_redir_list	*redir_list;
 	t_ast			*leaf;
 
+	if (!data->prev)
+	{
+		leaf = _create_leaf(NULL);
+		data->prev = leaf;
+	}
 	type = _is_redir(word);
 	if (type != E_REDIR_LAST_INDEX)
 	{
@@ -45,9 +53,9 @@ void	handle_leaf(t_ast_data *data, char *word)
 		redir_list->next = NULL;
 		redir_list->type = type;
 		if (type == E_REDIR_HEREDOC || type == E_REDIR_IN)
-			lst_add_front((t_list **)data->prev->s_leaf.redir_in, (t_list *)redir_list);
+			lst_add_back((t_list **)&data->prev->s_leaf.redir_in, (t_list *)redir_list);
 		else
-			lst_add_front((t_list **)data->prev->s_leaf.redir_out, (t_list *)redir_list);
+			lst_add_back((t_list **)&data->prev->s_leaf.redir_out, (t_list *)redir_list);
 	}
 	else if (data->prev && data->prev->type == E_NODE_LEAF)
 	{
@@ -55,13 +63,16 @@ void	handle_leaf(t_ast_data *data, char *word)
 		arg = mem_alloc(E_LFT_TASK, sizeof(t_strlist));
 		arg->content = word;
 		arg->next = NULL;
-		lst_add_back((t_list **)&data->prev->s_leaf.func, (t_list *)arg);
+		if (data->prev->type == E_NODE_LEAF)
+			lst_add_back((t_list **)&data->prev->s_leaf.func, (t_list *)arg);
 		leaf = data->prev;
 	}
 	else
+	{
 		leaf = _create_leaf(word);
-	if (!data->prev)
+		data->prev = leaf;
+	}
+	if (!data->root)
 		data->root = leaf;
-	data->prev = leaf;
 	create_ast(data);
 }

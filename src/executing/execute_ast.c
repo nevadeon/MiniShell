@@ -48,6 +48,8 @@ static void	_execute_leaf(t_ast *ast, t_exec_data data)
 	}
 	else
 	{
+		int	status;
+		waitpid(pid, &status, 0);
 		lst_add_front((t_list **)&data.pid_list, (t_list *)lst_pid_new(pid));
 	}
 }
