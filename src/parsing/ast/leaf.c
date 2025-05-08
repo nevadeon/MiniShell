@@ -81,7 +81,7 @@ void	handle_leaf(t_ast_data *data, char *word)
 	}
 	type = _is_redir(word);
 	if (type != E_REDIR_LAST_INDEX)
-		_handle_redir(data, word, type);
+		_handle_redir(data, type);
 	else if (data->prev && data->prev->type == E_NODE_LEAF)
 	{
 		_handle_prev_leaf(data, word);
