@@ -74,9 +74,11 @@ void	handle_leaf(t_ast_data *data, char *word)
 	t_redir_type	type;
 	t_ast			*leaf;
 
-	if (!data->prev)
+	if (!data->prev || data->prev->type == E_NODE_OPE)
 	{
 		leaf = _create_leaf(NULL);
+		if (data->prev && data->prev->type == E_NODE_OPE)
+			_handle_leaf_parent(data, leaf);
 		data->prev = leaf;
 	}
 	type = _is_redir(word);
