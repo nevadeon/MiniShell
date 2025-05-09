@@ -69,7 +69,7 @@ static void	_handle_leaf_parent(t_ast_data *data, t_ast *leaf)
 	}
 }
 
-void	handle_leaf(t_ast_data *data, char *word)
+t_ast	*handle_leaf(t_ast_data *data, char *word)
 {
 	t_redir_type	type;
 	t_ast			*leaf;
@@ -97,5 +97,9 @@ void	handle_leaf(t_ast_data *data, char *word)
 	}
 	if (!data->root)
 		data->root = leaf;
-	create_ast(data);
+	if (type != E_REDIR_LAST_INDEX)
+		data->prev_token = data->token;
+	else
+		data->prev_token = data->token;
+	return (create_ast(data));
 }

@@ -31,7 +31,7 @@ static t_ast	*_create_ope(char *s)
 	return (ope);
 }
 
-void	handle_ope(t_ast_data *data, char *word)
+t_ast	*handle_ope(t_ast_data *data, char *word)
 {
 	t_ast	*ope;
 
@@ -45,5 +45,6 @@ void	handle_ope(t_ast_data *data, char *word)
 		data->prev->s_ope.left = ope;
 	data->prev = ope;
 	data->last_ope = ope;
-	create_ast(data);
+	data->prev_token = data->token;
+	return (create_ast(data));
 }

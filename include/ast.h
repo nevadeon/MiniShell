@@ -33,6 +33,14 @@ typedef enum e_node_type
 	E_NODE_LAST_INDEX
 }	t_node_type;
 
+typedef enum e_token
+{
+	E_TOKEN_OPE,
+	E_TOKEN_REDIR,
+	E_TOKEN_WORD,
+	E_TOKEN_LAST_INDEX
+}	t_token;
+
 typedef enum e_ope_type
 {
 	E_OPE_PIPE,
@@ -81,14 +89,17 @@ typedef struct s_ast_data
 	t_ast	*prev;
 	t_ast	*root;
 	t_ast	*last_ope;
+	t_token	token;
+	t_token	prev_token;
 }	t_ast_data;
 
 t_ast_data	*init_ast_data(char *input);
 t_ast		*create_ast(t_ast_data *data);
 t_ast		*create_ast_by_hand(void);
-void		handle_ope(t_ast_data *data, char *word);
-void		handle_leaf(t_ast_data *data, char *word);
+t_ast		*handle_ope(t_ast_data *data, char *word);
+t_ast		*handle_leaf(t_ast_data *data, char *word);
 char		*get_next_word(char **input);
 void		print_ast(t_ast *ast, int indent);
+t_token		get_token_type(char *word);
 
 #endif
