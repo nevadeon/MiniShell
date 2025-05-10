@@ -1,18 +1,14 @@
-#include "ast.h"
-#include "str.h"
-#include "mem.h"
+#include "parsing.h"
 
-t_ast_data	*init_ast_data(char *input)
+static bool	_has_error(t_ast_data *data)
 {
-	t_ast_data	*ast_data;
-
-	ast_data = mem_alloc(E_LFT_TASK, 1 * sizeof(t_ast_data));
-	ast_data->input = input;
-	ast_data->last_ope = NULL;
-	ast_data->prev_token = E_TOKEN_LAST_INDEX;
-	ast_data->prev = NULL;
-	ast_data->root = NULL;
-	return (ast_data);
+	if (data->prev_token == E_TOKEN_OPE || data->prev_token == E_TOKEN_REDIR)
+		return (print_parsing_error(E_ERR_PARSING_UNEXPECTED_TOKEN, data->word), true);
+	if (data->prev_token == E_TOKEN_REDIR
+		|| (data->prev_token == E_TOKEN_LAST_INDEX && data->token == E_TOKEN_OPE)
+		|| (data->prev_token == E_TOKEN_OPE && data->token == E_TOKEN_OPE))
+		return (print_parsing_error(E_ERR_PARSING_UNEXPECTED_TOKEN, data->word), true);
+	return (false);
 }
 
 t_ast	*create_ast(t_ast_data *data)
@@ -22,16 +18,17 @@ t_ast	*create_ast(t_ast_data *data)
 
 	word = get_next_word(&data->input);
 	if (!word || str_len(word) == 0)
+	{
+		if (_has_error(data))
+			return (NULL);
 		return (data->root);
+	}
+	data->word = word;
 	token = get_token_type(word);
 	data->token = token;
-	if (data->prev_token == E_TOKEN_REDIR)
-		exit(EXIT_FAILURE);
-	if (data->prev_token == E_TOKEN_LAST_INDEX && data->token == E_TOKEN_OPE)
-		exit(EXIT_FAILURE);
-	if (data->prev_token == E_TOKEN_OPE && data->token == E_TOKEN_OPE)
-		exit(EXIT_FAILURE);
+	if (_has_error(data))
+		return (NULL);
 	if (token == E_TOKEN_OPE)
-		return (handle_ope(data, word));
-	return (handle_leaf(data, word));
+		return (handle_ope(data));
+	return (handle_leaf(data));
 }

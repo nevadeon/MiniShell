@@ -31,17 +31,17 @@ static t_ast	*_create_ope(char *s)
 	return (ope);
 }
 
-t_ast	*handle_ope(t_ast_data *data, char *word)
+t_ast	*handle_ope(t_ast_data *data)
 {
 	t_ast	*ope;
 
-	ope = _create_ope(word);
-	if (data->prev && data->prev->type == E_NODE_LEAF)
+	ope = _create_ope(data->word);
+	if (data->prev_token == E_TOKEN_LEAF)
 		ope->s_ope.right = data->root;
-	if (ope->s_ope.type == E_OPE_PIPE || !data->root || !data->last_ope
+	if (!data->root || !data->last_ope
 		|| data->root->type == E_NODE_LEAF || data->last_ope->s_ope.right)
 		data->root = ope;
-	if (data->prev && data->prev->type == E_NODE_OPE)
+	if (data->prev_token == E_TOKEN_OPE)
 		data->prev->s_ope.left = ope;
 	data->prev = ope;
 	data->last_ope = ope;

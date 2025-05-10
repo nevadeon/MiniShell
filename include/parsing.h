@@ -2,6 +2,9 @@
 # define PARSING_H
 
 # include "error.h"
+# include "ast.h"
+# include "str.h"
+# include "mem.h"
 
 typedef enum e_error_parsing
 {
@@ -13,6 +16,6 @@ typedef enum e_error_parsing
 	E_ERR_PARSING_LAST_INDEX
 }	t_error_parsing;
 
-t_error_category	get_parsing_category(void);
+void	print_parsing_error(t_error_parsing error, char *word);
 
 #endif

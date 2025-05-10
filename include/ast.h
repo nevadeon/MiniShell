@@ -35,9 +35,12 @@ typedef enum e_node_type
 
 typedef enum e_token
 {
-	E_TOKEN_OPE,
-	E_TOKEN_REDIR,
-	E_TOKEN_WORD,
+	E_TOKEN_NONE = 0,
+	E_TOKEN_INIT = 1 << 0,
+	E_TOKEN_OPE = 1 << 1,
+	E_TOKEN_REDIR = 1 << 2,
+	E_TOKEN_WORD = 1 << 3,
+	E_TOKEN_LEAF = E_TOKEN_REDIR | E_TOKEN_WORD,
 	E_TOKEN_LAST_INDEX
 }	t_token;
 
@@ -86,6 +89,7 @@ typedef struct s_ast
 typedef struct s_ast_data
 {
 	char	*input;
+	char	*word;
 	t_ast	*prev;
 	t_ast	*root;
 	t_ast	*last_ope;
@@ -93,11 +97,10 @@ typedef struct s_ast_data
 	t_token	prev_token;
 }	t_ast_data;
 
-t_ast_data	*init_ast_data(char *input);
 t_ast		*create_ast(t_ast_data *data);
 t_ast		*create_ast_by_hand(void);
-t_ast		*handle_ope(t_ast_data *data, char *word);
-t_ast		*handle_leaf(t_ast_data *data, char *word);
+t_ast		*handle_ope(t_ast_data *data);
+t_ast		*handle_leaf(t_ast_data *data);
 char		*get_next_word(char **input);
 void		print_ast(t_ast *ast, int indent);
 t_token		get_token_type(char *word);

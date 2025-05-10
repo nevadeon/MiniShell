@@ -40,6 +40,8 @@ static void	_handle_redir(t_ast_data *data, t_redir_type type)
 
 	redir_list = mem_alloc(E_LFT_TASK, sizeof(t_redir_list));
 	redir_list->content = get_next_word(&data->input);
+	if (str_len(redir_list->content) != 0)
+		data->token = E_TOKEN_WORD;
 	redir_list->next = NULL;
 	redir_list->type = type;
 	if (type == E_REDIR_HEREDOC || type == E_REDIR_IN)
@@ -60,7 +62,7 @@ static void	_handle_prev_leaf(t_ast_data *data, char *word)
 
 static void	_handle_leaf_parent(t_ast_data *data, t_ast *leaf)
 {
-	if (data->prev->type == E_NODE_OPE)
+	if (data->prev_token == E_TOKEN_OPE)
 	{
 		if (!data->prev->s_ope.right)
 			data->prev->s_ope.right = leaf;
@@ -69,37 +71,34 @@ static void	_handle_leaf_parent(t_ast_data *data, t_ast *leaf)
 	}
 }
 
-t_ast	*handle_leaf(t_ast_data *data, char *word)
+t_ast	*handle_leaf(t_ast_data *data)
 {
 	t_redir_type	type;
 	t_ast			*leaf;
 
-	if (!data->prev || data->prev->type == E_NODE_OPE)
+	if (!data->prev_token || data->prev_token == E_TOKEN_OPE)
 	{
 		leaf = _create_leaf(NULL);
-		if (data->prev && data->prev->type == E_NODE_OPE)
+		if (data->prev_token == E_TOKEN_OPE)
 			_handle_leaf_parent(data, leaf);
 		data->prev = leaf;
 	}
-	type = _is_redir(word);
+	type = _is_redir(data->word);
 	if (type != E_REDIR_LAST_INDEX)
 		_handle_redir(data, type);
 	else if (data->prev && data->prev->type == E_NODE_LEAF)
 	{
-		_handle_prev_leaf(data, word);
+		_handle_prev_leaf(data, data->word);
 		leaf = data->prev;
 	}
 	else
 	{
-		leaf = _create_leaf(word);
+		leaf = _create_leaf(data->word);
 		_handle_leaf_parent(data, leaf);
 		data->prev = leaf;
 	}
 	if (!data->root)
 		data->root = leaf;
-	if (type != E_REDIR_LAST_INDEX)
-		data->prev_token = data->token;
-	else
-		data->prev_token = data->token;
+	data->prev_token = data->token;
 	return (create_ast(data));
 }

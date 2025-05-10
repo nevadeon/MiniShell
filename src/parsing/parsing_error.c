@@ -21,7 +21,7 @@ static const char	*lib_message(int err)
 	return ("an error occured");
 }
 
-t_error_category	get_parsing_category(void)
+static t_error_category	_get_parsing_category(void)
 {
 	static const t_error_category	lib_category = {
 		.name = lib_name,
@@ -29,4 +29,16 @@ t_error_category	get_parsing_category(void)
 	};
 
 	return (lib_category);
+}
+
+void	print_parsing_error(t_error_parsing error, char *word)
+{
+	t_error_code		error_code;
+	t_error_category	error_cat;
+
+	error_cat = _get_parsing_category();
+	error_code = make_error(error, &error_cat);
+	printf("[%s] %s: %s\n",
+		error_name(&error_code),
+		error_message(&error_code), word);
 }
