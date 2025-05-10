@@ -21,7 +21,7 @@ static const char	*lib_message(int err)
 	return ("an error occured");
 }
 
-t_error_category	get_lib_category(void)
+t_error_category	get_parsing_category(void)
 {
 	static const t_error_category	lib_category = {
 		.name = lib_name,

@@ -13,6 +13,6 @@ typedef enum e_error_parsing
 	E_ERR_PARSING_LAST_INDEX
 }	t_error_parsing;
 
-t_error_category	get_lib_category(void);
+t_error_category	get_parsing_category(void);
 
 #endif
