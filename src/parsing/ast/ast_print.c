@@ -1,29 +1,48 @@
 #include "ast.h"
+#include "list.h"
 
-static void	_print_args(t_strlist *current)
+void	_print_redir(t_redir_list *list)
 {
-	while (current)
+	static char	*redir_type[E_REDIR_LAST_INDEX] = {
+		"<",
+		"<<",
+		">",
+		">>"
+	};
+
+	if (list)
 	{
-		printf("%s", current->content);
-		if (current->next)
-			printf(", ");
-		current = current->next;
+		printf("%s ", redir_type[list->type]);
+		printf("%s", list->content);
 	}
+}
+
+void	_print_strlist(t_strlist *list)
+{
+	if (list)
+		printf("%s", list->content);
 }
 
 static void	_print_leaf(t_ast *ast)
 {
-	if (ast->s_leaf.type == E_LEAF_FILENAME)
-		printf("filename: %s", ast->s_leaf.filename);
-	else
+	if (!ast->s_leaf.func)
+		return ;
+	printf("function : %s", ast->s_leaf.func->content);
+	if (ast->s_leaf.func->next)
 	{
-		printf("function: %s", ast->s_leaf.func->content);
-		if (ast->s_leaf.func->next)
-		{
-			printf(", args [");
-			_print_args(ast->s_leaf.func->next);
-			printf("]");
-		}
+		printf(" [");
+		lst_print((t_list *)ast->s_leaf.func->next, (void (*)(void *))_print_strlist);
+		printf("]");
+	}
+	if (ast->s_leaf.redir_in)
+	{
+		printf(", in ");
+		lst_print((t_list *)ast->s_leaf.redir_in, (void (*)(void *))_print_redir);
+	}
+	if (ast->s_leaf.redir_out)
+	{
+		printf(", out ");
+		lst_print((t_list *)ast->s_leaf.redir_out, (void (*)(void *))_print_redir);
 	}
 	printf("\n");
 }
@@ -32,10 +51,6 @@ void	print_ast(t_ast *ast, int indent)
 {
 	static const char	*ope_strings[E_OPE_LAST_INDEX] = {
 		"|",
-		"<",
-		"<<",
-		">",
-		">>",
 	};
 	int					i;
 
