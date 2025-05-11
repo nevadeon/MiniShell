@@ -6,10 +6,6 @@ static t_ope_type	_string_to_ope_type(char *word)
 {
 	static const char	*ope_strings[E_OPE_LAST_INDEX] = {
 		"|",
-		"<",
-		"<<",
-		">",
-		">>"
 	};
 	size_t				index;
 
@@ -35,19 +31,20 @@ static t_ast	*_create_ope(char *s)
 	return (ope);
 }
 
-t_ast	*handle_ope(t_ast_data *data, char *word)
+t_ast	*handle_ope(t_ast_data *data)
 {
 	t_ast	*ope;
 
-	ope = _create_ope(word);
-	if (data->prev && data->prev->type == E_NODE_LEAF)
-		ope->s_ope.left = data->root;
-	if (ope->s_ope.type == E_OPE_PIPE || !data->root || !data->last_ope
+	ope = _create_ope(data->word);
+	if (data->prev_token & E_TOKEN_LEAF)
+		ope->s_ope.right = data->root;
+	if (!data->root || !data->last_ope
 		|| data->root->type == E_NODE_LEAF || data->last_ope->s_ope.right)
 		data->root = ope;
-	if (data->prev && data->prev->type == E_NODE_OPE)
-		data->prev->s_ope.right = ope;
+	if (data->prev_token == E_TOKEN_OPE)
+		data->prev->s_ope.left = ope;
 	data->prev = ope;
 	data->last_ope = ope;
+	data->prev_token = data->token;
 	return (create_ast(data));
 }
