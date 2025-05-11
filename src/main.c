@@ -17,6 +17,23 @@ static char	*_readline_prompt(char *buf, size_t size)
 	return (buf);
 }
 
+static char	*_argv_to_input(int argc, char **argv)
+{
+	char	*input;
+	int		i;
+
+	i = 1;
+	input = mem_alloc(E_LFT_TASK, 1);
+	while (i < argc)
+	{
+		input = str_vjoin(E_LFT_TASK, 2, input, argv[i]);
+		if (i != argc)
+			input = str_vjoin(E_LFT_TASK, 2, input, " ");
+		i++;
+	}
+	return (input);
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	char		*input;
@@ -34,7 +51,7 @@ int	main(int argc, char **argv, char **envp)
 		handle_command(input);
 	}
 	if (argc > 1)
-		printf("handle command %s\n", argv[0]);
+		handle_command(_argv_to_input(argc, argv));
 	mem_free_all();
 	rl_clear_history();
 	return (0);
