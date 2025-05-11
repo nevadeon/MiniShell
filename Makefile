@@ -12,7 +12,7 @@ GDB_VALGRIND_ARGS =
 # OS detection
 UNAME_P := $(shell uname -p)
 ifeq ($(UNAME_S),Linux)
-    CFLAGS += -DLINUX
+	CFLAGS += -DLINUX
 endif
 
 # Directories
@@ -20,6 +20,9 @@ INC_DIR := include
 SRC_DIR := src
 OBJ_DIR := obj
 TEST_DIR := test
+
+# Include subdirectories
+CFLAGS += $(foreach dir, $(shell find $(INC_DIR) -type d), -I$(dir))
 
 # Sources and objects
 SRC := $(shell find $(SRC_DIR) -type f -name "*.c")
