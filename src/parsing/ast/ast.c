@@ -1,6 +1,6 @@
 #include "parsing.h"
 
-static bool	_has_error(t_ast_data *data)
+static bool	_has_error(t_ast_context *data)
 {
 	if (data->prev_token == E_TOKEN_REDIR
 		|| (data->prev_token == E_TOKEN_LAST_INDEX && data->token == E_TOKEN_OPE)
@@ -10,7 +10,7 @@ static bool	_has_error(t_ast_data *data)
 	return (false);
 }
 
-t_ast	*create_ast(t_ast_data *data)
+t_ast	*create_ast(t_ast_context *data)
 {
 	char		*word;
 	t_token		token;
