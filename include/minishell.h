@@ -16,6 +16,7 @@
 # include "env.h"
 # include "executing.h"
 # include "parsing.h"
+# include "builtins.h"
 # include "int.h"
 # include "list.h"
 # include "mem.h"

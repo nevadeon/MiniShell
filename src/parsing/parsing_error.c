@@ -1,12 +1,12 @@
 #include "error.h"
 #include "parsing.h"
 
-static const char	*lib_name(void)
+static const char	*_lib_name(void)
 {
 	return ("parsing");
 }
 
-static const char	*lib_message(int err)
+static const char	*_lib_message(int err)
 {
 	if (err == E_ERR_PARSING_OK)
 		return ("No error");
@@ -24,8 +24,8 @@ static const char	*lib_message(int err)
 static t_error_category	_get_parsing_category(void)
 {
 	static const t_error_category	lib_category = {
-		.name = lib_name,
-		.message = lib_message
+		.name = _lib_name,
+		.message = _lib_message
 	};
 
 	return (lib_category);
