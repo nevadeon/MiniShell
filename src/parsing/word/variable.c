@@ -32,20 +32,20 @@ void	expand_variable(char **word)
 		while ((*word)[index] && (*word)[index] != '$' && handle_escape(*word, &index, '\''))
 			index++;
 		found = (*word)[index] == '$';
-		if (found)
-		{
-			var.start = index;
+		if (!found)
+			return ;
+		var.start = index++;
+		var.bracketed = (*word)[index] == '{';
+		index += var.bracketed;
+		var.name_start = index;
+		while (_is_valid_var_name(*word, index, var.name_start))
 			index++;
-			var.bracketed = (*word)[index] == '{';
-			index += var.bracketed;
-			var.name_start = index;
-			while (_is_valid_var_name(*word, index, var.name_start))
-				index++;
-			var.name_end = index;
-			var.end = var.name_end + (var.bracketed && (*word)[index] == '}');
-			if (index != var.start + 1)
-				_override_var(word, var);
-		}
+		var.name_end = index;
+		if (var.bracketed && ((*word)[index]) != '}')
+			exit(666); // TODO HANDLE ERROR
+		var.end = var.name_end + (var.bracketed && (*word)[index] == '}');
+		if (index != var.start + 1)
+			_override_var(word, var);
 	} while (found);
 }
 
