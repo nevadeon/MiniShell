@@ -4,26 +4,23 @@
 
 static char	*_get_git_head(void)
 {
-	char	git_head[PATH_MAX];
-	char	*cursor;
+	static char	buffer[PATH_MAX];
 	int		fd;
 	int		b_read;
-	char	*last_slash;
 
 	fd = open(".git/HEAD", O_RDONLY);
-	if (fd != -1)
+	if (fd == -1)
+		return (NULL);
+	b_read = read(fd, buffer, PATH_MAX - 1);
+	buffer[b_read - 1] = '\0';
+	close(fd);
+	if (b_read <= 0)
+		return (NULL);
+	while (b_read)
 	{
-		b_read = read(fd, git_head, PATH_MAX);
-		git_head[b_read - 1] = '\0';
-		cursor = git_head;
-		last_slash = cursor;
-		while (*cursor)
-		{
-			if (*cursor == '/')
-				last_slash = cursor;
-			cursor++;
-		}
-		return (last_slash + 1);
+		if (buffer[b_read] == '/')
+			return (&buffer[b_read + 1]);
+		b_read--;
 	}
 	return (NULL);
 }
@@ -35,7 +32,7 @@ char	*readline_prompt(char *buf, size_t size)
 	char	*git_head;
 
 	if (getcwd(cwd, sizeof(cwd)) == NULL)
-		cwd[0] = '\0';	
+		cwd[0] = '\0';
 	git_head = _get_git_head();
 	if (git_head)
 	{
