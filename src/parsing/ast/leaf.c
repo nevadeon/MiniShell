@@ -32,7 +32,7 @@ static t_redir_type	_is_redir(char *word)
 	return (E_REDIR_LAST_INDEX);
 }
 
-static bool	_handle_redir(t_ast_data *data, t_redir_type type)
+static bool	_handle_redir(t_ast_context *data, t_redir_type type)
 {
 	t_redir_list	*redir_list;
 	char			*filename;
@@ -53,7 +53,7 @@ static bool	_handle_redir(t_ast_data *data, t_redir_type type)
 	return (true);
 }
 
-static void	_handle_prev_leaf(t_ast_data *data, char *word)
+static void	_handle_prev_leaf(t_ast_context *data, char *word)
 {
 	t_strlist	*arg;
 
@@ -63,7 +63,7 @@ static void	_handle_prev_leaf(t_ast_data *data, char *word)
 	lst_add_back((t_list **)&data->prev->s_leaf.func, (t_list *)arg);
 }
 
-static void	_handle_leaf_parent(t_ast_data *data, t_ast *leaf)
+static void	_handle_leaf_parent(t_ast_context *data, t_ast *leaf)
 {
 	if (data->prev_token == E_TOKEN_OPE)
 	{
@@ -74,7 +74,7 @@ static void	_handle_leaf_parent(t_ast_data *data, t_ast *leaf)
 	}
 }
 
-t_ast	*handle_leaf(t_ast_data *data)
+t_ast	*handle_leaf(t_ast_context *data)
 {
 	t_redir_type	type;
 	t_ast			*leaf;

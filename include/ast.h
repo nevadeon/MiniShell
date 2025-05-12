@@ -85,7 +85,7 @@ typedef struct s_ast
 	};
 }	t_ast;
 
-typedef struct s_ast_data
+typedef struct s_ast_context
 {
 	char	*input;
 	char	*word;
@@ -94,12 +94,12 @@ typedef struct s_ast_data
 	t_ast	*last_ope;
 	t_token	token;
 	t_token	prev_token;
-}	t_ast_data;
+}	t_ast_context;
 
-t_ast		*create_ast(t_ast_data *data);
+t_ast		*create_ast(t_ast_context *data);
 t_ast		*create_ast_by_hand(void);
-t_ast		*handle_ope(t_ast_data *data);
-t_ast		*handle_leaf(t_ast_data *data);
+t_ast		*handle_ope(t_ast_context *data);
+t_ast		*handle_leaf(t_ast_context *data);
 char		*get_next_word(char **input);
 void		print_ast(t_ast *ast, int indent);
 t_token		get_token_type(char *word);

@@ -31,7 +31,7 @@ static t_ast	*_create_ope(char *s)
 	return (ope);
 }
 
-t_ast	*handle_ope(t_ast_data *data)
+t_ast	*handle_ope(t_ast_context *data)
 {
 	t_ast	*ope;
 
