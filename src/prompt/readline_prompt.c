@@ -5,8 +5,8 @@
 static char	*_get_git_head(void)
 {
 	static char	buffer[PATH_MAX];
-	int		fd;
-	int		b_read;
+	int			fd;
+	int			b_read;
 
 	fd = open(".git/HEAD", O_RDONLY);
 	if (fd == -1)
@@ -37,7 +37,7 @@ char	*readline_prompt(char *buf, size_t size)
 	if (git_head)
 	{
 		n = snprintf(buf, size,
-			"\033[1;32mminishell\033[0m \033[1;35m%s\033[0m \033[1;32mgit:(\033[1;33m%s\033[1;32m) #\033[0m\n",
+			"\033[1;32mminishell\033[0m \033[1;35m%s\033[0m \033[1;32mgit:(\033[1;33m%s\033[1;32m) #\033[0m ",
 			cwd, git_head);
 	}
 	else
