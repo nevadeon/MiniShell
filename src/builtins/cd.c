@@ -13,32 +13,37 @@ static const char	*_lib_message(int err)
 		return ("No error");
 	if (err == E_ERR_CD_FILE_EXIST)
 		return ("No such file or directory");
+	if (err == E_ERR_CD_ARGS)
+		return ("Too many arguments");
 	if (err == E_ERR_CD_NOT_DIR)
 		return ("Not a directory");
 	return ("an error occured");
 }
 
-static void	_print_err(t_error_cd e, t_error_category *cat, char *path)
+static void	_print_err(t_error_cd e, char *path)
 {
-	t_error_code	code;
+	t_error_code		code;
+	t_error_category	err_cat;
 
-	code = make_error(e, cat);
-	printf("[%s] %s: %s\n", error_name(&code), error_message(&code), path);
+	err_cat = (t_error_category){.name = _lib_name, .message = _lib_message};
+	code = make_error(e, &err_cat);
+	printf("[%s] %s", error_name(&code), error_message(&code));
+	if (path)
+		printf(": %s", path);
+	printf("\n");
 }
 
 bool	check_permissions(char *path)
 {
 	struct stat			sb;
-	t_error_category	err_cat;
 	int					ret;
 
-	err_cat = (t_error_category){.name = _lib_name, .message = _lib_message};
 	ret = access(path, F_OK);
 	if (ret == -1)
-		return (_print_err(E_ERR_CD_FILE_EXIST, &err_cat, path), path);
+		return (_print_err(E_ERR_CD_FILE_EXIST, path), path);
 	ret = stat(path, &sb) != 0;
 	if (!S_ISDIR(sb.st_mode))
-		_print_err(E_ERR_CD_NOT_DIR, &err_cat, path);
+		_print_err(E_ERR_CD_NOT_DIR, path);
 	return (false);
 }
 
@@ -50,7 +55,7 @@ int	builtin_cd(t_strlist *args)
 	if (!args || !args->content)
 		return (chdir(env_get_var_value("HOME")));
 	if (args->next)
-		return (printf("erreur"), 0);
+		return (_print_err(E_ERR_CD_ARGS, NULL), 0);
 	path = args->content;
 	if (str_equals(path, "-"))
 		path = env_get_var_value("OLDPWD");
