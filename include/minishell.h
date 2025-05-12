@@ -39,9 +39,9 @@ typedef struct s_var
 
 void	handle_command(char *input);
 bool	handle_escape(char *input, size_t *len, char c);
-void	expand(char **word);
+void	expand(char **word, char **input);
 void	expand_tilde(char **word);
-void	expand_wildcard(char **word);
+void	expand_wildcard(char **input, char **word);
 char	*readline_prompt(char *buf, size_t size);
 
 #endif
