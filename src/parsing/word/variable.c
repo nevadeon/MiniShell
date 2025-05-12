@@ -49,9 +49,9 @@ void	expand_variable(char **word)
 	} while (found);
 }
 
-void	expand(char **word)
+void	expand(char **word, char **input)
 {
 	expand_variable(word);
 	expand_tilde(word);
-	expand_wildcard(word);
+	expand_wildcard(input, word);
 }
