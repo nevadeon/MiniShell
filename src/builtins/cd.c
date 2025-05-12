@@ -35,7 +35,7 @@ bool	check_permissions(char *path)
 	err_cat = (t_error_category){.name = _lib_name, .message = _lib_message};
 	ret = access(path, F_OK);
 	if (ret == -1)
-	 	return (_print_err(E_ERR_CD_FILE_EXIST, &err_cat, path), path);
+		return (_print_err(E_ERR_CD_FILE_EXIST, &err_cat, path), path);
 	ret = stat(path, &sb) != 0;
 	if (!S_ISDIR(sb.st_mode))
 		_print_err(E_ERR_CD_NOT_DIR, &err_cat, path);
