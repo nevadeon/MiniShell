@@ -31,6 +31,8 @@ static void	_remove_quotes(char *str)
 	char	*src;
 	char	*dst;
 
+	if (str_len(str) == 0)
+		return ;
 	src = str;
 	dst = str;
 	while (*src)
