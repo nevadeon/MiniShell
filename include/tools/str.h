@@ -24,5 +24,6 @@ void	str_replace(t_lifetime lft, t_replace data);
 int		str_cmp(const char *s1, const char *s2);
 char	**str_split(t_lifetime lft, char const *s, char c);
 char	*str_chr(const char *s, int c);
+char	*str_rchr(const char *s, int c);
 
 #endif
