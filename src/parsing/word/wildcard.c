@@ -133,9 +133,13 @@ void	expand_wildcard(char **input, char **word)
 		index++;
 	dir = _explore_directory(_get_directory(*word));
 	w = _compute_pattern(dir, _get_pattern(*word));
-	*word = w->content;
-	w = w->next;
-	files = NULL;
+	files = "";
+	*word = files;
+	if (w)
+	{
+		*word = w->content;
+		w = w->next;
+	}
 	while (w)
 	{
 		files = str_vjoin(E_LFT_TASK, 3, files, " ", w->content);
