@@ -59,7 +59,7 @@ char	*get_next_word(char **input)
 	word[len] = '\0';
 	if (str_len(word) == 0)
 		return (word);
-	expand(&word);
+	expand(&word, input);
 	_remove_quotes(word);
 	return (word);
 }
