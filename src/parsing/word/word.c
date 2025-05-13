@@ -31,6 +31,8 @@ static void	_remove_quotes(char *str)
 	char	*src;
 	char	*dst;
 
+	if (str_len(str) == 0)
+		return ;
 	src = str;
 	dst = str;
 	while (*src)
@@ -59,7 +61,7 @@ char	*get_next_word(char **input)
 	word[len] = '\0';
 	if (str_len(word) == 0)
 		return (word);
-	expand(&word);
+	expand(&word, input);
 	_remove_quotes(word);
 	return (word);
 }

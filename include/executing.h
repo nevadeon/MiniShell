@@ -6,7 +6,7 @@
 
 # define CMD_NAME_INDEX 0
 
-typedef struct s_strlist	t_strlist;
+typedef struct s_str_list	t_str_list;
 typedef struct s_ast		t_ast;
 
 typedef enum e_error
@@ -33,7 +33,7 @@ typedef struct s_exec_data
 }	t_exec_data;
 
 void		execute_ast(t_ast *ast);
-void		exec_cmd(char **env_paths, t_strlist *arg_list);
+void		exec_cmd(char **env_paths, t_str_list *arg_list);
 void		dup_close(int source_fd, int dest_fd);
 t_pid_list	*lst_pid_new(pid_t pid);
 

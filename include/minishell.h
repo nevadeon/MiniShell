@@ -1,20 +1,21 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# include <assert.h>
 # include <stdio.h>
 # include <readline/readline.h>
 # include <readline/history.h>
-# include <sys/stat.h>
 # include <unistd.h>
 # ifdef LINUX
 #  include <linux/limits.h>
 # endif
 # include <limits.h>
-# include <dirent.h>
 # include "ast.h"
 # include "char.h"
 # include "env.h"
 # include "executing.h"
+# include "parsing.h"
+# include "builtins.h"
 # include "int.h"
 # include "list.h"
 # include "mem.h"
@@ -37,8 +38,9 @@ typedef struct s_var
 
 void	handle_command(char *input);
 bool	handle_escape(char *input, size_t *len, char c);
-void	expand(char **word);
+void	expand(char **word, char **input);
 void	expand_tilde(char **word);
-void	expand_wildcard(char **word);
+void	expand_wildcard(char **input, char **word);
+char	*readline_prompt(char *buf, size_t size);
 
 #endif
