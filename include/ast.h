@@ -13,12 +13,6 @@ typedef struct s_strlist
 	char				*content;
 }	t_strlist;
 
-typedef struct s_dir
-{
-	int		nb_dir;
-	t_list	*head;
-}	t_dir;
-
 typedef enum e_leaf_type
 {
 	E_LEAF_FUNC,
@@ -100,7 +94,6 @@ t_ast		*create_ast(t_ast_context *data);
 t_ast		*create_ast_by_hand(void);
 t_ast		*handle_ope(t_ast_context *data);
 t_ast		*handle_leaf(t_ast_context *data);
-char		*get_next_word(char **input);
 void		print_ast(t_ast *ast, int indent);
 t_token		get_token_type(char *word);
 
