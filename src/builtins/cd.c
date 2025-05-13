@@ -48,7 +48,7 @@ bool	check_permissions(char *path)
 	return (false);
 }
 
-int	builtin_cd(t_strlist *args)
+int	builtin_cd(t_str_list *args)
 {
 	char		cwd[PATH_MAX];
 	char		*path;

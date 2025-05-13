@@ -4,14 +4,14 @@
 static t_ast	*_create_leaf(char *word)
 {
 	t_ast		*leaf;
-	t_strlist	*func;
+	t_str_list	*func;
 
 	leaf = mem_alloc(E_LFT_TASK, sizeof(t_ast));
 	leaf->type = E_NODE_LEAF;
 	leaf->s_leaf.func = NULL;
 	if (word != NULL)
 	{
-		func = mem_alloc(E_LFT_TASK, sizeof(t_strlist));
+		func = mem_alloc(E_LFT_TASK, sizeof(t_str_list));
 		func->content = word;
 		func->next = NULL;
 		lst_add_back((t_list **)&leaf->s_leaf.func, (t_list *)func);
@@ -55,9 +55,9 @@ static bool	_handle_redir(t_ast_context *data, t_redir_type type)
 
 static void	_handle_prev_leaf(t_ast_context *data, char *word)
 {
-	t_strlist	*arg;
+	t_str_list	*arg;
 
-	arg = mem_alloc(E_LFT_TASK, sizeof(t_strlist));
+	arg = mem_alloc(E_LFT_TASK, sizeof(t_str_list));
 	arg->content = word;
 	arg->next = NULL;
 	lst_add_back((t_list **)&data->prev->s_leaf.func, (t_list *)arg);

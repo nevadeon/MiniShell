@@ -11,6 +11,6 @@ typedef enum	e_error_cd
 	E_ERR_CD_NOT_DIR
 }	t_error_cd;
 
-int	builtin_cd(t_strlist *args);
+int	builtin_cd(t_str_list *args);
 
 #endif
