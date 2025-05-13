@@ -131,18 +131,21 @@ void	expand_wildcard(char **input, char **word)
 	index = 0;
 	while ((*word)[index] && !isspace((*word)[index]))
 		index++;
-	dir = _explore_directory(_get_directory(*word));
+	char	*directory;
+
+	directory = _get_directory(*word);
+	dir = _explore_directory(directory);
 	w = _compute_pattern(dir, _get_pattern(*word));
 	files = "";
 	*word = files;
 	if (w)
 	{
-		*word = w->content;
+		*word = str_vjoin(E_LFT_TASK, 3, directory, "/", w->content);
 		w = w->next;
 	}
 	while (w)
 	{
-		files = str_vjoin(E_LFT_TASK, 3, files, " ", w->content);
+		files = str_vjoin(E_LFT_TASK, 5, files, " ", directory, "/", w->content);
 		w = w->next;
 	}
 	str_replace(E_LFT_TASK, (t_replace){input, files, 0, 0});
