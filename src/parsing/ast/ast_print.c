@@ -17,7 +17,7 @@ void	_print_redir(t_redir_list *list)
 	}
 }
 
-void	_print_strlist(t_strlist *list)
+static void	_print_strlist(t_strlist *list)
 {
 	if (list)
 		printf("%s", list->content);
