@@ -17,7 +17,7 @@ static t_ast_context	*_init_ast_context(char *input)
 
 void	handle_command(char *input)
 {
-	t_ast_context			*data;
+	t_ast_context		*data;
 	t_ast				*ast;
 
 	data = _init_ast_context(input);
