@@ -7,11 +7,11 @@
 
 typedef struct s_list	t_list;
 
-typedef struct s_strlist
+typedef struct s_str_list
 {
-	struct s_strlist	*next;
+	struct s_str_list	*next;
 	char				*content;
-}	t_strlist;
+}	t_str_list;
 
 typedef enum e_leaf_type
 {
@@ -66,7 +66,7 @@ typedef struct s_ast
 	{
 		struct
 		{
-			t_strlist		*func;
+			t_str_list		*func;
 			t_redir_list	*redir_in;
 			t_redir_list	*redir_out;
 		}	s_leaf;
