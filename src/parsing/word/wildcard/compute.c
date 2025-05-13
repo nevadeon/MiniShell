@@ -28,11 +28,11 @@ static bool	_match(const char *pattern, const char *str)
 	}
 }
 
-t_strlist	*compute_pattern(t_strlist *files, char *pattern)
+t_str_list	*compute_pattern(t_str_list *files, char *pattern)
 {
 	char		*file_n;
-	t_strlist	*rep;
-	t_strlist	*current;
+	t_str_list	*rep;
+	t_str_list	*current;
 
 	current = files;
 	rep = NULL;

@@ -17,7 +17,7 @@ void	_print_redir(t_redir_list *list)
 	}
 }
 
-static void	_print_strlist(t_strlist *list)
+static void	_print_str_list(t_str_list *list)
 {
 	if (list)
 		printf("%s", list->content);
@@ -31,7 +31,7 @@ static void	_print_leaf(t_ast *ast)
 	if (ast->s_leaf.func->next)
 	{
 		printf(" [");
-		lst_print((t_list *)ast->s_leaf.func->next, (void (*)(void *))_print_strlist);
+		lst_print((t_list *)ast->s_leaf.func->next, (void (*)(void *))_print_str_list);
 		printf("]");
 	}
 	if (ast->s_leaf.redir_in)

@@ -18,7 +18,7 @@ typedef enum e_error_parsing
 }	t_error_parsing;
 
 void		print_parsing_error(t_error_parsing error, char *word);
-t_strlist	*compute_pattern(t_strlist *files, char *pattern);
+t_str_list	*compute_pattern(t_str_list *files, char *pattern);
 char		*get_next_word(char **input);
 
 #endif
