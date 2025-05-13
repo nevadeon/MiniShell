@@ -1,4 +1,5 @@
 #include "minishell.h"
+#include "path.h"
 #include "env.h"
 #include "builtins.h"
 

@@ -1,16 +1,15 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# include <assert.h>
 # include <stdio.h>
 # include <readline/readline.h>
 # include <readline/history.h>
-# include <sys/stat.h>
 # include <unistd.h>
 # ifdef LINUX
 #  include <linux/limits.h>
 # endif
 # include <limits.h>
-# include <dirent.h>
 # include "ast.h"
 # include "char.h"
 # include "env.h"
