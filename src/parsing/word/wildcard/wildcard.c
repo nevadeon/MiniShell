@@ -44,9 +44,15 @@ void	expand_wildcard(char **input, char **word)
 		return ;
 	pattern = path_get_filename(*word);
 	directory = path_get_path(*word);
+	result = NULL;
 	if (str_len(directory) == 0)
 		directory = str_dup(E_LFT_TASK, ".");
-	files = (t_str_list *)path_get_dir_content(directory);
-	result = compute_pattern(files, pattern);
+	if (path_check(directory, E_PATH_IS_DIRECTORY))
+	{
+		files = (t_str_list *)path_get_dir_content(directory);
+		result = compute_pattern(files, pattern);
+	}
+	if (!result)
+		fprintf(stderr, "No match found: %s", *word);
 	_apply_wildcard(input, word, result);
 }

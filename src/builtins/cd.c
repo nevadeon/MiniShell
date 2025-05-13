@@ -36,15 +36,10 @@ static void	_print_err(t_error_cd e, char *path)
 
 bool	check_permissions(char *path)
 {
-	struct stat			sb;
-	int					ret;
-
-	ret = access(path, F_OK);
-	if (ret == -1)
+	if (!path_check(path, E_PATH_EXIST))
 		return (_print_err(E_ERR_CD_FILE_EXIST, path), path);
-	ret = stat(path, &sb) != 0;
-	if (!S_ISDIR(sb.st_mode))
-		_print_err(E_ERR_CD_NOT_DIR, path);
+	if (!path_check(path, E_PATH_IS_DIRECTORY))
+		return (_print_err(E_ERR_CD_NOT_DIR, path), path);
 	return (false);
 }
 

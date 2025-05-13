@@ -12,7 +12,7 @@ t_list	*path_get_dir_content(char *path)
 	rep = opendir(path);
 	list = NULL;
 	if (rep == NULL)
-		return (perror("Erreur lors de l'ouverture du répertoire"), NULL);
+		return (perror("Error while opening repository"), NULL);
 	if (str_equals(path, "."))
 		path = "";
 	while (1)
