@@ -21,34 +21,43 @@ static void	_execute_leaf(t_ast *ast, t_exec_data data)
 {
 	pid_t	pid;
 
-	pid = fork();
-	if (pid == 0)
+	if (str_equals(ast->s_leaf.func->content, "cd"))
 	{
-		if (ast != data.root)
-		{
-			if (ast == data.last_ope->s_ope.right)
-			{
-				dup_close(data.pipefd[0], STDIN_FILENO);
-				close(data.pipefd[1]);
-			}
-			else if (data.last_ope == data.root)
-			{
-				dup_close(data.pipefd[1], STDOUT_FILENO);
-				close(data.pipefd[0]);
-			}
-			else
-			{
-				dup_close(data.prev_pipe_fd, STDIN_FILENO);
-				dup_close(data.pipefd[1], STDOUT_FILENO);
-				close(data.pipefd[0]);
-			}
-		}
-		exec_cmd(data.env_paths, ast->s_leaf.func);
-		exit(666);
+		builtin_cd(ast->s_leaf.func->next);
 	}
 	else
 	{
-		lst_add_front((t_list **)&data.pid_list, (t_list *)lst_pid_new(pid));
+		pid = fork();
+		if (pid == 0)
+		{
+			if (ast != data.root)
+			{
+				if (ast == data.last_ope->s_ope.right)
+				{
+					dup_close(data.pipefd[0], STDIN_FILENO);
+					close(data.pipefd[1]);
+				}
+				else if (data.last_ope == data.root)
+				{
+					dup_close(data.pipefd[1], STDOUT_FILENO);
+					close(data.pipefd[0]);
+				}
+				else
+				{
+					dup_close(data.prev_pipe_fd, STDIN_FILENO);
+					dup_close(data.pipefd[1], STDOUT_FILENO);
+					close(data.pipefd[0]);
+				}
+			}
+			exec_cmd(data.env_paths, ast->s_leaf.func);
+			exit(666);
+		}
+		else
+		{
+			int status;
+			waitpid(pid, &status, 0);
+			lst_add_front((t_list **)&data.pid_list, (t_list *)lst_pid_new(pid));
+		}
 	}
 }
 
