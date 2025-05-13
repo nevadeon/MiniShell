@@ -17,6 +17,8 @@ typedef enum e_error_parsing
 	E_ERR_PARSING_LAST_INDEX
 }	t_error_parsing;
 
-void	print_parsing_error(t_error_parsing error, char *word);
+void		print_parsing_error(t_error_parsing error, char *word);
+t_strlist	*compute_pattern(t_strlist *files, char *pattern);
+char		*get_next_word(char **input);
 
 #endif
