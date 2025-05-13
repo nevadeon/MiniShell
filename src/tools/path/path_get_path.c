@@ -1,0 +1,22 @@
+#include "path.h"
+
+char	*path_get_path(char *filepath)
+{
+	size_t	index;
+	size_t	last_slash_index;
+	char	*path_cpy;
+
+	last_slash_index = 0;
+	index = 0;
+	path_cpy = str_dup(E_LFT_TASK, filepath);
+	while (path_cpy[index])
+	{
+		if (path_cpy[index] == '/')
+			last_slash_index = index;
+		index++;
+	}
+	if (last_slash_index == 0)
+		return (str_dup(E_LFT_TASK, ""));
+	path_cpy[last_slash_index + 1] = '\0';
+	return (path_cpy);
+}
