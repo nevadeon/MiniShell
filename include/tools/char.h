@@ -1,7 +1,10 @@
 #ifndef CHAR_H
 # define CHAR_H
 
-int	char_isalnum(int c);
-int	char_isalpha(int c);
+# include <stdbool.h>
+
+bool	char_isnum(char c);
+bool	char_isalpha(char c);
+bool	char_isalnum(char c);
 
 #endif
