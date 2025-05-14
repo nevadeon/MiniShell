@@ -18,12 +18,22 @@ static char	*_argv_to_input(int argc, char **argv)
 	return (input);
 }
 
+void	increase_shlvl(void)
+{
+	int	shlvl;
+
+	shlvl = str_atoi(env_get_var_value("SHLVL"));
+	shlvl++;
+	env_set_var_value("SHLVL", num_itoa(shlvl));
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	char		*input;
 	char		prompt[PATH_MAX + 20];
 
 	env_set(envp);
+	increase_shlvl();
 	while (argc == 1)
 	{
 		input = readline(readline_prompt(prompt, PATH_MAX + 20));

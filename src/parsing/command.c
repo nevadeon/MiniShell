@@ -24,6 +24,6 @@ void	handle_command(char *input)
 	ast = create_ast(data);
 	if (!ast)
 		return ;
-	print_ast(ast, 0);
+	// print_ast(ast, 0);
 	execute_ast(ast);
 }
