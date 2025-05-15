@@ -42,5 +42,6 @@ void	expand(char **word, char **input);
 void	expand_tilde(char **word);
 void	expand_wildcard(char **input, char **word);
 char	*readline_prompt(char *buf, size_t size);
+void	input_loop(void);
 
 #endif
