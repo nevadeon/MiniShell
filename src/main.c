@@ -63,7 +63,7 @@ void	input_loop(void)
 int	main(int argc, char **argv, char **envp)
 {
 	struct sigaction	sa;
-	t_allocator		alloc_prog;
+	t_allocator			alloc_prog;
 
 	env_set(envp);
 	alloc_prog = make_dynamic_arena_allocator(ARENA_BLOCK_SIZE);
