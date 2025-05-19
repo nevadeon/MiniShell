@@ -14,7 +14,7 @@ static bool	_has_to_expand(char *word)
 	return (word[index] == '*');
 }
 
-static void	_apply_wildcard(char **input, char **word, t_str_list *result)
+static void	_apply_wildcard(t_allocator *alloc, char **input, char **word, t_str_list *result)
 {
 	char		*files;
 
@@ -27,13 +27,13 @@ static void	_apply_wildcard(char **input, char **word, t_str_list *result)
 	}
 	while (result)
 	{
-		files = str_vjoin(E_LFT_TASK, 3, files, " ", result->content);
+		files = str_vjoin(alloc, 3, files, " ", result->content);
 		result = result->next;
 	}
-	str_replace(E_LFT_TASK, (t_replace){input, files, 0, 0});
+	str_replace(alloc, (t_replace){input, files, 0, 0});
 }
 
-void	expand_wildcard(char **input, char **word)
+void	expand_wildcard(t_allocator *alloc, char **input, char **word)
 {
 	t_str_list	*result;
 	char		*pattern;
@@ -42,17 +42,17 @@ void	expand_wildcard(char **input, char **word)
 
 	if (!_has_to_expand(*word))
 		return ;
-	pattern = path_get_filename(*word);
-	directory = path_get_path(*word);
+	pattern = path_get_filename(alloc, *word);
+	directory = path_get_path(alloc, *word);
 	result = NULL;
 	if (str_len(directory) == 0)
-		directory = str_dup(E_LFT_TASK, ".");
+		directory = str_dup(alloc, ".");
 	if (path_check(directory, E_PATH_IS_DIRECTORY))
 	{
-		files = (t_str_list *)path_get_dir_content(directory);
-		result = compute_pattern(files, pattern);
+		files = (t_str_list *)path_get_dir_content(alloc, directory);
+		result = compute_pattern(alloc, files, pattern);
 	}
 	if (!result)
 		fprintf(stderr, "No match found: %s", *word);
-	_apply_wildcard(input, word, result);
+	_apply_wildcard(alloc, input, word, result);
 }

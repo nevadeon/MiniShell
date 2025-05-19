@@ -1,17 +1,17 @@
 #include "ast.h"
 #include "parsing.h"
 
-static t_ast	*_create_leaf(char *word)
+static t_ast	*_create_leaf(t_allocator *alloc, char *word)
 {
 	t_ast		*leaf;
 	t_str_list	*func;
 
-	leaf = mem_alloc(E_LFT_TASK, sizeof(t_ast));
+	leaf = mem_alloc(alloc, sizeof(t_ast));
 	leaf->type = E_NODE_LEAF;
 	leaf->s_leaf.func = NULL;
 	if (word != NULL)
 	{
-		func = mem_alloc(E_LFT_TASK, sizeof(t_str_list));
+		func = mem_alloc(alloc, sizeof(t_str_list));
 		func->content = word;
 		func->next = NULL;
 		lst_add_back((t_list **)&leaf->s_leaf.func, (t_list *)func);
@@ -37,8 +37,8 @@ static bool	_handle_redir(t_ast_context *data, t_redir_type type)
 	t_redir_list	*redir_list;
 	char			*filename;
 
-	redir_list = mem_alloc(E_LFT_TASK, sizeof(t_redir_list));
-	filename = get_next_word(&data->input);
+	redir_list = mem_alloc(data->alloc, sizeof(t_redir_list));
+	filename = get_next_word(data->alloc, &data->input);
 	if (str_len(filename) != 0)
 		data->token = get_token_type(filename);
 	if (data->token == E_TOKEN_OPE)
@@ -57,7 +57,7 @@ static void	_handle_prev_leaf(t_ast_context *data, char *word)
 {
 	t_str_list	*arg;
 
-	arg = mem_alloc(E_LFT_TASK, sizeof(t_str_list));
+	arg = mem_alloc(data->alloc, sizeof(t_str_list));
 	arg->content = word;
 	arg->next = NULL;
 	lst_add_back((t_list **)&data->prev->s_leaf.func, (t_list *)arg);
@@ -81,7 +81,7 @@ t_ast	*handle_leaf(t_ast_context *data)
 
 	if (!data->prev_token || data->prev_token == E_TOKEN_OPE)
 	{
-		leaf = _create_leaf(NULL);
+		leaf = _create_leaf(data->alloc, NULL);
 		if (data->prev_token == E_TOKEN_OPE)
 			_handle_leaf_parent(data, leaf);
 		data->prev = leaf;
@@ -91,7 +91,7 @@ t_ast	*handle_leaf(t_ast_context *data)
 	{
 		if (!_handle_redir(data, type))
 			return (NULL);
-	} 
+	}
 	else if (data->prev && data->prev->type == E_NODE_LEAF)
 	{
 		_handle_prev_leaf(data, data->word);
@@ -99,7 +99,7 @@ t_ast	*handle_leaf(t_ast_context *data)
 	}
 	else
 	{
-		leaf = _create_leaf(data->word);
+		leaf = _create_leaf(data->alloc, data->word);
 		_handle_leaf_parent(data, leaf);
 		data->prev = leaf;
 	}

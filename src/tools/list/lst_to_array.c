@@ -1,12 +1,11 @@
 #include "list.h"
-#include "mem.h"
 
-void	**lst_to_array(t_lifetime lft, t_list *list)
+void	**lst_to_array(t_allocator *alloc, t_list *list)
 {
 	void	**tab;
 	int		i;
 
-	tab = mem_alloc(lft, sizeof(char *) * (lst_len(list) + 1));
+	tab = mem_alloc(alloc, sizeof(char *) * (lst_len(list) + 1));
 	i = 0;
 	while (list)
 	{

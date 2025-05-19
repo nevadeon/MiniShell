@@ -4,7 +4,6 @@
 # include "error.h"
 # include "ast.h"
 # include "str.h"
-# include "mem.h"
 # include "list.h"
 
 typedef enum e_error_parsing
@@ -18,7 +17,7 @@ typedef enum e_error_parsing
 }	t_error_parsing;
 
 void		print_parsing_error(t_error_parsing error, char *word);
-t_str_list	*compute_pattern(t_str_list *files, char *pattern);
-char		*get_next_word(char **input);
+t_str_list	*compute_pattern(t_allocator *alloc, t_str_list *files, char *pattern);
+char		*get_next_word(t_allocator *alloc, char **input);
 
 #endif

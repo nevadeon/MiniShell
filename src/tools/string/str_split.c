@@ -1,4 +1,4 @@
-#include "mem.h"
+#include "str.h"
 
 static int	_count_words(const char *s, char c)
 {
@@ -14,7 +14,7 @@ static int	_count_words(const char *s, char c)
 	return (nb_words);
 }
 
-static char	*_strdup_to_c(t_lifetime lft, const char **s, char c)
+static char	*_strdup_to_c(t_allocator *alloc, const char **s, char c)
 {
 	char	*cpy;
 	int		cpy_len;
@@ -23,7 +23,7 @@ static char	*_strdup_to_c(t_lifetime lft, const char **s, char c)
 	cpy_len = 0;
 	while ((*s)[cpy_len] && (*s)[cpy_len] != c)
 		cpy_len++;
-	cpy = mem_alloc(lft, sizeof(char) * (cpy_len + 1));
+	cpy = mem_alloc(alloc, sizeof(char) * (cpy_len + 1));
 	if (cpy == NULL)
 		return (NULL);
 	i = 0;
@@ -37,12 +37,12 @@ static char	*_strdup_to_c(t_lifetime lft, const char **s, char c)
 	return (cpy);
 }
 
-char	**str_split(t_lifetime lft, char const *s, char c)
+char	**str_split(t_allocator *alloc, char const *s, char c)
 {
 	char	**tab;
 	int		i;
 
-	tab = mem_alloc(lft, sizeof(char *) * (_count_words(s, c) + 1));
+	tab = mem_alloc(alloc, sizeof(char *) * (_count_words(s, c) + 1));
 	if (tab == NULL)
 		return (NULL);
 	i = 0;
@@ -52,7 +52,7 @@ char	**str_split(t_lifetime lft, char const *s, char c)
 			s++;
 		if (*s)
 		{
-			tab[i] = _strdup_to_c(lft, &s, c);
+			tab[i] = _strdup_to_c(alloc, &s, c);
 			if (tab[i] == NULL)
 				return (NULL);
 			i++;

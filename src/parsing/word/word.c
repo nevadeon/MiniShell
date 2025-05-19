@@ -45,7 +45,7 @@ static void	_remove_quotes(char *str)
 	*dst = '\0';
 }
 
-char	*get_next_word(char **input)
+char	*get_next_word(t_allocator *alloc, char **input)
 {
 	char	*word;
 	int		len;
@@ -55,13 +55,13 @@ char	*get_next_word(char **input)
 	len = _get_word_len(*input);
 	if (len < 0)
 		return (NULL);
-	word = mem_alloc(E_LFT_TASK, (len + 1) * sizeof(char));
+	word = mem_alloc(alloc, (len + 1) * sizeof(char));
 	str_memcpy(word, *input, len);
 	*input += len;
 	word[len] = '\0';
 	if (str_len(word) == 0)
 		return (word);
-	expand(&word, input);
+	expand(alloc, &word, input);
 	_remove_quotes(word);
 	return (word);
 }

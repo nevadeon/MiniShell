@@ -15,7 +15,7 @@ t_ast	*create_ast(t_ast_context *data)
 	char		*word;
 	t_token		token;
 
-	word = get_next_word(&data->input);
+	word = get_next_word(data->alloc, &data->input);
 	if (!word || str_len(word) == 0)
 	{
 		if (data->prev_token == E_TOKEN_OPE || data->prev_token == E_TOKEN_REDIR)

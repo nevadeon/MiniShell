@@ -1,7 +1,6 @@
 #include "str.h"
-#include "mem.h"
 
-void	str_replace(t_lifetime lft, t_replace data)
+void	str_replace(t_allocator *alloc, t_replace data)
 {
 	char	*old_str;
 	char	*new_word;
@@ -13,7 +12,7 @@ void	str_replace(t_lifetime lft, t_replace data)
 	rep_l = str_len(data.rep);
 	str_l = str_len(old_str);
 	new_word_l = str_l - (data.end - data.start) + rep_l;
-	new_word = mem_alloc(lft, (new_word_l + 1) * sizeof(char));
+	new_word = mem_alloc(alloc, (new_word_l + 1) * sizeof(char));
 	if (!new_word)
 		return ;
 	str_memcpy(new_word, old_str, data.start);

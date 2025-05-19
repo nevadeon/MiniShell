@@ -28,7 +28,7 @@ static bool	_match(const char *pattern, const char *str)
 	}
 }
 
-t_str_list	*compute_pattern(t_str_list *files, char *pattern)
+t_str_list	*compute_pattern(t_allocator *alloc, t_str_list *files, char *pattern)
 {
 	char		*file_n;
 	t_str_list	*rep;
@@ -38,7 +38,7 @@ t_str_list	*compute_pattern(t_str_list *files, char *pattern)
 	rep = NULL;
 	while (current)
 	{
-		file_n = path_get_filename(current->content);
+		file_n = path_get_filename(alloc, current->content);
 		if (pattern[0] != '.' && file_n[0] == '.')
 		{
 			current = current->next;
@@ -46,7 +46,7 @@ t_str_list	*compute_pattern(t_str_list *files, char *pattern)
 		}
 		if (_match(pattern, file_n))
 			lst_add_back((t_list **)&rep,
-				lst_new(E_LFT_TASK, current->content));
+				lst_new(alloc, current->content));
 		current = current->next;
 	}
 	return (rep);
