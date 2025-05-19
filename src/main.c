@@ -2,9 +2,7 @@
 #include "minishell.h"
 #include "signals.h"
 
-volatile sig_atomic_t	g_signal = 0;
-
-static char	*_argv_to_input(t_allocator *alloc, int argc, char **argv)
+static char	*_argv_to_input(int argc, char **argv)
 {
 	char	*input;
 	int		i;
