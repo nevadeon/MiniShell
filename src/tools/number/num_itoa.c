@@ -1,5 +1,4 @@
 #include "num.h"
-#include "mem.h"
 
 static int	_count_digit(long n)
 {
@@ -18,7 +17,7 @@ static int	_count_digit(long n)
 	return (i + 1);
 }
 
-char	*num_itoa(int n)
+char	*num_itoa(t_allocator *alloc, int n)
 {
 	char	*r;
 	int		size;
@@ -26,7 +25,7 @@ char	*num_itoa(int n)
 
 	n_cpy = (long)n;
 	size = _count_digit(n) + (n < 0);
-	r = (char *)mem_alloc(E_LFT_TASK, sizeof(char) * (size + 1));
+	r = (char *)mem_alloc(alloc, sizeof(char) * (size + 1));
 	if (!r)
 		return (NULL);
 	r[0] = '-';

@@ -43,22 +43,22 @@ bool	check_permissions(char *path)
 	return (false);
 }
 
-int	builtin_cd(t_str_list *args)
+int	builtin_cd(t_allocator *alloc, t_str_list *args)
 {
 	char		cwd[PATH_MAX];
 	char		*path;
 
 	if (!args || !args->content)
-		return (chdir(env_get_var_value("HOME")));
+		return (chdir(env_get_var_value(alloc, "HOME")));
 	if (args->next)
 		return (_print_err(E_ERR_CD_ARGS, NULL), 0);
 	path = args->content;
 	if (str_equals(path, "-"))
-		path = env_get_var_value("OLDPWD");
+		path = env_get_var_value(alloc, "OLDPWD");
 	if (check_permissions(path))
 		return (false);
 	if (getcwd(cwd, sizeof(cwd)) == NULL)
 		cwd[0] = '\0';
-	env_set_var_value("OLDPWD", cwd);
+	env_set_var_value(alloc, "OLDPWD", cwd);
 	return (chdir(path));
 }

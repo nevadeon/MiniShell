@@ -1,6 +1,8 @@
 #ifndef NUM_H
 # define NUM_H
 
-char	*num_itoa(int nb);
+#include "allocator.h"
+
+char	*num_itoa(t_allocator *alloc, int nb);
 
 #endif

@@ -4,6 +4,7 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <stdbool.h>
+# include "allocator.h"
 
 typedef struct s_list	t_list;
 
@@ -81,13 +82,14 @@ typedef struct s_ast
 
 typedef struct s_ast_context
 {
-	char	*input;
-	char	*word;
-	t_ast	*prev;
-	t_ast	*root;
-	t_ast	*last_ope;
-	t_token	token;
-	t_token	prev_token;
+	t_allocator	*alloc;
+	char		*input;
+	char		*word;
+	t_ast		*prev;
+	t_ast		*root;
+	t_ast		*last_ope;
+	t_token		token;
+	t_token		prev_token;
 }	t_ast_context;
 
 t_ast		*create_ast(t_ast_context *data);

@@ -1,6 +1,6 @@
 #include "path.h"
 
-char	*path_get_path(char *filepath)
+char	*path_get_path(t_allocator *alloc, char *filepath)
 {
 	size_t	index;
 	size_t	last_slash_index;
@@ -8,7 +8,7 @@ char	*path_get_path(char *filepath)
 
 	last_slash_index = 0;
 	index = 0;
-	path_cpy = str_dup(E_LFT_TASK, filepath);
+	path_cpy = str_dup(alloc, filepath);
 	while (path_cpy[index])
 	{
 		if (path_cpy[index] == '/')
@@ -16,7 +16,7 @@ char	*path_get_path(char *filepath)
 		index++;
 	}
 	if (last_slash_index == 0)
-		return (str_dup(E_LFT_TASK, ""));
+		return (str_dup(alloc, ""));
 	path_cpy[last_slash_index + 1] = '\0';
 	return (path_cpy);
 }

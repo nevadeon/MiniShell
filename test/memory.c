@@ -2,50 +2,37 @@
 
 bool	test_memory(void)
 {
-	int		i;
-	__attribute__((unused)) char	*s;
+	t_allocator	alloc;
 
-	i = 0;
+	alloc = make_dynamic_arena_allocator(ARENA_BLOCK_SIZE);
+	assert(check_allocator(&alloc));
+	assert(((t_dynamic_arena *)alloc.data)->capacity == ARENA_BLOCK_SIZE);
+	assert(((t_dynamic_arena *)alloc.data)->used_memory == 0);
+
+	//return address test
+	__attribute__((unused)) void	*origin;
+	__attribute__((unused)) void	*dump;
+	origin = ((t_dynamic_arena *)alloc.data)->blocks->mem_start;
+	mem_alloc(&alloc, 3);
+	dump = mem_alloc(&alloc, 5);
+	assert(dump == (origin + 8));
+	dump = mem_alloc(&alloc, 1);
+	assert(dump == (origin + 16));
+
+	//block overflow test
+	int i = 0;
 	while (++i <= 20)
-	{
-		s = mem_alloc(E_LFT_PROG, ARENA_BLOCK_SIZE / 4);
-		s = mem_alloc(E_LFT_TASK, ARENA_BLOCK_SIZE / 4);
-		s = mem_alloc(E_LFT_FUNC, ARENA_BLOCK_SIZE / 4);
-	}
-	s = mem_alloc(E_LFT_PROG, ARENA_BLOCK_SIZE + 1);
-	s = mem_alloc(E_LFT_TASK, ARENA_BLOCK_SIZE + 1);
-	s = mem_alloc(E_LFT_FUNC, ARENA_BLOCK_SIZE + 1);
+		mem_alloc(&alloc, ARENA_BLOCK_SIZE / 4);
 
-	mem_free_instance(E_LFT_PROG);
-	mem_free_instance(E_LFT_PROG);
-	mem_free_instance(E_LFT_TASK);
-	mem_free_instance(E_LFT_TASK);
-	mem_free_instance(E_LFT_FUNC);
-	mem_free_instance(E_LFT_FUNC);
-	mem_free_all();
-	mem_free_all();
+	//oversize test
+	mem_alloc(&alloc, ARENA_BLOCK_SIZE + 1);
 
-	//verifying that allocated memory is correctly freed
-	s = mem_alloc(E_LFT_PROG, 100);
-	mem_free_all();
-	assert(*(get_mgc_head(E_LFT_PROG)) == NULL);
-	assert(get_arena(E_LFT_PROG)->head == NULL);
-	assert(get_arena(E_LFT_PROG)->used_memory == 0);
-
-	//memory alignment verification
-	void *arena_origin = mem_alloc(E_LFT_PROG, 0);
-	void *ptr1 = mem_alloc(E_LFT_PROG, sizeof(void *) + 1);
-	void *ptr2 = mem_alloc(E_LFT_PROG, 1);
-	assert(((ptr1 - arena_origin) % sizeof(void *)) == 0);
-	assert(((ptr2 - arena_origin) % sizeof(void *)) == 0);
-
-	mem_add_block(E_LFT_PROG, strdup("test-1"));
-	mem_add_block(E_LFT_PROG, strdup("test-2"));
-	mem_add_block(E_LFT_TASK, strdup("test-3"));
-	mem_add_block(E_LFT_TASK, strdup("test-4"));
-	mem_add_block(E_LFT_FUNC, strdup("test-5"));
-	mem_add_block(E_LFT_FUNC, strdup("test-6"));
-	mem_free_all();
+	//free test
+	free_allocator(&alloc);
+	assert(!alloc.data);
+	assert(!alloc.alloc_fn);
+	assert(!alloc.check_fn);
+	assert(!alloc.free_fn);
 
 	printf("All memory tests passed 🥰\n");
 	return (EXIT_SUCCESS);
