@@ -9,6 +9,8 @@ static t_ast	*_create_leaf(t_allocator *alloc, char *word)
 	leaf = mem_alloc(alloc, sizeof(t_ast));
 	leaf->type = E_NODE_LEAF;
 	leaf->s_leaf.func = NULL;
+	leaf->s_leaf.redir_in = NULL;
+	leaf->s_leaf.redir_out = NULL;
 	if (word != NULL)
 	{
 		func = mem_alloc(alloc, sizeof(t_str_list));
