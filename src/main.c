@@ -35,11 +35,11 @@ int	main(int argc, char **argv, char **envp)
 	char			prompt[PATH_MAX + 20];
 
 	env_set(envp);
-	alloc_prog = make_dynamic_arena_allocator(ARENA_BLOCK_SIZE);
+	alloc_prog = make_arena_allocator(ARENA_BLOCK_SIZE);
 	increase_shlvl(&alloc_prog);
 	while (argc == 1)
 	{
-		alloc_cmd = make_dynamic_arena_allocator(ARENA_BLOCK_SIZE);
+		alloc_cmd = make_arena_allocator(ARENA_BLOCK_SIZE);
 		input = readline(readline_prompt(prompt, PATH_MAX + 20));
 		if (input[0] != '\0')
 			add_history(input);
