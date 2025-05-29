@@ -1,7 +1,7 @@
 #include <stdlib.h>
-#include "fixed_arena.h"
+#include "block_allocator.h"
 
-t_fixed_arena	*new_fixed_arena_data(size_t size)
+t_fixed_arena	*new_block_data(size_t size)
 {
 	t_fixed_arena	*arena;
 
@@ -17,7 +17,7 @@ t_fixed_arena	*new_fixed_arena_data(size_t size)
 	return (arena);
 }
 
-void	*fixed_arena_alloc_fn(void *data, size_t size)
+void	*block_alloc_fn(void *data, size_t size)
 {
 	t_fixed_arena	*arena;
 	void			*ptr;
@@ -34,7 +34,7 @@ void	*fixed_arena_alloc_fn(void *data, size_t size)
 	return (ptr);
 }
 
-bool	fixed_arena_check_fn(void *data)
+bool	block_check_fn(void *data)
 {
 	t_fixed_arena	*arena;
 
@@ -45,7 +45,7 @@ bool	fixed_arena_check_fn(void *data)
 	return (false);
 }
 
-void	fixed_arena_free_fn(void *data)
+void	block_free_fn(void *data)
 {
 	t_fixed_arena	*arena;
 
@@ -58,15 +58,15 @@ void	fixed_arena_free_fn(void *data)
 	arena->capacity = 0;
 }
 
-t_allocator	make_fixed_arena_allocator(size_t size)
+t_allocator	make_block_allocator(size_t size)
 {
 	t_allocator	fixed_arena_allocator;
 
 	fixed_arena_allocator = (t_allocator){
-		.data = new_fixed_arena_data(size),
-		.alloc_fn = fixed_arena_alloc_fn,
-		.check_fn = fixed_arena_check_fn,
-		.free_fn = fixed_arena_free_fn,
+		.data = new_block_data(size),
+		.alloc_fn = block_alloc_fn,
+		.check_fn = block_check_fn,
+		.free_fn = block_free_fn,
 	};
 	return (fixed_arena_allocator);
 }

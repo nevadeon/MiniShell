@@ -14,10 +14,10 @@ typedef struct s_fixed_arena
 	size_t	capacity;
 }	t_fixed_arena;
 
-t_allocator		make_fixed_arena_allocator(size_t size);
-t_fixed_arena	*new_fixed_arena_data(size_t size);
-void			*fixed_arena_alloc_fn(void *data, size_t size);
-bool			fixed_arena_check_fn(void *data);
-void			fixed_arena_free_fn(void *data);
+t_allocator		make_block_allocator(size_t size);
+t_fixed_arena	*new_block_data(size_t size);
+void			*block_alloc_fn(void *data, size_t size);
+bool			block_check_fn(void *data);
+void			block_free_fn(void *data);
 
 #endif
