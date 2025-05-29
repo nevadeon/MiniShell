@@ -1,9 +1,17 @@
 #include "allocator.h"
 
-void	*mem_alloc(t_allocator *allocator, size_t size)
+static void	assert_allocator(t_allocator *allocator)
 {
 	assert(allocator);
+	assert(allocator->data);
 	assert(allocator->alloc_fn);
+	assert(allocator->check_fn);
+	assert(allocator->free_fn);
+}
+
+void	*mem_alloc(t_allocator *allocator, size_t size)
+{
+	assert_allocator(allocator);
 	return (allocator->alloc_fn(allocator->data, size));
 }
 
@@ -16,8 +24,7 @@ bool	check_allocator(t_allocator *allocator)
 
 void	free_allocator(t_allocator *allocator)
 {
-	assert(allocator);
-	assert(allocator->free_fn);
+	assert_allocator(allocator);
 	allocator->free_fn(allocator->data);
 	allocator->data = NULL;
 	allocator->alloc_fn = NULL;
