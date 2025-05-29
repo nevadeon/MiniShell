@@ -21,8 +21,8 @@
 # include "sort.h"
 # include "str.h"
 # include "allocator.h"
-# include "dynamic_arena.h"
-# include "fixed_arena.h"
+# include "arena_allocator.h"
+# include "block_allocator.h"
 
 # ifdef INCLUDE_TEST_HEADER
 #  include "test.h"
