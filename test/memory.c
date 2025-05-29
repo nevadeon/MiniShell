@@ -4,7 +4,7 @@ bool	test_memory(void)
 {
 	t_allocator	alloc;
 
-	alloc = make_dynamic_arena_allocator(ARENA_BLOCK_SIZE);
+	alloc = make_arena_allocator(ARENA_BLOCK_SIZE);
 	assert(check_allocator(&alloc));
 	assert(((t_dynamic_arena *)alloc.data)->capacity == ARENA_BLOCK_SIZE);
 	assert(((t_dynamic_arena *)alloc.data)->used_memory == 0);

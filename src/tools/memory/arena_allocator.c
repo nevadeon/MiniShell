@@ -1,5 +1,5 @@
 #include <stdlib.h>
-#include "dynamic_arena.h"
+#include "arena_allocator.h"
 
 static void	_list_add_front(t_block_list **list, t_block_list *new_node)
 {
@@ -24,7 +24,7 @@ static t_block_list	*_new_block(size_t size)
 	return (new_node);
 }
 
-t_dynamic_arena *new_dynamic_arena_data(size_t capacity)
+t_dynamic_arena *new_arena_data(size_t capacity)
 {
 	t_dynamic_arena	*arena;
 
@@ -40,7 +40,7 @@ t_dynamic_arena *new_dynamic_arena_data(size_t capacity)
 	return (arena);
 }
 
-void	*dynamic_arena_alloc_fn(void *data, size_t size)
+void	*arena_alloc_fn(void *data, size_t size)
 {
 	t_dynamic_arena	*a;
 	t_block_list	*new_block;
@@ -69,7 +69,7 @@ void	*dynamic_arena_alloc_fn(void *data, size_t size)
 	return (ptr);
 }
 
-bool	dynamic_arena_check_fn(void *data)
+bool	arena_check_fn(void *data)
 {
 	t_dynamic_arena	*arena;
 
@@ -80,7 +80,7 @@ bool	dynamic_arena_check_fn(void *data)
 	return (false);
 }
 
-static void	list_clear(t_block_list **list)
+static void	_list_clear(t_block_list **list)
 {
 	t_block_list	*node;
 	t_block_list	*temp;
@@ -98,29 +98,29 @@ static void	list_clear(t_block_list **list)
 	*list = NULL;
 }
 
-void	dynamic_arena_free_fn(void *data)
+void	arena_free_fn(void *data)
 {
 	t_dynamic_arena	*arena;
 
 	if (!data)
 		return ;
 	arena = (t_dynamic_arena *)data;
-	list_clear(&arena->blocks);
+	_list_clear(&arena->blocks);
 	arena->blocks = NULL;
 	arena->used_memory = 0;
 	arena->capacity = 0;
 	free(arena);
 }
 
-t_allocator	make_dynamic_arena_allocator(size_t size)
+t_allocator	make_arena_allocator(size_t size)
 {
 	t_allocator	dynamic_allocator;
 
 	dynamic_allocator = (t_allocator){
-		.data = new_dynamic_arena_data(size),
-		.alloc_fn = dynamic_arena_alloc_fn,
-		.check_fn = dynamic_arena_check_fn,
-		.free_fn = dynamic_arena_free_fn,
+		.data = new_arena_data(size),
+		.alloc_fn = arena_alloc_fn,
+		.check_fn = arena_check_fn,
+		.free_fn = arena_free_fn,
 	};
 	return (dynamic_allocator);
 }
