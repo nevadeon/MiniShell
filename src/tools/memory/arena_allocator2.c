@@ -5,6 +5,7 @@ bool	arena_check_fn(void *data)
 {
 	t_arena	*arena;
 
+	assert(data);
 	arena = (t_arena *)data;
 	return (arena && arena->blocks && arena->blocks->mem_start);
 }
@@ -31,6 +32,7 @@ void	arena_free_fn(void *data)
 {
 	t_arena	*arena;
 
+	assert(data);
 	if (!data)
 		return ;
 	arena = (t_arena *)data;

@@ -24,7 +24,7 @@ static t_block_list	*_new_block(size_t size)
 	return (new_node);
 }
 
-static t_arena *_new_arena_data(size_t capacity)
+static t_arena *_new_arena_data(size_t size)
 {
 	t_arena	*arena;
 
@@ -32,8 +32,8 @@ static t_arena *_new_arena_data(size_t capacity)
 	if (!arena)
 		return (NULL);
 	*arena = (t_arena){
-		.blocks = _new_block(capacity),
-		.capacity = capacity,
+		.blocks = _new_block(size),
+		.capacity = size,
 		.used_memory = 0,
 	};
 	return (arena);
@@ -46,6 +46,7 @@ void	*arena_alloc_fn(void *data, size_t size)
 	void			*ptr;
 
 	assert(size > 0);
+	assert(data);
 	a = (t_arena *)data;
 	if (!a->blocks)
 		return (NULL);

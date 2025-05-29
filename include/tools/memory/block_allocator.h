@@ -1,9 +1,6 @@
-#ifndef FIXED_ARENA_H
-# define FIXED_ARENA_H
+#ifndef BLOCK_ALLOCATOR_H
+# define BLOCK_ALLOCATOR_H
 
-# include <stddef.h>
-# include <stdbool.h>
-# include <assert.h>
 # include <stdint.h>
 # include "allocator.h"
 
@@ -14,9 +11,9 @@ typedef struct s_block
 	size_t	capacity;
 }	t_block;
 
-t_allocator		make_block_allocator(size_t size);
-void			*block_alloc_fn(void *data, size_t size);
-bool			block_check_fn(void *data);
-void			block_free_fn(void *data);
+t_allocator	make_block_allocator(size_t size);
+void		*block_alloc_fn(void *data, size_t size);
+bool		block_check_fn(void *data);
+void		block_free_fn(void *data);
 
 #endif
