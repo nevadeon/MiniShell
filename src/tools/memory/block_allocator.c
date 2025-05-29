@@ -22,6 +22,7 @@ void	*block_alloc_fn(void *data, size_t size)
 	void	*ptr;
 
 	assert(size > 0);
+	assert(data);
 	block = (t_block *)data;
 	assert(block->mem_start);
 	assert((block->used_memory + size) <= block->capacity);
@@ -34,6 +35,7 @@ bool	block_check_fn(void *data)
 {
 	t_block	*block;
 
+	assert(data);
 	block = (t_block *)data;
 	return (block && block->mem_start);
 }
@@ -42,6 +44,7 @@ void	block_free_fn(void *data)
 {
 	t_block	*block;
 
+	assert(data);
 	if (!data)
 		return ;
 	block = (t_block *)data;
