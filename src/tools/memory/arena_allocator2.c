@@ -3,13 +3,10 @@
 
 bool	arena_check_fn(void *data)
 {
-	t_dynamic_arena	*arena;
+	t_arena	*arena;
 
-	assert(data);
-	arena = (t_dynamic_arena *)data;
-	if (arena && arena->blocks && arena->blocks->mem_start)
-		return (true);
-	return (false);
+	arena = (t_arena *)data;
+	return (arena && arena->blocks && arena->blocks->mem_start);
 }
 
 static void	_list_clear(t_block_list **list)
@@ -32,11 +29,11 @@ static void	_list_clear(t_block_list **list)
 
 void	arena_free_fn(void *data)
 {
-	t_dynamic_arena	*arena;
+	t_arena	*arena;
 
 	if (!data)
 		return ;
-	arena = (t_dynamic_arena *)data;
+	arena = (t_arena *)data;
 	_list_clear(&arena->blocks);
 	arena->blocks = NULL;
 	arena->used_memory = 0;

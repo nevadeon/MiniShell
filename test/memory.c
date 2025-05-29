@@ -6,13 +6,13 @@ bool	test_memory(void)
 
 	alloc = make_arena_allocator(ARENA_BLOCK_SIZE);
 	assert(check_allocator(&alloc));
-	assert(((t_dynamic_arena *)alloc.data)->capacity == ARENA_BLOCK_SIZE);
-	assert(((t_dynamic_arena *)alloc.data)->used_memory == 0);
+	assert(((t_arena *)alloc.data)->capacity == ARENA_BLOCK_SIZE);
+	assert(((t_arena *)alloc.data)->used_memory == 0);
 
 	//return address test
 	__attribute__((unused)) void	*origin;
 	__attribute__((unused)) void	*dump;
-	origin = ((t_dynamic_arena *)alloc.data)->blocks->mem_start;
+	origin = ((t_arena *)alloc.data)->blocks->mem_start;
 	mem_alloc(&alloc, 3);
 	dump = mem_alloc(&alloc, 5);
 	assert(dump == (origin + 8));

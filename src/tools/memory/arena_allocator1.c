@@ -24,15 +24,14 @@ static t_block_list	*_new_block(size_t size)
 	return (new_node);
 }
 
-t_dynamic_arena *new_arena_data(size_t capacity)
+static t_arena *_new_arena_data(size_t capacity)
 {
-	t_dynamic_arena	*arena;
+	t_arena	*arena;
 
-	assert(capacity > 0);
-	arena = malloc(sizeof(t_dynamic_arena));
+	arena = malloc(sizeof(t_arena));
 	if (!arena)
 		return (NULL);
-	*arena = (t_dynamic_arena){
+	*arena = (t_arena){
 		.blocks = _new_block(capacity),
 		.capacity = capacity,
 		.used_memory = 0,
@@ -42,13 +41,12 @@ t_dynamic_arena *new_arena_data(size_t capacity)
 
 void	*arena_alloc_fn(void *data, size_t size)
 {
-	t_dynamic_arena	*a;
+	t_arena			*a;
 	t_block_list	*new_block;
 	void			*ptr;
 
-	assert(data);
 	assert(size > 0);
-	a = (t_dynamic_arena *)data;
+	a = (t_arena *)data;
 	if (!a->blocks)
 		return (NULL);
 	if (a->used_memory & (sizeof(void *) - 1))
@@ -74,8 +72,9 @@ t_allocator	make_arena_allocator(size_t size)
 {
 	t_allocator	dynamic_allocator;
 
+	assert(size > 0);
 	dynamic_allocator = (t_allocator){
-		.data = new_arena_data(size),
+		.data = _new_arena_data(size),
 		.alloc_fn = arena_alloc_fn,
 		.check_fn = arena_check_fn,
 		.free_fn = arena_free_fn,
