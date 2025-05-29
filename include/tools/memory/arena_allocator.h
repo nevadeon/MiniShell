@@ -13,15 +13,14 @@ typedef struct s_block_list
 	uint8_t				*mem_start;
 }	t_block_list;
 
-typedef struct s_dynamic_arena
+typedef struct s_arena
 {
 	t_block_list	*blocks;
 	size_t			used_memory;
 	size_t			capacity;
-}	t_dynamic_arena;
+}	t_arena;
 
 t_allocator		make_arena_allocator(size_t size);
-t_dynamic_arena	*new_arena_data(size_t size);
 void			*arena_alloc_fn(void *data, size_t size);
 void			arena_free_fn(void *data);
 bool			arena_check_fn(void *data);
