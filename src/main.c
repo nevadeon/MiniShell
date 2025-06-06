@@ -2,7 +2,7 @@
 #include "minishell.h"
 #include "signals.h"
 
-static char	*_argv_to_input(int argc, char **argv)
+static char	*_argv_to_input(t_allocator *alloc, int argc, char **argv)
 {
 	char	*input;
 	int		i;
@@ -66,7 +66,7 @@ int	main(int argc, char **argv, char **envp)
 	t_allocator			alloc_prog;
 
 	env_set(envp);
-	alloc_prog = make_dynamic_arena_allocator(ARENA_BLOCK_SIZE);
+	alloc_prog = make_arena_allocator(ARENA_BLOCK_SIZE);
 	increase_shlvl(&alloc_prog);
 	memset(&sa, 0, sizeof(struct sigaction));
 	env_set(envp);
