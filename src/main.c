@@ -36,7 +36,7 @@ void	input_loop(void)
 
 	while (1)
 	{
-		alloc_cmd = make_arena_allocator(ARENA_BLOCK_SIZE);
+		cmd = make_arena_allocator(ARENA_BLOCK_SIZE);
 		input = readline(readline_prompt(prompt, PATH_MAX + 20));
 		if (g_signal == SIGINT)
 		{

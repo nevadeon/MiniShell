@@ -15,7 +15,6 @@
 # include "env.h"
 # include "parsing.h"
 # include "builtins.h"
-# include "int.h"
 # include "list.h"
 # include "num.h"
 # include "sort.h"
@@ -23,6 +22,7 @@
 # include "allocator.h"
 # include "arena_allocator.h"
 # include "block_allocator.h"
+# include "executing.h"
 
 # ifdef INCLUDE_TEST_HEADER
 #  include "test.h"
@@ -39,7 +39,7 @@ typedef struct s_var
 	bool	bracketed;
 }	t_var;
 
-void	handle_command(t_allocator *alloc, char *input);
+void	handle_command(t_allocator *prog, t_allocator *cmd, char *input);
 bool	handle_escape(char *input, size_t *len, char c);
 void	expand(t_allocator *alloc, char **word, char **input);
 void	expand_tilde(t_allocator *alloc, char **word);
