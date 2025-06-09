@@ -1,5 +1,6 @@
 #include "ast.h"
 #include "parsing.h"
+#include "executing.h"
 
 static t_ast_context	*_init_ast_context(t_allocator *alloc, char *input)
 {
@@ -15,14 +16,15 @@ static t_ast_context	*_init_ast_context(t_allocator *alloc, char *input)
 	return (ast_context);
 }
 
-void	handle_command(t_allocator *alloc, char *input)
+void	handle_command(t_allocator *prog, t_allocator *cmd, char *input)
 {
 	t_ast_context		*data;
 	t_ast				*ast;
 
-	data = _init_ast_context(alloc, input);
+	data = _init_ast_context(cmd, input);
 	ast = create_ast(data);
 	if (!ast)
 		return ;
 	print_ast(ast, 0);
+	execute_ast(prog, cmd, ast);
 }

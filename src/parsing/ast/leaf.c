@@ -49,9 +49,9 @@ static bool	_handle_redir(t_ast_context *data, t_redir_type type)
 	redir_list->next = NULL;
 	redir_list->type = type;
 	if (type == E_REDIR_HEREDOC || type == E_REDIR_IN)
-		lst_add_front((t_list **)&data->prev->s_leaf.redir_in, (t_list *)redir_list);
+		lst_add_back((t_list **)&data->prev->s_leaf.redir_in, (t_list *)redir_list);
 	else
-		lst_add_front((t_list **)&data->prev->s_leaf.redir_out, (t_list *)redir_list);
+		lst_add_back((t_list **)&data->prev->s_leaf.redir_out, (t_list *)redir_list);
 	return (true);
 }
 

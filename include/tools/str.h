@@ -4,7 +4,10 @@
 # include <stdbool.h>
 # include <stdlib.h>
 # include <stdarg.h>
+# include <unistd.h>
 # include "allocator.h"
+
+#define GNL_BUFFER_SIZE 4096
 
 typedef enum e_lifetime	t_lifetime;
 
@@ -28,5 +31,8 @@ char	**str_split(t_allocator *alloc, char const *s, char c);
 char	*str_chr(const char *s, int c);
 char	*str_rchr(const char *s, int c);
 int		str_atoi(const char *s);
+size_t	str_putfd(const char *s, int fd);
+size_t	str_clen(const char *str, char c, bool include_char);
+char	*get_next_line(int fd);
 
 #endif
