@@ -13,7 +13,7 @@ static int	_heredoc(char *stop)
 	while (1)
 	{
 		str_putfd("> ", STDOUT_FILENO);
-		line = get_next_line(STDIN_FILENO);
+		line = str_gnl(STDIN_FILENO);
 		if (!line || str_ncmp(line, stop, str_clen(line, '\n', false)) == 0)
 			break ;
 		str_putfd(line, pipe_fd[1]);
