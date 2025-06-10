@@ -33,6 +33,6 @@ char	*str_rchr(const char *s, int c);
 int		str_atoi(const char *s);
 size_t	str_putfd(const char *s, int fd);
 size_t	str_clen(const char *str, char c, bool include_char);
-char	*get_next_line(int fd);
+char	*str_gnl(int fd);
 
 #endif

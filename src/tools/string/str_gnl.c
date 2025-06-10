@@ -1,7 +1,7 @@
 #include "str.h"
 #include "unistd.h"
 
-void	ft_strccat(char *dest, const char *src, char c, bool include_char)
+static void	_strccat(char *dest, const char *src, char c, bool include_char)
 {
 	while (*dest)
 		dest++;
@@ -12,7 +12,7 @@ void	ft_strccat(char *dest, const char *src, char c, bool include_char)
 	*dest = '\0';
 }
 
-char	*ft_strcdup(const char *str, char c, bool include_char)
+static char	*_strcdup(const char *str, char c, bool include_char)
 {
 	char	*copy;
 	size_t	len;
@@ -29,25 +29,25 @@ char	*ft_strcdup(const char *str, char c, bool include_char)
 	return (copy);
 }
 
-void	ft_strcpy(char *dest, const char *src)
+static void	_strcpy(char *dest, const char *src)
 {
 	while (*src)
 		*dest++ = *src++;
 	*dest = '\0';
 }
 
-char	*ft_strcjoinfree(char *str1, char *str2, char c)
+static char	*_strcjoinfree(char *str1, char *str2, char c)
 {
 	char	*output;
 
 	output = malloc((str_clen(str1, c, 1) + str_clen(str2, c, 1) + 1));
-	ft_strcpy(output, str1);
-	ft_strccat(output, str2, c, true);
+	_strcpy(output, str1);
+	_strccat(output, str2, c, true);
 	free(str1);
 	return (output);
 }
 
-char	*get_next_line(int fd)
+char	*str_gnl(int fd)
 {
 	static char	buffer[GNL_BUFFER_SIZE + 1] = {0};
 	char		*line;
@@ -55,7 +55,7 @@ char	*get_next_line(int fd)
 
 	if (fd < 0 || fd > 1024 || GNL_BUFFER_SIZE <= 0)
 		return (NULL);
-	line = ft_strcdup(buffer, '\n', true);
+	line = _strcdup(buffer, '\n', true);
 	while (str_chr(buffer, '\n') == NULL)
 	{
 		read_bytes = read(fd, buffer, GNL_BUFFER_SIZE);
@@ -64,8 +64,8 @@ char	*get_next_line(int fd)
 		buffer[read_bytes] = '\0';
 		if (read_bytes == 0)
 			break ;
-		line = ft_strcjoinfree(line, buffer, '\n');
+		line = _strcjoinfree(line, buffer, '\n');
 	}
-	ft_strcpy(buffer, buffer + str_clen(buffer, '\n', true));
+	_strcpy(buffer, buffer + str_clen(buffer, '\n', true));
 	return (line);
 }
