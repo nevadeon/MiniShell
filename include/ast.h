@@ -82,7 +82,7 @@ typedef struct s_ast
 
 typedef struct s_ast_context
 {
-	t_allocator	*alloc;
+	t_alloc	*alloc;
 	char		*input;
 	char		*word;
 	t_ast		*prev;

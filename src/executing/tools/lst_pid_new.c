@@ -1,6 +1,6 @@
 #include "executing.h"
 
-t_pid_list	*lst_pid_new(t_allocator *alloc, pid_t pid)
+t_pid_list	*lst_pid_new(t_alloc *alloc, pid_t pid)
 {
 	t_pid_list	*new_node;
 

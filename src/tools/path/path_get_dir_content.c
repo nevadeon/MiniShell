@@ -1,7 +1,7 @@
 #include "path.h"
 #include "sort.h"
 
-t_list	*path_get_dir_content(t_allocator *alloc, char *path)
+t_list	*path_get_dir_content(t_alloc *alloc, char *path)
 {
 	t_list			*list;
 	struct dirent	*ent;

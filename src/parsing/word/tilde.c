@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-void	expand_tilde(t_allocator *alloc, char **word)
+void	expand_tilde(t_alloc *alloc, char **word)
 {
 	char	*var_name_value;
 

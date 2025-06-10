@@ -11,6 +11,6 @@ typedef enum	e_error_cd
 	E_ERR_CD_NOT_DIR
 }	t_error_cd;
 
-int	builtin_cd(t_allocator *alloc, t_str_list *args);
+int	builtin_cd(t_alloc *alloc, t_str_list *args);
 
 #endif

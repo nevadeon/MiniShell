@@ -14,7 +14,7 @@ static int	_count_words(const char *s, char c)
 	return (nb_words);
 }
 
-static char	*_strdup_to_c(t_allocator *alloc, const char **s, char c)
+static char	*_strdup_to_c(t_alloc *alloc, const char **s, char c)
 {
 	char	*cpy;
 	int		cpy_len;
@@ -37,7 +37,7 @@ static char	*_strdup_to_c(t_allocator *alloc, const char **s, char c)
 	return (cpy);
 }
 
-char	**str_split(t_allocator *alloc, char const *s, char c)
+char	**str_split(t_alloc *alloc, char const *s, char c)
 {
 	char	**tab;
 	int		i;

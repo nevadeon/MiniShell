@@ -35,7 +35,7 @@ char	*env_get_var(char *var_name)
 	return (NULL);
 }
 
-char	*env_get_var_value(t_allocator *alloc, char *var_name)
+char	*env_get_var_value(t_alloc *alloc, char *var_name)
 {
 	char	*var_value;
 
@@ -47,7 +47,7 @@ char	*env_get_var_value(t_allocator *alloc, char *var_name)
 	return ("");
 }
 
-char	*env_set_var_value(t_allocator *alloc, char *var_name, char *var_value)
+char	*env_set_var_value(t_alloc *alloc, char *var_name, char *var_value)
 {
 	char	**env;
 	char	*new_var;

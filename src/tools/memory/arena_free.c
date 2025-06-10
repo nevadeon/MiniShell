@@ -1,15 +1,6 @@
 #include <stdlib.h>
 #include "arena_allocator.h"
 
-bool	arena_check_fn(void *data)
-{
-	t_arena	*arena;
-
-	assert(data);
-	arena = (t_arena *)data;
-	return (arena && arena->blocks && arena->blocks->mem_start);
-}
-
 static void	_list_clear(t_block_list **list)
 {
 	t_block_list	*node;

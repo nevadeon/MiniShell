@@ -7,14 +7,13 @@ void	*malloc_alloc_fn(void *data, size_t size)
 	return (malloc(size));
 }
 
-t_allocator	make_malloc_allocator(void)
+t_alloc	make_malloc_allocator(void)
 {
-	t_allocator	malloc_allocator;
+	t_alloc	malloc_allocator;
 
-	malloc_allocator = (t_allocator){
+	malloc_allocator = (t_alloc){
 		.data = NULL,
 		.alloc_fn = malloc_alloc_fn,
-		.check_fn = NULL,
 		.free_fn = NULL,
 	};
 	return (malloc_allocator);

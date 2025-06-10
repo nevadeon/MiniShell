@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-void	exec_cmd(t_allocator *cmd, char **env_paths, t_str_list *arg_list)
+void	exec_cmd(t_alloc *cmd, char **env_paths, t_str_list *arg_list)
 {
 	char	**args;
 	char	*path;

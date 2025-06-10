@@ -28,7 +28,7 @@ static bool	_match(const char *pattern, const char *str)
 	}
 }
 
-t_str_list	*compute_pattern(t_allocator *alloc, t_str_list *files, char *pattern)
+t_str_list	*compute_pattern(t_alloc *alloc, t_str_list *files, char *pattern)
 {
 	char		*file_n;
 	t_str_list	*rep;

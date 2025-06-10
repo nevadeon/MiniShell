@@ -1,6 +1,6 @@
 #include "list.h"
 
-t_list	*lst_new(t_allocator *alloc, void *content)
+t_list	*lst_new(t_alloc *alloc, void *content)
 {
 	t_list	*new_node;
 

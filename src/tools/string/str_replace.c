@@ -1,6 +1,6 @@
 #include "str.h"
 
-void	str_replace(t_allocator *alloc, t_replace data)
+void	str_replace(t_alloc *alloc, t_replace data)
 {
 	char	*old_str;
 	char	*new_word;

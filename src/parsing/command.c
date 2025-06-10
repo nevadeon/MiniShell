@@ -2,7 +2,7 @@
 #include "parsing.h"
 #include "executing.h"
 
-static t_ast_context	*_init_ast_context(t_allocator *alloc, char *input)
+static t_ast_context	*_init_ast_context(t_alloc *alloc, char *input)
 {
 	t_ast_context	*ast_context;
 
@@ -16,7 +16,7 @@ static t_ast_context	*_init_ast_context(t_allocator *alloc, char *input)
 	return (ast_context);
 }
 
-void	handle_command(t_allocator *prog, t_allocator *cmd, char *input)
+void	handle_command(t_alloc *prog, t_alloc *cmd, char *input)
 {
 	t_ast_context		*data;
 	t_ast				*ast;

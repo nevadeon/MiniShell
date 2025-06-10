@@ -13,6 +13,8 @@ static t_block	*_new_block_data(size_t size)
 		.used_memory = 0,
 		.capacity = size,
 	};
+	if (!block->mem_start)
+		return (free(block), NULL);
 	return (block);
 }
 
@@ -31,39 +33,30 @@ void	*block_alloc_fn(void *data, size_t size)
 	return (ptr);
 }
 
-bool	block_check_fn(void *data)
-{
-	t_block	*block;
-
-	assert(data);
-	block = (t_block *)data;
-	return (block && block->mem_start);
-}
-
 void	block_free_fn(void *data)
 {
 	t_block	*block;
 
-	assert(data);
-	if (!data)
-		return ;
 	block = (t_block *)data;
+	assert(block->mem_start);
 	free(block->mem_start);
-	block->mem_start = NULL;
-	block->used_memory = 0;
-	block->capacity = 0;
+	*block = (t_block){0};
 }
 
-t_allocator	make_block_allocator(size_t size)
+t_alloc	*new_block_allocator(size_t size)
 {
-	t_allocator	block_allocator;
+	t_alloc	*block_allocator;
 
 	assert(size > 0);
-	block_allocator = (t_allocator){
+	block_allocator = malloc(sizeof(t_alloc));
+	if (!block_allocator)
+		return (NULL);
+	*block_allocator = (t_alloc){
 		.data = _new_block_data(size),
 		.alloc_fn = block_alloc_fn,
-		.check_fn = block_check_fn,
 		.free_fn = block_free_fn,
 	};
+	if (!block_allocator->data)
+		return (free(block_allocator), NULL);
 	return (block_allocator);
 }

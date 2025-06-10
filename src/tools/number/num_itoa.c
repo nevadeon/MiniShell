@@ -17,7 +17,7 @@ static int	_count_digit(long n)
 	return (i + 1);
 }
 
-char	*num_itoa(t_allocator *alloc, int n)
+char	*num_itoa(t_alloc *alloc, int n)
 {
 	char	*r;
 	int		size;

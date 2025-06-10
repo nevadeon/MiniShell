@@ -1,7 +1,7 @@
 #include "minishell.h"
 #include "env.h"
 
-static void	_override_var(t_allocator *alloc, char **word, t_var var)
+static void	_override_var(t_alloc *alloc, char **word, t_var var)
 {
 	char	*var_name;
 	size_t	var_name_len;
@@ -20,7 +20,7 @@ static bool	_is_valid_var_name(char *word, size_t index, size_t var_name_start)
 	return (word[index] && ((index == var_name_start && (char_isalpha(word[index]) || word[index] == '_')) || (index != var_name_start && (char_isalnum(word[index]) || word[index] == '_'))));
 }
 
-void	expand_variable(t_allocator *alloc, char **word)
+void	expand_variable(t_alloc *alloc, char **word)
 {
 	size_t	index;
 	t_var	var;
@@ -49,7 +49,7 @@ void	expand_variable(t_allocator *alloc, char **word)
 	} while (found);
 }
 
-void	expand(t_allocator *alloc, char **word, char **input)
+void	expand(t_alloc *alloc, char **word, char **input)
 {
 	expand_variable(alloc, word);
 	expand_tilde(alloc, word);

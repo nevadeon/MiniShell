@@ -1,6 +1,6 @@
 #include "str.h"
 
-char	*str_dup(t_allocator *alloc, char *s)
+char	*str_dup(t_alloc *alloc, char *s)
 {
 	char	*r;
 	size_t	s_len;

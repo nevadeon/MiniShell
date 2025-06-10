@@ -1,6 +1,6 @@
 #include "path.h"
 
-char	*path_get_path(t_allocator *alloc, char *filepath)
+char	*path_get_path(t_alloc *alloc, char *filepath)
 {
 	size_t	index;
 	size_t	last_slash_index;
