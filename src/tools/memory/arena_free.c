@@ -23,13 +23,12 @@ void	arena_free_fn(void *data)
 {
 	t_arena	*arena;
 
-	assert(data);
-	if (!data)
-		return ;
 	arena = (t_arena *)data;
+	assert(arena);
+	assert(arena->blocks);
+	if (!arena || !arena->blocks)
+		return ;
 	_list_clear(&arena->blocks);
-	arena->blocks = NULL;
-	arena->used_memory = 0;
-	arena->capacity = 0;
+	*arena = (t_arena){0};
 	free(arena);
 }

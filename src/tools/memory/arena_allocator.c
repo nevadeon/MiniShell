@@ -24,7 +24,7 @@ static t_block_list	*_new_block(size_t size)
 	return (new_node);
 }
 
-static t_arena *_new_arena_data(size_t size)
+static t_arena	*_new_arena_data(size_t size)
 {
 	t_arena	*arena;
 

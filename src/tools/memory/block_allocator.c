@@ -23,11 +23,14 @@ void	*block_alloc_fn(void *data, size_t size)
 	t_block	*block;
 	void	*ptr;
 
-	assert(size > 0);
-	assert(data);
 	block = (t_block *)data;
+	assert(size > 0);
+	assert(block);
 	assert(block->mem_start);
 	assert((block->used_memory + size) <= block->capacity);
+	if (!block || !block->mem_start
+		|| (block->used_memory + size) > block->capacity)
+		return (NULL);
 	ptr = block->mem_start + block->used_memory;
 	block->used_memory += size;
 	return (ptr);
@@ -38,7 +41,10 @@ void	block_free_fn(void *data)
 	t_block	*block;
 
 	block = (t_block *)data;
+	assert(block);
 	assert(block->mem_start);
+	if (!block || !block->mem_start)
+		return ;
 	free(block->mem_start);
 	*block = (t_block){0};
 }
