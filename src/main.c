@@ -2,23 +2,6 @@
 #include "minishell.h"
 #include "signals.h"
 
-static char	*_argv_to_input(t_alloc *alloc, int argc, char **argv)
-{
-	char	*input;
-	int		i;
-
-	i = 1;
-	input = mem_alloc(alloc, 1);
-	while (i < argc)
-	{
-		input = str_vjoin(alloc, 2, input, argv[i]);
-		if (i != argc)
-			input = str_vjoin(alloc, 2, input, " ");
-		i++;
-	}
-	return (input);
-}
-
 void	increase_shlvl(t_alloc *alloc)
 {
 	int	shlvl;
@@ -28,15 +11,15 @@ void	increase_shlvl(t_alloc *alloc)
 	env_set_var_value(alloc, "SHLVL", num_itoa(alloc, shlvl));
 }
 
-void	input_loop(void)
+void	input_loop(t_alloc *alloc_prog)
 {
-	char			prompt[PATH_MAX + 20];
-	t_allocator		alloc_cmd;
-	char			*input;
+	char	prompt[PATH_MAX + 20];
+	char	*input;
+	t_alloc	*alloc_cmd;
 
 	while (1)
 	{
-		cmd = new_arena_allocator(ARENA_BLOCK_SIZE);
+		alloc_cmd = new_arena_allocator(ARENA_BLOCK_SIZE);
 		input = readline(readline_prompt(prompt, PATH_MAX + 20));
 		if (g_signal == SIGINT)
 		{
@@ -55,21 +38,22 @@ void	input_loop(void)
 			add_history(input);
 		if (str_equals(input, "exit"))
 			break ;
-		handle_command(&alloc_cmd, input);
+		handle_command(alloc_prog, alloc_cmd, input);
 		free_allocator(&alloc_cmd);
 		free(input);
 	}
 }
 
-int	main(int argc, char **argv, char **envp)
+int	main(int argc, __attribute__((unused)) char **argv, char **envp)
 {
 	struct sigaction	sa;
-	t_allocator			alloc_prog;
+	t_alloc				*alloc_prog;
 
+	if (argc != 1)
+		return (EXIT_FAILURE);
 	env_set(envp);
-	alloc_prog = make_arena_allocator(ARENA_BLOCK_SIZE);
-	increase_shlvl(&alloc_prog);
-
+	alloc_prog = new_arena_allocator(ARENA_BLOCK_SIZE);
+	increase_shlvl(alloc_prog);
 	memset(&sa, 0, sizeof(struct sigaction));
 	env_set(envp);
 	sa.sa_handler = signal_handler;
@@ -78,10 +62,7 @@ int	main(int argc, char **argv, char **envp)
 	sigaction(SIGINT, &sa, NULL);
 	sa.sa_handler = SIG_IGN;
 	sigaction(SIGQUIT, &sa, NULL);
-	if (argc == 1)
-		input_loop();
-	else
-		handle_command(&alloc_prog, _argv_to_input(&alloc_prog, argc, argv));
+	input_loop(alloc_prog);
 	free_allocator(&alloc_prog);
 	rl_clear_history();
 	return (0);
