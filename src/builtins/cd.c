@@ -43,7 +43,7 @@ bool	check_permissions(char *path)
 	return (false);
 }
 
-int	builtin_cd(t_allocator *alloc, t_str_list *args)
+int	builtin_cd(t_alloc *alloc, t_str_list *args)
 {
 	char		cwd[PATH_MAX];
 	char		*path;

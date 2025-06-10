@@ -19,8 +19,8 @@ typedef enum e_path_check
 }	t_path_check;
 
 bool	path_check(char *path, t_path_check check);
-t_list	*path_get_dir_content(t_allocator *alloc, char *path);
-char	*path_get_path(t_allocator *alloc, char *filepath);
-char	*path_get_filename(t_allocator *alloc, char *filepath);
+t_list	*path_get_dir_content(t_alloc *alloc, char *path);
+char	*path_get_path(t_alloc *alloc, char *filepath);
+char	*path_get_filename(t_alloc *alloc, char *filepath);
 
 #endif

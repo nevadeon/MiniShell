@@ -1,7 +1,7 @@
 #include "path.h"
 #include "stdio.h"
 
-char	*path_get_filename(t_allocator *alloc, char *filepath)
+char	*path_get_filename(t_alloc *alloc, char *filepath)
 {
 	char	*pattern;
 

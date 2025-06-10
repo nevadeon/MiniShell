@@ -45,7 +45,7 @@ static void	_remove_quotes(char *str)
 	*dst = '\0';
 }
 
-char	*get_next_word(t_allocator *alloc, char **input)
+char	*get_next_word(t_alloc *alloc, char **input)
 {
 	char	*word;
 	int		len;

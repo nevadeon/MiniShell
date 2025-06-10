@@ -14,7 +14,7 @@ static bool	_has_to_expand(char *word)
 	return (word[index] == '*');
 }
 
-static void	_apply_wildcard(t_allocator *alloc, char **input, char **word, t_str_list *result)
+static void	_apply_wildcard(t_alloc *alloc, char **input, char **word, t_str_list *result)
 {
 	char		*files;
 
@@ -33,7 +33,7 @@ static void	_apply_wildcard(t_allocator *alloc, char **input, char **word, t_str
 	str_replace(alloc, (t_replace){input, files, 0, 0});
 }
 
-void	expand_wildcard(t_allocator *alloc, char **input, char **word)
+void	expand_wildcard(t_alloc *alloc, char **input, char **word)
 {
 	t_str_list	*result;
 	char		*pattern;

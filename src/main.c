@@ -2,7 +2,7 @@
 #include "minishell.h"
 #include "signals.h"
 
-static char	*_argv_to_input(t_allocator *alloc, int argc, char **argv)
+static char	*_argv_to_input(t_alloc *alloc, int argc, char **argv)
 {
 	char	*input;
 	int		i;
@@ -19,7 +19,7 @@ static char	*_argv_to_input(t_allocator *alloc, int argc, char **argv)
 	return (input);
 }
 
-void	increase_shlvl(t_allocator *alloc)
+void	increase_shlvl(t_alloc *alloc)
 {
 	int	shlvl;
 
@@ -36,7 +36,7 @@ void	input_loop(void)
 
 	while (1)
 	{
-		cmd = make_arena_allocator(ARENA_BLOCK_SIZE);
+		cmd = new_arena_allocator(ARENA_BLOCK_SIZE);
 		input = readline(readline_prompt(prompt, PATH_MAX + 20));
 		if (g_signal == SIGINT)
 		{

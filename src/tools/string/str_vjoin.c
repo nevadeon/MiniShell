@@ -15,7 +15,7 @@ static size_t	_get_length(size_t nb_args, va_list lst)
 	return (length);
 }
 
-char	*str_vjoin(t_allocator *alloc, size_t nb_args, ...)
+char	*str_vjoin(t_alloc *alloc, size_t nb_args, ...)
 {
 	char	*r;
 	size_t	length;

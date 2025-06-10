@@ -18,7 +18,7 @@ static t_ope_type	_string_to_ope_type(char *word)
 	return (E_OPE_LAST_INDEX);
 }
 
-static t_ast	*_create_ope(t_allocator *alloc, char *s)
+static t_ast	*_create_ope(t_alloc *alloc, char *s)
 {
 	t_ast	*ope;
 

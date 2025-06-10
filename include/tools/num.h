@@ -3,6 +3,6 @@
 
 #include "allocator.h"
 
-char	*num_itoa(t_allocator *alloc, int nb);
+char	*num_itoa(t_alloc *alloc, int nb);
 
 #endif

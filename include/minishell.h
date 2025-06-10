@@ -39,11 +39,11 @@ typedef struct s_var
 	bool	bracketed;
 }	t_var;
 
-void	handle_command(t_allocator *prog, t_allocator *cmd, char *input);
+void	handle_command(t_alloc *prog, t_alloc *cmd, char *input);
 bool	handle_escape(char *input, size_t *len, char c);
-void	expand(t_allocator *alloc, char **word, char **input);
-void	expand_tilde(t_allocator *alloc, char **word);
-void	expand_wildcard(t_allocator *alloc, char **input, char **word);
+void	expand(t_alloc *alloc, char **word, char **input);
+void	expand_tilde(t_alloc *alloc, char **word);
+void	expand_wildcard(t_alloc *alloc, char **input, char **word);
 char	*readline_prompt(char *buf, size_t size);
 void	input_loop(void);
 

@@ -1,7 +1,7 @@
 #include "ast.h"
 #include "parsing.h"
 
-static t_ast	*_create_leaf(t_allocator *alloc, char *word)
+static t_ast	*_create_leaf(t_alloc *alloc, char *word)
 {
 	t_ast		*leaf;
 	t_str_list	*func;

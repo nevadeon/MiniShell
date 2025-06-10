@@ -2,7 +2,7 @@
 
 static void	_execute_ast_recursive(t_ast *ast, t_exec_data *data);
 
-t_exec_data	make_exec_data(t_allocator *prog, t_allocator *cmd, t_ast *ast)
+t_exec_data	make_exec_data(t_alloc *prog, t_alloc *cmd, t_ast *ast)
 {
 	t_exec_data	data;
 
@@ -33,8 +33,8 @@ static void	_handle_leaf(t_ast *ast, t_exec_data *data)
 		exec_cmd(data->cmd, data->env_paths, ast->s_leaf.func);
 		close(in_fd);
 		close(out_fd);
-		free_allocator(data->cmd);
-		free_allocator(data->prog);
+		free_allocator(&data->cmd);
+		free_allocator(&data->prog);
 		exit(errno);
 	}
 	else
@@ -84,7 +84,7 @@ static void	_execute_ast_recursive(t_ast *ast, t_exec_data *data)
 		_handle_ope(ast, data);
 }
 
-void	execute_ast(t_allocator *prog, t_allocator *cmd, t_ast *ast)
+void	execute_ast(t_alloc *prog, t_alloc *cmd, t_ast *ast)
 {
 	t_exec_data	data;
 	int			status;

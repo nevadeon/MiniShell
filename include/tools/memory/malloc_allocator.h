@@ -3,7 +3,7 @@
 
 #include "allocator.h"
 
-t_allocator	make_malloc_allocator();
-void		*malloc_alloc_fn(void *data, size_t size);
+t_alloc	make_malloc_allocator();
+void	*malloc_alloc_fn(void *data, size_t size);
 
 #endif

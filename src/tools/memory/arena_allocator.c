@@ -36,6 +36,8 @@ static t_arena *_new_arena_data(size_t size)
 		.capacity = size,
 		.used_memory = 0,
 	};
+	if (!arena->blocks)
+		return (free(arena), NULL);
 	return (arena);
 }
 
@@ -48,7 +50,7 @@ void	*arena_alloc_fn(void *data, size_t size)
 	assert(size > 0);
 	assert(data);
 	a = (t_arena *)data;
-	if (!a->blocks)
+	if (!a || !a->blocks)
 		return (NULL);
 	if (a->used_memory & (sizeof(void *) - 1))
 		a->used_memory += sizeof(void *) - (a->used_memory % sizeof(void *));
@@ -68,17 +70,20 @@ void	*arena_alloc_fn(void *data, size_t size)
 	return (ptr);
 }
 
-
-t_allocator	make_arena_allocator(size_t size)
+t_alloc	*new_arena_allocator(size_t size)
 {
-	t_allocator	dynamic_allocator;
+	t_alloc	*arena_allocator;
 
 	assert(size > 0);
-	dynamic_allocator = (t_allocator){
+	arena_allocator = malloc(sizeof(t_alloc));
+	if (!arena_allocator)
+		return (NULL);
+	*arena_allocator = (t_alloc){
 		.data = _new_arena_data(size),
 		.alloc_fn = arena_alloc_fn,
-		.check_fn = arena_check_fn,
 		.free_fn = arena_free_fn,
 	};
-	return (dynamic_allocator);
+	if (!arena_allocator->data)
+		return (free(arena_allocator), NULL);
+	return (arena_allocator);
 }

@@ -1,6 +1,6 @@
 #include "list.h"
 
-void	**lst_to_array(t_allocator *alloc, t_list *list)
+void	**lst_to_array(t_alloc *alloc, t_list *list)
 {
 	void	**tab;
 	int		i;
