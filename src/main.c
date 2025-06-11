@@ -38,7 +38,7 @@ void	input_loop(t_alloc *alloc_prog)
 			add_history(input);
 		if (str_equals(input, "exit"))
 			break ;
-		handle_command(alloc_prog, alloc_cmd, input);
+		handle_command(&alloc_prog, &alloc_cmd, input);
 		free_allocator(&alloc_cmd);
 		free(input);
 	}

@@ -48,8 +48,8 @@ void	*arena_alloc_fn(void *data, size_t size)
 	void			*ptr;
 
 	assert(size > 0);
-	assert(data);
 	a = (t_arena *)data;
+	assert(a && a->blocks);
 	if (!a || !a->blocks)
 		return (NULL);
 	if (a->used_memory & (sizeof(void *) - 1))

@@ -16,15 +16,15 @@ static t_ast_context	*_init_ast_context(t_alloc *alloc, char *input)
 	return (ast_context);
 }
 
-void	handle_command(t_alloc *prog, t_alloc *cmd, char *input)
+void	handle_command(t_alloc **alloc_prog, t_alloc **alloc_cmd, char *input)
 {
 	t_ast_context		*data;
 	t_ast				*ast;
 
-	data = _init_ast_context(cmd, input);
+	data = _init_ast_context(*alloc_cmd, input);
 	ast = create_ast(data);
 	if (!ast)
 		return ;
 	print_ast(ast, 0);
-	execute_ast(prog, cmd, ast);
+	execute_ast(alloc_prog, alloc_cmd, ast);
 }
