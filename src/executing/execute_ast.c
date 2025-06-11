@@ -2,19 +2,19 @@
 
 static void	_execute_ast_recursive(t_ast *ast, t_exec_data *data);
 
-t_exec_data	make_exec_data(t_alloc *prog, t_alloc *cmd, t_ast *ast)
+t_exec_data	make_exec_data(t_alloc **a_prog, t_alloc **a_cmd, t_ast *ast)
 {
 	t_exec_data	data;
 
 	data = (t_exec_data){
-		.cmd = cmd,
-		.prog = prog,
+		.alloc_cmd = a_cmd,
+		.alloc_prog = a_prog,
 		.root = ast,
 		.last_ope = NULL,
 		.pid_list = NULL,
 		.prev_pipe_fd = 0,
 		.pipefd = {0, 0},
-		.env_paths = str_split(cmd, env_get_var_value(cmd, "PATH"), ':'),
+		.env_paths = str_split(*a_cmd, env_get_var_value(*a_cmd, "PATH"), ':'),
 	};
 	return (data);
 }
@@ -30,17 +30,17 @@ static void	_handle_leaf(t_ast *ast, t_exec_data *data)
 	{
 		in_fd = handle_input_redir(ast->s_leaf.redir_in, data->prev_pipe_fd);
 		out_fd = handle_output_redir(ast->s_leaf.redir_out, data->pipefd[1]);
-		exec_cmd(data->cmd, data->env_paths, ast->s_leaf.func);
+		exec_cmd(*(data->alloc_cmd), data->env_paths, ast->s_leaf.func);
 		close(in_fd);
 		close(out_fd);
-		free_allocator(&data->cmd);
-		free_allocator(&data->prog);
+		free_allocator(data->alloc_cmd);
+		free_allocator(data->alloc_prog);
 		exit(errno);
 	}
 	else
 	{
 		lst_add_front((t_list **)&data->pid_list, \
-			(t_list *)lst_pid_new(data->cmd, pid));
+			(t_list *)lst_pid_new(*(data->alloc_cmd), pid));
 	}
 }
 
@@ -84,12 +84,12 @@ static void	_execute_ast_recursive(t_ast *ast, t_exec_data *data)
 		_handle_ope(ast, data);
 }
 
-void	execute_ast(t_alloc *prog, t_alloc *cmd, t_ast *ast)
+void	execute_ast(t_alloc **alloc_prog, t_alloc **alloc_cmd, t_ast *ast)
 {
 	t_exec_data	data;
 	int			status;
 
-	data = make_exec_data(prog, cmd, ast);
+	data = make_exec_data(alloc_prog, alloc_cmd, ast);
 	_execute_ast_recursive(ast, &data);
 	while (data.pid_list)
 	{

@@ -39,7 +39,7 @@ typedef struct s_var
 	bool	bracketed;
 }	t_var;
 
-void	handle_command(t_alloc *prog, t_alloc *cmd, char *input);
+void	handle_command(t_alloc **alloc_prog, t_alloc **alloc_cmd, char *input);
 bool	handle_escape(char *input, size_t *len, char c);
 void	expand(t_alloc *alloc, char **word, char **input);
 void	expand_tilde(t_alloc *alloc, char **word);

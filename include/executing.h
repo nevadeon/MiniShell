@@ -28,8 +28,8 @@ typedef struct s_pid_list
 
 typedef struct s_exec_data
 {
-	t_alloc	*prog;
-	t_alloc	*cmd;
+	t_alloc		**alloc_prog;
+	t_alloc		**alloc_cmd;
 	t_ast		*root;
 	t_ast		*last_ope;
 	int			prev_pipe_fd;
@@ -38,7 +38,7 @@ typedef struct s_exec_data
 	t_pid_list	*pid_list;
 }	t_exec_data;
 
-void		execute_ast(t_alloc *prog, t_alloc *cmd, t_ast *ast);
+void		execute_ast(t_alloc **prog, t_alloc **cmd, t_ast *ast);
 void		exec_cmd(t_alloc *cmd, char **env_paths, t_str_list *arg_list);
 void		dup_close(int source_fd, int dest_fd);
 t_pid_list	*lst_pid_new(t_alloc *alloc, pid_t pid);
