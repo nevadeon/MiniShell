@@ -19,7 +19,7 @@ void	input_loop(t_alloc *alloc_prog)
 	while (1)
 	{
 		alloc_cmd = new_arena_allocator(ARENA_BLOCK_SIZE);
-		input = readline(readline_prompt(alloc_cmd));
+		input = readline(readline_prompt());
 		if (g_signal == SIGINT)
 		{
 			free_allocator(&alloc_cmd);

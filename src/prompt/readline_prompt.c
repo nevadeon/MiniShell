@@ -25,16 +25,35 @@ static char	*_get_git_head(void)
 	return (NULL);
 }
 
-char	*readline_prompt(t_alloc *alloc)
+char	*readline_prompt(void)
 {
-	char	cwd[PATH_MAX];
-	char	*git_head;
+	static char	buffer[PATH_MAX + 200];
+	char		cwd[PATH_MAX];
+	char		*git_head;
+	size_t		index;
+	size_t		tmp_len;
 
 	if (getcwd(cwd, sizeof(cwd)) == NULL)
 		cwd[0] = '\0';
+	index = 0;
 	git_head = _get_git_head();
+	tmp_len = str_len("\001\033[1;32mminishell\033[0m \033[1;35m");
+	str_memcpy(buffer, "\001\033[1;32mminishell\033[0m \033[1;35m", tmp_len);
+	index += tmp_len;
+	tmp_len = str_len(cwd);
+	str_memcpy(buffer + index, cwd, tmp_len);
+	index += tmp_len;
 	if (git_head)
-		return (str_vjoin(alloc, 5, "\001\033[1;32mminishell\033[0m \033[1;35m", cwd, "\033[0m \033[1;32mgit:(\033[1;33m", git_head, "\033[1;32m) #\033[0m \002"));
-	else
-		return (str_vjoin(alloc, 3, "\001\033[1;32mminishell\033[0m \033[1;35m", cwd, "\033[0m \033[1;32m#\033[0m \002"));
+	{
+		tmp_len = str_len("\033[0m \033[1;32mgit:(\033[1;33m");
+		str_memcpy(buffer + index, "\033[0m \033[1;32mgit:(\033[1;33m", tmp_len);
+		index += tmp_len;
+		tmp_len = str_len(git_head);
+		str_memcpy(buffer + index, git_head, tmp_len);
+		index += tmp_len;
+	}
+	tmp_len = str_len("\033[1;32m) #\033[0m \002");
+	str_memcpy(buffer + index, "\033[1;32m) #\033[0m \002", tmp_len);
+	index += tmp_len;
+	return (buffer);
 }
