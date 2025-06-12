@@ -20,13 +20,6 @@ void	input_loop(t_alloc *alloc_prog)
 	{
 		alloc_cmd = new_arena_allocator(ARENA_BLOCK_SIZE);
 		input = readline(readline_prompt(alloc_cmd));
-		if (g_signal == SIGINT)
-		{
-			free_allocator(&alloc_cmd);
-			g_signal = 0;
-			free(input);
-			continue ;
-		}
 		if (!input)
 		{
 			printf("exit\n");
@@ -48,6 +41,7 @@ int	main(int argc, __attribute__((unused)) char **argv, char **envp)
 	struct sigaction	sa;
 	t_alloc				*alloc_prog;
 
+	rl_catch_signals = 0;
 	if (argc != 1)
 		return (EXIT_FAILURE);
 	env_set(envp);
@@ -57,7 +51,7 @@ int	main(int argc, __attribute__((unused)) char **argv, char **envp)
 	env_set(envp);
 	sa.sa_handler = signal_handler;
 	sigemptyset(&sa.sa_mask);
-	sa.sa_flags = SA_RESTART;
+	sa.sa_flags = 0;
 	sigaction(SIGINT, &sa, NULL);
 	sa.sa_handler = SIG_IGN;
 	sigaction(SIGQUIT, &sa, NULL);
