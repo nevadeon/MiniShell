@@ -37,13 +37,16 @@ char	*readline_prompt(char *buf, size_t size)
 	if (git_head)
 	{
 		n = snprintf(buf, size,
-			"\033[1;32mminishell\033[0m \033[1;35m%s\033[0m \033[1;32mgit:(\033[1;33m%s\033[1;32m) #\033[0m ",
+			"\001\033[1;32m\002minishell \001\033[1;35m\002%s "
+			"\001\033[1;32m\002git:(\001\033[1;33m\002%s\001\033[1;32m\002"
+			") \001\033[1;32m\002#\001\033[0m\002 ",
 			cwd, git_head);
 	}
 	else
 	{
 		n = snprintf(buf, size,
-			"\033[1;32mminishell\033[0m \033[1;35m%s\033[0m \033[1;32m# \033[0m",
+			"\001\033[1;32m\002minishell \001\033[1;35m\002%s "
+			"\001\033[1;32m\002#\001\033[0m\002 ",
 			cwd);
 	}
 	if (n < 0 || (size_t)n >= size)
