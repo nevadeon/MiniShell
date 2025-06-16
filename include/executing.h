@@ -35,7 +35,6 @@ typedef struct s_exec_data
 	int			prev_pipe_fd;
 	int			pipefd[2];
 	char		**env_paths;
-	t_pid_list	*pid_list;
 }	t_exec_data;
 
 void		execute_ast(t_alloc **prog, t_alloc **cmd, t_ast *ast);
