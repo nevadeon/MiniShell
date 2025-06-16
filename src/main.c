@@ -13,14 +13,13 @@ void	increase_shlvl(t_alloc *alloc)
 
 void	input_loop(t_alloc *alloc_prog)
 {
-	char	prompt[PATH_MAX + 20];
 	char	*input;
 	t_alloc	*alloc_cmd;
 
 	while (1)
 	{
 		alloc_cmd = new_arena_allocator(ARENA_BLOCK_SIZE);
-		input = readline(readline_prompt(prompt, PATH_MAX + 20));
+		input = readline(readline_prompt(alloc_cmd));
 		if (g_signal == SIGINT)
 		{
 			free_allocator(&alloc_cmd);
