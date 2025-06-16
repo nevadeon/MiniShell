@@ -25,31 +25,15 @@ static char	*_get_git_head(void)
 	return (NULL);
 }
 
-char	*readline_prompt(char *buf, size_t size)
+char	*readline_prompt(t_alloc *alloc)
 {
 	char	cwd[PATH_MAX];
-	int		n;
 	char	*git_head;
 
 	if (getcwd(cwd, sizeof(cwd)) == NULL)
 		cwd[0] = '\0';
 	git_head = _get_git_head();
 	if (git_head)
-	{
-		n = snprintf(buf, size,
-			"\001\033[1;32m\002minishell \001\033[1;35m\002%s "
-			"\001\033[1;32m\002git:(\001\033[1;33m\002%s\001\033[1;32m\002"
-			") \001\033[1;32m\002#\001\033[0m\002 ",
-			cwd, git_head);
-	}
-	else
-	{
-		n = snprintf(buf, size,
-			"\001\033[1;32m\002minishell \001\033[1;35m\002%s "
-			"\001\033[1;32m\002#\001\033[0m\002 ",
-			cwd);
-	}
-	if (n < 0 || (size_t)n >= size)
-		return (NULL);
-	return (buf);
+		return (str_vjoin(alloc, 5, "\001\033[1;32m\002minishell \001\033[1;35m\002", cwd, "\001\033[1;32m\002 git:(\001\033[1;33m\002", git_head, "\001\033[1;32m\002)\001\033[1;32m\002#\001\033[0m\002 "));
+	return (str_vjoin(alloc, 3, "\001\033[1;32m\002minishell \001\033[1;35m\002", cwd, "\001\033[1;32m\002\001\033[1;32m\002#\001\033[0m\002 "));
 }

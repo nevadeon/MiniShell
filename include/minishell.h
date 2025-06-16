@@ -44,7 +44,7 @@ bool	handle_escape(char *input, size_t *len, char c);
 void	expand(t_alloc *alloc, char **word, char **input);
 void	expand_tilde(t_alloc *alloc, char **word);
 void	expand_wildcard(t_alloc *alloc, char **input, char **word);
-char	*readline_prompt(char *buf, size_t size);
+char	*readline_prompt(t_alloc *alloc);
 void	input_loop(t_alloc *alloc_prog);
 
 #endif
