@@ -11,7 +11,6 @@ t_exec_data	make_exec_data(t_alloc **a_prog, t_alloc **a_cmd, t_ast *ast)
 		.alloc_prog = a_prog,
 		.root = ast,
 		.last_ope = NULL,
-		.pid_list = NULL,
 		.prev_pipe_fd = 0,
 		.pipefd = {0, 0},
 		.env_paths = str_split(*a_cmd, env_get_var_value(*a_cmd, "PATH"), ':'),
@@ -24,6 +23,7 @@ static void	_handle_leaf(t_ast *ast, t_exec_data *data)
 	pid_t	pid;
 	int 	in_fd;
 	int		out_fd;
+	int		status;
 
 	pid = fork();
 	if (pid == 0)
@@ -39,8 +39,7 @@ static void	_handle_leaf(t_ast *ast, t_exec_data *data)
 	}
 	else
 	{
-		lst_add_front((t_list **)&data->pid_list, \
-			(t_list *)lst_pid_new(*(data->alloc_cmd), pid));
+		waitpid(pid, &status, 0);
 	}
 }
 
@@ -87,13 +86,7 @@ static void	_execute_ast_recursive(t_ast *ast, t_exec_data *data)
 void	execute_ast(t_alloc **alloc_prog, t_alloc **alloc_cmd, t_ast *ast)
 {
 	t_exec_data	data;
-	int			status;
 
 	data = make_exec_data(alloc_prog, alloc_cmd, ast);
 	_execute_ast_recursive(ast, &data);
-	while (data.pid_list)
-	{
-		waitpid(data.pid_list->pid, &status, 0);
-		data.pid_list = data.pid_list->next;
-	}
 }
