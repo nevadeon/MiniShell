@@ -7,6 +7,12 @@ void	*malloc_alloc_fn(void *data, size_t size)
 	return (malloc(size));
 }
 
+void	malloc_free_fn(void *data)
+{
+	(void)data;
+	return ;
+}
+
 t_alloc	*new_malloc_allocator(int unused_param)
 {
 	t_alloc	*malloc_allocator;
@@ -21,10 +27,4 @@ t_alloc	*new_malloc_allocator(int unused_param)
 		.free_fn = malloc_free_fn,
 	};
 	return (malloc_allocator);
-}
-
-void	malloc_free_fn(void *data)
-{
-	(void)data;
-	return ;
 }
