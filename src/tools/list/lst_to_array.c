@@ -12,6 +12,6 @@ void	**lst_to_array(t_alloc *alloc, t_list *list)
 		tab[i++] = list->content;
 		list = list->next;
 	}
-	tab[i + 1] = NULL;
+	tab[i] = NULL;
 	return (tab);
 }
