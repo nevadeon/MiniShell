@@ -3,7 +3,8 @@
 
 # include "allocator.h"
 
-t_alloc	*new_malloc_allocator(void);
+t_alloc	*new_malloc_allocator(int unused_param);
 void	*malloc_alloc_fn(void *data, size_t size);
+void	malloc_free_fn(void *data);
 
 #endif
