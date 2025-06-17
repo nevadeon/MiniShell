@@ -18,7 +18,7 @@ void	input_loop(t_alloc *alloc_prog)
 
 	while (1)
 	{
-		alloc_cmd = new_arena_allocator(ARENA_BLOCK_SIZE);
+		alloc_cmd = new_malloc_allocator(ARENA_BLOCK_SIZE);
 		input = readline(readline_prompt(alloc_cmd));
 		if (!input)
 			break ;
@@ -43,7 +43,7 @@ int	main(int argc, __attribute__((unused)) char **argv, char **envp)
 	if (argc != 1)
 		return (EXIT_FAILURE);
 	env_set(envp);
-	alloc_prog = new_arena_allocator(ARENA_BLOCK_SIZE);
+	alloc_prog = new_malloc_allocator(ARENA_BLOCK_SIZE);
 	increase_shlvl(alloc_prog);
 	memset(&sa, 0, sizeof(struct sigaction));
 	env_set(envp);
