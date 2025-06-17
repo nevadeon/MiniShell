@@ -23,6 +23,7 @@
 # include "arena_allocator.h"
 # include "block_allocator.h"
 # include "malloc_allocator.h"
+# include "mgc_allocator.h"
 # include "executing.h"
 
 # ifdef INCLUDE_TEST_HEADER
