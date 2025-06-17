@@ -21,11 +21,7 @@ void	input_loop(t_alloc *alloc_prog)
 		alloc_cmd = new_arena_allocator(ARENA_BLOCK_SIZE);
 		input = readline(readline_prompt(alloc_cmd));
 		if (!input)
-		{
-			printf("exit\n");
-			free_allocator(&alloc_cmd);
 			break ;
-		}
 		if (input[0] != '\0')
 			add_history(input);
 		if (str_equals(input, "exit"))
@@ -34,6 +30,8 @@ void	input_loop(t_alloc *alloc_prog)
 		free_allocator(&alloc_cmd);
 		free(input);
 	}
+	printf("exit\n");
+	free_allocator(&alloc_cmd);
 }
 
 int	main(int argc, __attribute__((unused)) char **argv, char **envp)
