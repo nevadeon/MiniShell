@@ -1,5 +1,20 @@
 #include "test.h"
 
+void	test_mgc(void)
+{
+	t_alloc *alloc;
+
+	alloc = new_mgc_allocator(0);
+	void *ptr;
+	int i = 0;
+	while (i < 20)
+	{
+		ptr = mem_alloc(alloc, 100);
+		i++;
+	}
+	free_allocator(&alloc);
+}
+
 bool	test_memory(void)
 {
 	t_alloc	*alloc;
@@ -29,6 +44,8 @@ bool	test_memory(void)
 	//free test
 	free_allocator(&alloc);
 	assert(!alloc);
+
+	test_mgc();
 
 	printf("All memory tests passed 🥰\n");
 	return (EXIT_SUCCESS);
