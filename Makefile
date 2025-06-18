@@ -66,16 +66,17 @@ $(OBJ_DIR)/$(TEST_DIR)/%.o: $(TEST_DIR)/%.c
 	@mkdir -p $(dir $@)
 	@$(CC) $(CFLAGS) -c $< -o $@
 
-macro: CFLAGS += -D_GNU_SOURCE -DINCLUDE_TEST_MACRO
+macro: CFLAGS += -D_GNU_SOURCE -DINCLUDE_TEST_MACRO -g
 macro: LDFLAGS += -ldl
 macro: re
 
-valgrind: CFLAGS += -g
-valgrind: re
+g: CFLAGS += -g
+g: re
+
+valgrind: g
 	valgrind $(VALGRIND_FLAGS) ./$(NAME) $(GDB_VALGRIND_ARGS)
 
-gdb: CFLAGS += -g
-gdb: re
+gdb: g
 	gdb $(GDB_FLAGS) ./$(NAME) $(GDB_VALGRIND_ARGS)
 
 valgrind_test: CFLAGS += -g -DINCLUDE_TEST_HEADER
@@ -86,4 +87,4 @@ gdb_test: CFLAGS += -g -DINCLUDE_TEST_HEADER
 gdb_test: fclean $(TEST_BIN)
 	gdb $(GDB_FLAGS) ./$(TEST_BIN)
 
-.PHONY: all re clean fclean test valgrind gdb valgrind_test gdb_test macro
+.PHONY: all re clean fclean test valgrind gdb valgrind_test gdb_test macro g
