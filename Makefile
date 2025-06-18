@@ -5,7 +5,7 @@ TEST_BIN := tests
 CC := cc
 CFLAGS = -Wall -Wextra -I$(INC_DIR)
 LDFLAGS = -lreadline
-VALGRIND_FLAGS := --quiet --leak-check=full --show-leak-kinds=all --track-origins=yes --suppressions=./rl.supp
+VALGRIND_FLAGS := --leak-check=full --show-leak-kinds=all --track-fds=yes --trace-children=yes --track-origins=yes --suppressions=./rl.supp
 GDB_FLAGS := --quiet --args
 GDB_VALGRIND_ARGS =
 
@@ -66,6 +66,10 @@ $(OBJ_DIR)/$(TEST_DIR)/%.o: $(TEST_DIR)/%.c
 	@mkdir -p $(dir $@)
 	@$(CC) $(CFLAGS) -c $< -o $@
 
+macro: CFLAGS += -D_GNU_SOURCE -DINCLUDE_TEST_MACRO
+macro: LDFLAGS += -ldl
+macro: re
+
 valgrind: CFLAGS += -g
 valgrind: re
 	valgrind $(VALGRIND_FLAGS) ./$(NAME) $(GDB_VALGRIND_ARGS)
@@ -82,4 +86,4 @@ gdb_test: CFLAGS += -g -DINCLUDE_TEST_HEADER
 gdb_test: fclean $(TEST_BIN)
 	gdb $(GDB_FLAGS) ./$(TEST_BIN)
 
-.PHONY: all re clean fclean test valgrind gdb valgrind_test gdb_test
+.PHONY: all re clean fclean test valgrind gdb valgrind_test gdb_test macro
