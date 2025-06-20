@@ -29,6 +29,9 @@
 # ifdef INCLUDE_TEST_HEADER
 #  include "test.h"
 # endif
+# ifdef INCLUDE_TEST_MACRO
+#  include "test_macro.h"
+# endif
 
 # define ARENA_BLOCK_SIZE 4096
 
