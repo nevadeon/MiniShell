@@ -1,26 +1,27 @@
-// #include "minishell.h"
-// #include "builtins.h"
+#include "minishell.h"
+#include "builtins.h"
 
-// int	builtin_echo(__attribute__((unused)) t_alloc *alloc, t_str_list *args)
-// {
-// 	t_str_list	*current;
-// 	bool		newline;
+int	builtin_echo(__attribute__((unused)) t_alloc *alloc, char **args)
+{
+	bool	newline;
+    int     i;
 
-// 	newline = true;
-// 	if (!args || !args->content)
-// 		return (printf("\n"), EXIT_SUCCESS);
-// 	current = args;
-// 	newline = !str_equals(current->content, "-n");
-// 	if (!newline)
-// 		current = current->next;
-// 	while (current)
-// 	{
-// 		printf("%s", current->content);
-// 		current = current->next;
-// 		if (current && current->content)
-// 			printf(" ");
-// 	}
-// 	if (newline)
-// 		printf("\n");
-// 	return (EXIT_SUCCESS);
-// }
+	newline = false;
+	if (!args[1])
+    {
+		printf("\n");
+        exit(EXIT_SUCCESS);
+    }
+	newline = str_cmp(args[1], "-n") == 0;
+    i = 0 + newline;
+	while (args[i])
+	{
+		printf("%s", args[i]);
+		if (args[i + 1])
+            printf(" ");
+		i++;
+	}
+	if (newline)
+		printf("\n");
+	exit(EXIT_SUCCESS);
+}
