@@ -1,26 +1,33 @@
 #include "ast.h"
 #include "list.h"
 
-void	_print_redir(t_redir_list *list)
+static void	plstr(void *content)
 {
-	static char	*redir_type[E_REDIR_LAST_INDEX] = {
-		"<",
-		"<<",
-		">",
-		">>"
-	};
-
-	if (list)
-	{
-		printf("%s ", redir_type[list->type]);
-		printf("%s", list->content);
-	}
+	printf("%s", (char *)content);
 }
 
-static void	_print_str_list(t_str_list *list)
+#include <string.h>
+static void plredir(t_redir_list *l)
 {
-	if (list)
-		printf("%s", list->content);
+	t_redir_list	*current;
+	char			*type_str;
+
+	current = l;
+	while (current)
+	{
+		if (current->type == E_REDIR_IN)
+			type_str = strdup("<");
+		if (current->type == E_REDIR_OUT_APPEND)
+			type_str = strdup(">>");
+		if (current->type == E_REDIR_OUT_TRUNC)
+			type_str = strdup(">");
+		if (current->type == E_REDIR_HEREDOC)
+			type_str = strdup("<<");
+		printf(" %s ", type_str);
+		free(type_str);
+		printf("%s", (char *)current->content);
+		current = current->next;
+	}
 }
 
 static void	_print_leaf(t_ast *ast)
@@ -31,39 +38,30 @@ static void	_print_leaf(t_ast *ast)
 	if (ast->s_leaf.func->next)
 	{
 		printf(" [");
-		lst_print((t_list *)ast->s_leaf.func->next, (void (*)(void *))_print_str_list);
+		lst_print((t_list *)ast->s_leaf.func->next, (void (*)(void *))plstr);
 		printf("]");
 	}
 	if (ast->s_leaf.redir_in)
-	{
-		printf(", in ");
-		lst_print((t_list *)ast->s_leaf.redir_in, (void (*)(void *))_print_redir);
-	}
+		plredir(ast->s_leaf.redir_in);
 	if (ast->s_leaf.redir_out)
-	{
-		printf(", out ");
-		lst_print((t_list *)ast->s_leaf.redir_out, (void (*)(void *))_print_redir);
-	}
+		plredir(ast->s_leaf.redir_out);
 	printf("\n");
 }
 
 void	print_ast(t_ast *ast, int indent)
 {
-	static const char	*ope_strings[E_OPE_LAST_INDEX] = {
-		"|",
-	};
-	int					i;
+	int	i;
 
 	if (!ast)
 		return ;
 	i = -1;
 	while (++i < indent)
 		printf("  ");
-	if (ast->type == E_NODE_LEAF)
+	if (ast->type == E_WORD)
 		_print_leaf(ast);
-	else if (ast->type == E_NODE_OPE)
+	else if (ast->type == E_CONTROL_OPE)
 	{
-		printf("Operator: %s\n", ope_strings[ast->s_ope.type]);
+		printf("Operator: |\n");
 		print_ast(ast->s_ope.left, indent + 1);
 		print_ast(ast->s_ope.right, indent + 1);
 	}

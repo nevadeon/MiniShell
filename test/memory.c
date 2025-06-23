@@ -5,7 +5,7 @@ void	test_mgc(void)
 	t_alloc *alloc;
 
 	alloc = new_mgc_allocator(0);
-	void *ptr;
+	__attribute__((unused)) void *ptr;
 	int i = 0;
 	while (i < 20)
 	{

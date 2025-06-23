@@ -41,9 +41,7 @@ typedef struct s_var
 	bool	bracketed;
 }	t_var;
 
-void	handle_command(t_alloc **alloc_prog, t_alloc **alloc_cmd, char *input);
-bool	handle_escape(char *input, size_t *len, char c);
-void	expand(t_alloc *alloc, char **word, char **input);
+void handle_command(__attribute__((unused)) t_alloc **alloc_prog, t_alloc **alloc_cmd, char *input);
 void	expand_tilde(t_alloc *alloc, char **word);
 void	expand_wildcard(t_alloc *alloc, char **input, char **word);
 char	*readline_prompt(t_alloc *alloc);

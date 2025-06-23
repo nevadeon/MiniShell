@@ -1,33 +1,104 @@
-#include "parsing.h"
+#include "ast.h"
 
-static bool	_has_error(t_ast_context *data)
+static t_ast	*_handle_ope(t_alloc *alloc, t_ast_context *context);
+static t_ast	*_handle_word(t_alloc *alloc, t_ast_context *context);
+
+static t_ast	*_handle_ope(t_alloc *alloc, t_ast_context *context)
 {
-	if (data->prev_token == E_TOKEN_REDIR
-		|| (data->prev_token == E_TOKEN_LAST_INDEX && data->token == E_TOKEN_OPE)
-		|| (data->prev_token == E_TOKEN_OPE && data->token == E_TOKEN_OPE)
-		|| (data->prev_token == E_TOKEN_REDIR && data->token == E_TOKEN_OPE))
-		return (print_parsing_error(E_ERR_PARSING_UNEXPECTED_TOKEN, data->word), true);
-	return (false);
+	t_ast	*node;
+	t_ast	*node_to_append;
+
+	node_to_append = NULL;
+	if (!context->token_list_item || !context->token_list_item->content)
+		return (context->root);
+	node = mem_alloc(alloc, sizeof(t_ast));
+	node->type = E_CONTROL_OPE;
+	node->s_ope.left = NULL;
+	node->s_ope.right = NULL;
+	node->s_ope.type = E_OPE_PIPE;
+	if (context->prev_ope)
+		node_to_append = context->prev_ope;
+	else
+		node_to_append = context->prev;
+	node->s_ope.right = node_to_append;
+	context->root = node;
+	context->prev = node;
+	context->prev_ope = node;
+	context->token_list_item = context->token_list_item->next;
+	if (context->token_list_item->content->type == E_CONTROL_OPE)
+		return (fprintf(stderr, "bash: syntax error near unexpected token `%s'",
+				context->token_list_item->content->str), NULL);
+	return (_handle_word(alloc, context));
 }
 
-t_ast	*create_ast(t_ast_context *data)
+static void	_handle_redir(t_alloc *alloc, t_ast_context *context, t_ast *node)
 {
-	char		*word;
-	t_token		token;
+	t_redir_list	*redir;
 
-	word = get_next_word(data->alloc, &data->input);
-	if (!word || str_len(word) == 0)
+	redir = mem_alloc(alloc, sizeof(t_redir_list));
+	redir->content = NULL;
+	redir->next = NULL;
+	redir->type = get_redir_type(context->token_list_item->content->str);
+	context->token_list_item = context->token_list_item->next;
+	if (!context->token_list_item)
+		fprintf(stderr, "bash: syntax error near unexpected token `newline`");
+	redir->content = context->token_list_item->content->str;
+	if (redir->type == E_REDIR_IN || redir->type == E_REDIR_HEREDOC)
+		lst_add_back((t_list **)&node->s_leaf.redir_in, (t_list *)redir);
+	if (redir->type == E_REDIR_OUT_APPEND || redir->type == E_REDIR_OUT_TRUNC)
+		lst_add_back((t_list **)&node->s_leaf.redir_out, (t_list *)redir);
+}
+
+static t_ast	*_create_leaf(t_alloc *alloc, t_ast_context *context)
+{
+	t_ast	*node;
+
+	node = mem_alloc(alloc, sizeof(t_ast));
+	node->type = E_WORD;
+	node->s_leaf.redir_in = NULL;
+	node->s_leaf.redir_out = NULL;
+	node->s_leaf.func = NULL;
+	while (context->token_list_item
+		&& (context->token_list_item->content->type == E_WORD
+			|| context->token_list_item->content->type == E_REDIR_OPE))
 	{
-		if (data->prev_token == E_TOKEN_OPE || data->prev_token == E_TOKEN_REDIR)
-			return (print_parsing_error(E_ERR_PARSING_UNEXPECTED_TOKEN, data->word), NULL);
-		return (data->root);
+		if (context->token_list_item->content->type == E_WORD)
+			lst_add_back((t_list **)&node->s_leaf.func, \
+			(t_list *)lst_new(alloc, context->token_list_item->content->str));
+		else
+			_handle_redir(alloc, context, node);
+		context->token_list_item = context->token_list_item->next;
 	}
-	token = get_token_type(word);
-	data->word = word;
-	data->token = token;
-	if (_has_error(data))
-		return (NULL);
-	if (token == E_TOKEN_OPE)
-		return (handle_ope(data));
-	return (handle_leaf(data));
+	return (node);
+}
+
+static t_ast	*_handle_word(t_alloc *alloc, t_ast_context *context)
+{
+	t_ast	*node;
+
+	if (!context->token_list_item || !context->token_list_item->content)
+		return (context->root);
+	node = _create_leaf(alloc, context);
+	if (context->prev && context->prev->type == E_CONTROL_OPE)
+	{
+		if (!context->prev->s_ope.left)
+			context->prev->s_ope.left = node;
+		if (!context->prev->s_ope.right)
+			context->prev->s_ope.right = node;
+	}
+	context->prev = node;
+	if (!context->root)
+		context->root = node;
+	if (!context->token_list_item)
+		return (context->root);
+	return (_handle_ope(alloc, context));
+}
+
+t_ast	*create_ast(t_alloc *alloc, t_ast_context *context)
+{
+	if (!context->token_list_item)
+		return (context->root);
+	if (context->token_list_item->content->type == E_CONTROL_OPE)
+		return (_handle_ope(alloc, context));
+	return (_handle_word(alloc, context));
 }
