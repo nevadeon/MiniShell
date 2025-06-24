@@ -10,7 +10,7 @@ t_exec_data	make_exec_data(t_alloc **a_prog, t_alloc **a_cmd)
 		.alloc_cmd = a_cmd,
 		.alloc_prog = a_prog,
 		.to_close = 0,
-		.env_paths = str_split(*a_cmd, env_get_var_value(*a_cmd, "PATH"), ':'),
+		.env_paths = str_split(*a_cmd, env_get_var_value("PATH", NULL), ':'),
 	};
 	return (data);
 }
@@ -70,7 +70,7 @@ static void	_handle_ope(t_ast *a, t_exec_data *d, int std_in, int prev_in)
 			close(prev_in);
 		d->to_close = 0;
 		_exec_ast(a->s_ope.right, d, std_in, pipe_fd[PIPE_IN]);
-		if (a->s_ope.right->type == E_NODE_LEAF)
+		if (a->s_ope.right->type == E_WORD)
 			close(pipe_fd[PIPE_IN]);
 	}
 }
@@ -79,7 +79,7 @@ static void	_exec_ast(t_ast *ast, t_exec_data *data, int fd1, int fd2)
 {
 	if (!ast)
 		return ;
-	if (ast->type == E_NODE_LEAF)
+	if (ast->type == E_WORD)
 		_handle_leaf(ast, data, fd1, fd2);
 	else
 		_handle_ope(ast, data, fd1, fd2);

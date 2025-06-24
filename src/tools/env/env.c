@@ -34,16 +34,22 @@ char	*env_get_var(char *var_name)
 	}
 	return (NULL);
 }
-
-char	*env_get_var_value(t_alloc *alloc, char *var_name)
+#include <stdio.h>
+char	*env_get_var_value(char *var_name, int *status)
 {
+	char	*var;
 	char	*var_value;
 
-	if (str_ncmp(var_name, "$", str_len("$")) == 0)
-		return (num_itoa(alloc, (int) getpid()));
-	var_value = env_get_var(var_name);
-	if (var_value)
-		return (env_get_var(var_name) + str_len(var_name) + 1);
+	var = env_get_var(var_name);
+	if (var)
+	{
+		var_value = var + str_len(var_name) + 1;
+		if (*var_value != '\0' && status)
+			*status = 1;
+		return (var_value);
+	}
+	if (status)
+		*status = 0;
 	return ("");
 }
 

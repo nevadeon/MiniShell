@@ -6,9 +6,17 @@ void	increase_shlvl(t_alloc *alloc)
 {
 	int	shlvl;
 
-	shlvl = str_atoi(env_get_var_value(alloc, "SHLVL"));
+	shlvl = str_atoi(env_get_var_value("SHLVL", NULL));
 	shlvl++;
 	env_set_var_value(alloc, "SHLVL", num_itoa(alloc, shlvl));
+}
+
+void handle_command(t_alloc **alloc_prog, t_alloc **alloc_cmd, char *input)
+{
+	t_ast	*ast;
+
+	ast = parsing(*alloc_cmd, &input);
+	execute_ast(alloc_prog, alloc_cmd, ast);
 }
 
 void	input_loop(t_alloc *alloc_prog)
@@ -18,21 +26,21 @@ void	input_loop(t_alloc *alloc_prog)
 
 	while (1)
 	{
-		alloc_cmd = new_malloc_allocator(ARENA_BLOCK_SIZE);
+		alloc_cmd = new_mgc_allocator(ARENA_BLOCK_SIZE);
 		input = readline(readline_prompt(alloc_cmd));
-		if (!input)
+		if (!input || str_equals(input, "exit"))
 			break ;
 		if (input[0] != '\0')
 			add_history(input);
-		if (str_equals(input, "exit"))
-			break ;
 		handle_command(&alloc_prog, &alloc_cmd, input);
 		free_allocator(&alloc_cmd);
 		free(input);
 	}
 	printf("exit\n");
 	free_allocator(&alloc_cmd);
+	free(input);
 }
+
 
 int	main(int argc, __attribute__((unused)) char **argv, char **envp)
 {
@@ -43,7 +51,7 @@ int	main(int argc, __attribute__((unused)) char **argv, char **envp)
 	if (argc != 1)
 		return (EXIT_FAILURE);
 	env_set(envp);
-	alloc_prog = new_malloc_allocator(ARENA_BLOCK_SIZE);
+	alloc_prog = new_mgc_allocator(ARENA_BLOCK_SIZE);
 	increase_shlvl(alloc_prog);
 	memset(&sa, 0, sizeof(struct sigaction));
 	env_set(envp);

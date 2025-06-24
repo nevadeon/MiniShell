@@ -1,6 +1,7 @@
 #ifndef EXECUTING_H
 # define EXECUTING_H
 
+# include "parsing.h"
 # include <unistd.h>
 # include <sys/wait.h>
 # include <fcntl.h>

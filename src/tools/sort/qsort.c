@@ -1,4 +1,4 @@
-#include "minishell.h"
+#include "sort.h"
 
 static t_list	*_merge_sorted_lists(t_list *smaller, t_list *equal, t_list *greater)
 {

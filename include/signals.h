@@ -3,6 +3,7 @@
 
 # include <stdio.h>
 # include <signal.h>
+# include <readline/readline.h>
 # include <unistd.h>
 
 extern sig_atomic_t	g_signal;

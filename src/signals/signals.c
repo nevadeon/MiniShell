@@ -1,5 +1,4 @@
 #include "signals.h"
-#include "minishell.h"
 
 sig_atomic_t	g_signal = 0;
 
