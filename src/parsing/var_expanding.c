@@ -3,6 +3,19 @@
 #include "num.h"
 #include "char.h"
 
+static bool	_is_var_name_valid(char *str)
+{
+	size_t	index;
+
+	index = 0;
+	if ((str)[index] != '_' && !char_isalpha((str)[index]))
+		return (false);
+	while (char_isalnum((str)[index]) || (str)[index] == '_')
+		index++;
+	return (index == str_len(str));
+}
+
+
 static t_replace	*_replace_special_parameters(t_alloc *alloc, \
 	char **s, size_t index)
 {
@@ -28,7 +41,9 @@ static t_replace	*_replace_bracketed_variable(t_alloc *alloc, char **s, \
 {
 	t_replace	*ret;
 	char		*var_name;
+	int			status;
 
+	status = 0;
 	if ((*s)[index] == '{')
 	{
 		ret = mem_alloc(alloc, sizeof(t_replace));
@@ -37,7 +52,9 @@ static t_replace	*_replace_bracketed_variable(t_alloc *alloc, char **s, \
 		str_escape(*s, &index, '{', '}');
 		ret->end = index;
 		var_name = str_extract(alloc, *ret->str, ret->start + 2, ret->end - 1);
-		ret->rep = env_get_var_value(var_name, NULL);
+		if (!_is_var_name_valid(var_name))
+			return (toggle_pars_err(E_PARS_GEN, *s), NULL);
+		ret->rep = env_get_var_value(var_name, &status);
 		return (ret);
 	}
 	return (NULL);

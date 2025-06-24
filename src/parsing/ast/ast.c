@@ -26,8 +26,7 @@ static t_ast	*_handle_ope(t_alloc *alloc, t_ast_context *context)
 	context->prev_ope = node;
 	context->token_list_item = context->token_list_item->next;
 	if (context->token_list_item->content->type == E_CONTROL_OPE)
-		return (fprintf(stderr, "bash: syntax error near unexpected token `%s'",
-				context->token_list_item->content->str), NULL);
+		return (toggle_pars_err(E_PARS_UNEX_TOKEN, "|"), NULL);
 	return (_handle_word(alloc, context));
 }
 
@@ -41,7 +40,7 @@ static void	_handle_redir(t_alloc *alloc, t_ast_context *context, t_ast *node)
 	redir->type = get_redir_type(context->token_list_item->content->str);
 	context->token_list_item = context->token_list_item->next;
 	if (!context->token_list_item)
-		fprintf(stderr, "bash: syntax error near unexpected token `newline`");
+		return (toggle_pars_err(E_PARS_UNEX_TOKEN, "newline"));
 	redir->content = context->token_list_item->content->str;
 	if (redir->type == E_REDIR_IN || redir->type == E_REDIR_HEREDOC)
 		lst_add_back((t_list **)&node->s_leaf.redir_in, (t_list *)redir);
@@ -67,6 +66,8 @@ static t_ast	*_create_leaf(t_alloc *alloc, t_ast_context *context)
 			(t_list *)lst_new(alloc, context->token_list_item->content->str));
 		else
 			_handle_redir(alloc, context, node);
+		if (errno)
+			return (NULL);
 		context->token_list_item = context->token_list_item->next;
 	}
 	return (node);

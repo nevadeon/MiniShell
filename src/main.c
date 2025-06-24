@@ -16,6 +16,8 @@ void handle_command(t_alloc **alloc_prog, t_alloc **alloc_cmd, char *input)
 	t_ast	*ast;
 
 	ast = parsing(*alloc_cmd, &input);
+	if (!ast || errno != 0)
+		return ;
 	execute_ast(alloc_prog, alloc_cmd, ast);
 }
 

@@ -8,10 +8,13 @@ t_ast	*parsing(t_alloc *alloc, char **inp)
 	t_ast_context	data;
 	t_ast			*ast;
 
+	errno = 0;
 	remove_comment(alloc, inp);
 	token_list = tokenize(alloc, inp);
 	tilde_expanding(alloc, token_list);
 	var_expanding(alloc, token_list);
+	if (errno)
+		return (NULL);
 	word_splitting(alloc, token_list);
 	wildcard_expanding(alloc, token_list);
 	quote_removal(alloc, token_list);

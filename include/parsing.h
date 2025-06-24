@@ -10,6 +10,13 @@
 # include "list.h"
 # include "env.h"
 
+typedef enum s_parsing_errors
+{
+	E_PARS_NO = 0,
+	E_PARS_GEN = 1,
+	E_PARS_UNEX_TOKEN = 2
+}	t_parsing_errors;
+
 typedef struct s_list	t_list;
 
 typedef struct s_str_list
@@ -90,6 +97,7 @@ typedef struct s_ast_context
 	t_ast			*prev_ope;
 }	t_ast_context;
 
+void			toggle_pars_err(t_parsing_errors err_code, char *arg);
 bool			is_blank_meta(char c);
 bool			is_meta(char c);
 bool			is_ope(char c);
@@ -110,6 +118,5 @@ t_str_list		*compute_pattern(t_alloc *alloc, t_str_list *files, char *pattern);
 void			quote_removal(t_alloc *alloc, t_token_list *token_list);
 t_ast			*create_ast(t_alloc *alloc, t_ast_context *data);
 void			print_ast(t_ast *ast, int indent);
-
 
 #endif
