@@ -1,38 +1,32 @@
 #include "minishell.h"
 
-static void _exec_failure_print(char **args)
+static void _exec_failure_print(t_ctx *ctx, char **args)
 {
 	if(errno == EACCES)
-	{
-		fprintf(stderr, "%s: Permission denied\n", args[CMD_NAME]);
-		errno = 126;
-	}
+		throw_error(ctx, ERR_PERM_DENIED, args[CMD_NAME]);
 	else if (errno == ENOENT)
-	{
-		fprintf(stderr, "%s: command not found\n", args[CMD_NAME]);
-		errno = 127;
-	}
+		throw_error(ctx, ERR_CMD_NOT_FOUND, args[CMD_NAME]);
 	else
 		fprintf(stderr, "%s: %s\n", args[CMD_NAME], strerror(errno));
 }
 
-void	exec_cmd(t_alloc *alloc, char **env_paths, char **args)
+void	exec_cmd(t_ctx *ctx, char **env_paths, char **args)
 {
 	char	*path;
 	int		i;
 
 	if (str_chr(args[CMD_NAME], '/'))
-		execve(args[CMD_NAME], args, env_get());
+		execve(args[CMD_NAME], args, *ctx->env);
 	else
 	{
 		i = -1;
 		while (env_paths[++i])
 		{
-			path = str_vjoin(alloc, 3, env_paths[i], "/", args[CMD_NAME]);
-			execve(path, args, env_get());
+			path = str_vjoin(*ctx->cmd, 3, env_paths[i], "/", args[CMD_NAME]);
+			execve(path, args, *ctx->env);
 			if (errno != ENOENT)
 				break ;
 		}
 	}
-	_exec_failure_print(args);
+	_exec_failure_print(ctx, args);
 }

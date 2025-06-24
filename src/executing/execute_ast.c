@@ -1,16 +1,16 @@
 #include "minishell.h"
 
-static void	_exec_ast(t_ast *ast, t_exec_data *data, int fd1, int fd2);
+static void	_exec_ast(t_ctx *ctx, t_ast *ast, t_exec_data *data, int fd1, int fd2);
 
-t_exec_data	make_exec_data(t_alloc **a_prog, t_alloc **a_cmd)
+t_exec_data	make_exec_data(t_ctx *ctx)
 {
 	t_exec_data	data;
 
 	data = (t_exec_data){
-		.alloc_cmd = a_cmd,
-		.alloc_prog = a_prog,
+		.alloc_cmd = ctx->cmd,
+		.alloc_prog = ctx->prog,
 		.to_close = 0,
-		.env_paths = str_split(*a_cmd, env_get_var_value("PATH", NULL), ':'),
+		.env_paths = str_split(*ctx->cmd, env_get_var_value(*ctx->env, "PATH"), ':'),
 	};
 	return (data);
 }
@@ -31,7 +31,7 @@ static void _handle_exec_failure(t_exec_data *d, int final_in, int final_out)
 	exit(errno);
 }
 
-static void	_handle_leaf(t_ast *a, t_exec_data *d, int pipe_out, int pipe_in)
+static void	_handle_leaf(t_ctx *ctx, t_ast *a, t_exec_data *d, int pipe_out, int pipe_in)
 {
 	pid_t	pid;
 	int 	final_in;
@@ -46,7 +46,7 @@ static void	_handle_leaf(t_ast *a, t_exec_data *d, int pipe_out, int pipe_in)
 		final_out = handle_output_redir(a->s_leaf.redir_out, pipe_in);
 		if (d->to_close)
 			close(d->to_close);
-		exec_cmd(*(d->alloc_cmd), d->env_paths, \
+		exec_cmd(ctx, d->env_paths, \
 			(char **)lst_to_array(*(d->alloc_cmd), (t_list *)a->s_leaf.func));
 		_handle_exec_failure(d, final_in, final_out);
 	}
@@ -55,7 +55,7 @@ static void	_handle_leaf(t_ast *a, t_exec_data *d, int pipe_out, int pipe_in)
 			(t_list *) lst_pid_new(*d->alloc_cmd, pid));
 }
 
-static void	_handle_ope(t_ast *a, t_exec_data *d, int std_in, int prev_in)
+static void	_handle_ope(t_ctx *ctx, t_ast *a, t_exec_data *d, int std_in, int prev_in)
 {
 	int	pipe_fd[2];
 
@@ -64,35 +64,35 @@ static void	_handle_ope(t_ast *a, t_exec_data *d, int std_in, int prev_in)
 		if (pipe(pipe_fd) == -1)
 			return (_error("pipe"));
 		d->to_close = pipe_fd[PIPE_IN];
-		_exec_ast(a->s_ope.left, d, pipe_fd[PIPE_OUT], prev_in);
+		_exec_ast(ctx, a->s_ope.left, d, pipe_fd[PIPE_OUT], prev_in);
 		close(pipe_fd[PIPE_OUT]);
 		if (prev_in)
 			close(prev_in);
 		d->to_close = 0;
-		_exec_ast(a->s_ope.right, d, std_in, pipe_fd[PIPE_IN]);
+		_exec_ast(ctx, a->s_ope.right, d, std_in, pipe_fd[PIPE_IN]);
 		if (a->s_ope.right->type == E_WORD)
 			close(pipe_fd[PIPE_IN]);
 	}
 }
 
-static void	_exec_ast(t_ast *ast, t_exec_data *data, int fd1, int fd2)
+static void	_exec_ast(t_ctx *ctx, t_ast *ast, t_exec_data *data, int fd1, int fd2)
 {
 	if (!ast)
 		return ;
 	if (ast->type == E_WORD)
-		_handle_leaf(ast, data, fd1, fd2);
+		_handle_leaf(ctx, ast, data, fd1, fd2);
 	else
-		_handle_ope(ast, data, fd1, fd2);
+		_handle_ope(ctx, ast, data, fd1, fd2);
 }
 
-void	execute_ast(t_alloc **alloc_prog, t_alloc **alloc_cmd, t_ast *ast)
+void	execute_ast(t_ctx *ctx, t_ast *ast)
 {
 	t_exec_data	data;
 	int			status;
 	int			exit_status;
 
-	data = make_exec_data(alloc_prog, alloc_cmd);
-	_exec_ast(ast, &data, 0, 0);
+	data = make_exec_data(ctx);
+	_exec_ast(ctx, ast, &data, 0, 0);
 	while (data.processes)
 	{
 		waitpid(data.processes->pid, &status, 0);

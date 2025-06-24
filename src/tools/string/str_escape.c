@@ -4,13 +4,16 @@ bool	str_escape(char *s, size_t *index, char start, char end)
 {
 	assert(s);
 	if (!s[*index])
-		return (false);
-	if (s[*index] == start)
+		return (true);
+	if (s[*index] != start)
+		return (true);
+	(*index)++;
+	while (s[*index] && s[*index] != end)
+		(*index)++;
+	if (s[*index] == end)
 	{
-		while (s[++*index] && s[*index] != end)
-			;
-		if (s[*index] == end)
-			(*index)++;
+		(*index)++;
+		return (true);
 	}
-	return (true);
+	return (false);
 }
