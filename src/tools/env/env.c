@@ -2,29 +2,10 @@
 #include "str.h"
 #include "num.h"
 
-static void	**_env(void)
+char	*env_get_var(char **env, char *var_name)
 {
-	static void	*env;
-
-	return (&env);
-}
-
-inline void	*env_get(void)
-{
-	return (*_env());
-}
-
-inline void	env_set(void *e)
-{
-	*_env() = e;
-}
-
-char	*env_get_var(char *var_name)
-{
-	char	**env;
 	int		len;
 
-	env = env_get();
 	len = str_len(var_name);
 	while (*env)
 	{
@@ -34,26 +15,22 @@ char	*env_get_var(char *var_name)
 	}
 	return (NULL);
 }
-#include <stdio.h>
-char	*env_get_var_value(char *var_name, int *status)
+
+char	*env_get_var_value(char **env, char *var_name)
 {
 	char	*var;
 	char	*var_value;
 
-	var = env_get_var(var_name);
+	var = env_get_var(env, var_name);
 	if (var)
 	{
 		var_value = var + str_len(var_name) + 1;
-		if (*var_value != '\0' && status)
-			*status = 1;
 		return (var_value);
 	}
-	if (status)
-		*status = 0;
-	return ("");
+	return (NULL);
 }
 
-char	*env_set_var_value(t_alloc *alloc, char *var_name, char *var_value)
+char	*env_set_var_value(t_ctx *ctx, char *var_name, char *var_value)
 {
 	char	**env;
 	char	*new_var;
@@ -62,8 +39,8 @@ char	*env_set_var_value(t_alloc *alloc, char *var_name, char *var_value)
 	char	**new_env;
 
 	len = str_len(var_name);
-	env = env_get();
-	new_var = str_vjoin(alloc, 3, var_name, "=", var_value);
+	env = *ctx->env;
+	new_var = str_vjoin(*ctx->prog, 3, var_name, "=", var_value);
 	i = 0;
 	while (env[i])
 	{
@@ -71,10 +48,9 @@ char	*env_set_var_value(t_alloc *alloc, char *var_name, char *var_value)
 			return (env[i] = new_var, env[i]);
 		i++;
 	}
-	new_env = mem_alloc(alloc, sizeof(char *) * (i + 2));
+	new_env = mem_alloc(*ctx->prog, sizeof(char *) * (i + 2));
 	str_memcpy(new_env, env, sizeof(char *) * i);
 	new_env[i] = new_var;
 	new_env[i + 1] = NULL;
-	env_set(new_env);
 	return (new_env[i]);
 }

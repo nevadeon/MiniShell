@@ -1,6 +1,7 @@
 #ifndef TEST_MACRO_H
 # define TEST_MACRO_H
 
+# include "forward.h"
 # include <stdio.h>
 # include <errno.h>
 # include <dlfcn.h>

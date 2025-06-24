@@ -65,20 +65,19 @@ static void	_process_splitting(t_alloc *alloc, t_token_list *item, char *ifs)
 	}
 }
 
-void	word_splitting(t_alloc *alloc, t_token_list *token_list)
+void	word_splitting(t_ctx *ctx, t_token_list *token_list)
 {
 	char			*ifs;
 	t_token_list	*current;
-	int				status;
 
-	ifs = env_get_var_value("IFS", &status);
-	if (!status)
-		ifs = str_dup(alloc, " \t\n");
+	ifs = env_get_var_value(*ctx->env, "IFS");
+	if (!ifs)
+		ifs = str_dup(*ctx->cmd, " \t\n");
 	current = token_list;
 	while (current)
 	{
 		if (current->content->expanded)
-			_process_splitting(alloc, current, ifs);
+			_process_splitting(*ctx->cmd, current, ifs);
 		current = current->next;
 	}
 }

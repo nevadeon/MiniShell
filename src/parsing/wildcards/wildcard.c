@@ -30,6 +30,7 @@ static void	_process_expanding(t_alloc *alloc, t_token_list *item)
 	t_str_list	*files;
 	t_str_list	*result;
 
+	result = NULL;
 	pattern = path_get_filename(alloc, item->content->str);
 	directory = path_get_path(alloc, item->content->str);
 	if (str_len(directory) == 0)

@@ -1,6 +1,7 @@
 #ifndef TEST_H
 # define TEST_H
 
+# include "forward.h"
 # include <assert.h>
 # include <stdbool.h>
 # include <string.h>

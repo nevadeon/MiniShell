@@ -24,23 +24,23 @@ static	char *_get_usr_directory(t_alloc *alloc, char *user_name)
 	return (NULL);
 }
 
-static char	*_handle_tilde_expanding(t_alloc *alloc, char *str)
+static char	*_handle_tilde_expanding(t_ctx *ctx, char *str)
 {
 	char	*usr_name;
 	int		len;
 
 	if (str[1] == '\0' || str[1] == '/')
-		return (env_get_var_value("HOME", NULL));
+		return (env_get_var_value(*ctx->env, "HOME"));
 	if (str[1] == '+')
-		return (env_get_var_value("PWD", NULL));
+		return (env_get_var_value(*ctx->env, "PWD"));
 	if (str[1] == '-')
-		return (env_get_var_value("OLDPWD", NULL));
+		return (env_get_var_value(*ctx->env, "OLDPWD"));
 	len = str_clen(str, '/', false);
-	usr_name = str_extract(alloc, str, 1, len);
-	return (_get_usr_directory(alloc, usr_name));
+	usr_name = str_extract(*ctx->cmd, str, 1, len);
+	return (_get_usr_directory(*ctx->cmd, usr_name));
 }
 
-static void	_process_tilde_token(t_alloc *alloc, t_token_list *token)
+static void	_process_tilde_token(t_ctx *ctx, t_token_list *token)
 {
 	t_replace	rep;
 	char		**content;
@@ -51,16 +51,16 @@ static void	_process_tilde_token(t_alloc *alloc, t_token_list *token)
 	rep.str = content;
 	rep.start = 0;
 	rep.end = str_clen(*content, '/', false);
-	rep.rep = _handle_tilde_expanding(alloc, *content);
+	rep.rep = _handle_tilde_expanding(ctx, *content);
 	if (rep.rep)
 	{
-		str_replace(alloc, rep);
+		str_replace(*ctx->cmd, rep);
 		token->content->expanded = true;
 	}
 	return ;
 }
 
-void	tilde_expanding(t_alloc *alloc, t_token_list *token_list)
+void	tilde_expanding(t_ctx *ctx, t_token_list *token_list)
 {
 	t_token_list	*current;
 
@@ -68,7 +68,7 @@ void	tilde_expanding(t_alloc *alloc, t_token_list *token_list)
 	while (current)
 	{
 		if (current->content->type == E_WORD)
-			_process_tilde_token(alloc, current);
+			_process_tilde_token(ctx, current);
 		current = current->next;
 	}
 }

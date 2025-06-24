@@ -36,7 +36,7 @@ t_token	*new_token(t_alloc *alloc, char *str, bool expanded, t_token_type type)
 	return (token);
 }
 
-static char	*_process_tokenize(t_alloc *alloc, char **input)
+static char	*_process_tokenize(t_ctx *ctx, char **input)
 {
 	size_t			index;
 	char			*ret;
@@ -47,44 +47,48 @@ static char	*_process_tokenize(t_alloc *alloc, char **input)
 		return (NULL);
 	index = 0;
 	if (**input == '|')
-		ret = str_dup(alloc, "|");
+		ret = str_dup(*ctx->cmd, "|");
 	else if (**input == '<' && *(*input + 1) == '<')
-		ret = str_dup(alloc, "<<");
+		ret = str_dup(*ctx->cmd, "<<");
 	else if (**input == '>' && *(*input + 1) == '>')
-		ret = str_dup(alloc, ">>");
+		ret = str_dup(*ctx->cmd, ">>");
 	else if (**input == '<')
-		ret = str_dup(alloc, "<");
+		ret = str_dup(*ctx->cmd, "<");
 	else if (**input == '>')
-		ret = str_dup(alloc, ">");
+		ret = str_dup(*ctx->cmd, ">");
 	else
 	{
 		while ((*input)[index] && !is_meta((*input)[index]))
 		{
-			str_escape(*input, &index, '"', '"');
-			str_escape(*input, &index, '\'', '\'');
+			if (!str_escape(*input, &index, '"', '"'))
+				return (throw_error(ctx, ERR_UNCLOSED, "\""), NULL);
+			if (!str_escape(*input, &index, '\'', '\''))
+				return (throw_error(ctx, ERR_UNCLOSED, "'"), NULL);
 			str_escape(*input, &index, '{', '}');
 			if ((*input)[index] && !is_meta((*input)[index]))
 				index++;
 		}
-		ret = str_extract(alloc, *input, 0, index);
+		ret = str_extract(*ctx->cmd, *input, 0, index);
 	}
 	*input += str_len(ret);
 	return (ret);
 }
 
-t_token_list	*tokenize(t_alloc *alloc, char **input)
+t_token_list	*tokenize(t_ctx *ctx, char **input)
 {
 	t_token_list	*token_list;
 	t_token			*tok;
 	char			*word;
 
 	token_list = NULL;
-	word = _process_tokenize(alloc, input);
+	word = _process_tokenize(ctx, input);
 	while (word)
 	{
-		tok = new_token(alloc, word, false, get_token_type(word));
-		lst_add_back((t_list **)&token_list, lst_new(alloc, (void *)tok));
-		word = _process_tokenize(alloc, input);
+		if (ctx->last_error_type)
+			return (NULL);
+		tok = new_token(*ctx->cmd, word, false, get_token_type(word));
+		lst_add_back((t_list **)&token_list, lst_new(*ctx->cmd, (void *)tok));
+		word = _process_tokenize(ctx, input);
 	}
 	return (token_list);
 }

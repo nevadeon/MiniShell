@@ -1,6 +1,16 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# ifdef INCLUDE_TEST_HEADER
+#  include "test.h"
+# endif
+# ifdef INCLUDE_TEST_MACRO
+#  include "test_macro.h"
+# endif
+
+# define ARENA_BLOCK_SIZE 4096
+
+# include "forward.h"
 # include <assert.h>
 # include <stdio.h>
 # include <readline/readline.h>
@@ -26,28 +36,34 @@
 # include "mgc_allocator.h"
 # include "executing.h"
 
-# ifdef INCLUDE_TEST_HEADER
-#  include "test.h"
-# endif
-# ifdef INCLUDE_TEST_MACRO
-#  include "test_macro.h"
-# endif
-
-# define ARENA_BLOCK_SIZE 4096
-
-typedef struct s_var
+typedef struct s_str_list
 {
-	size_t	start;
-	size_t	name_start;
-	size_t	end;
-	size_t	name_end;
-	bool	bracketed;
-}	t_var;
+	struct s_str_list	*next;
+	char				*content;
+}	t_str_list;
 
-void	handle_command(t_alloc **alloc_prog, t_alloc **alloc_cmd, char *input);
-void	expand_tilde(t_alloc *alloc, char **word);
-void	expand_wildcard(t_alloc *alloc, char **input, char **word);
+typedef enum e_shell_error
+{
+	ERR_NONE = 0,
+	ERR_BAD_SUBSTITUTION,
+	ERR_UNEXPECTED_TOKEN,
+	ERR_UNCLOSED,
+	ERR_PERM_DENIED,
+	ERR_NO_FILE_OR_DIR,
+	ERR_IS_DIR,
+	ERR_CMD_NOT_FOUND,
+}	t_shell_error;
+
+typedef struct s_ctx
+{
+	t_alloc			**prog;
+	t_alloc			**cmd;
+	t_shell_error	last_error_type;
+	int				last_exit_code;
+	char			***env;
+}	t_ctx;
+
 char	*readline_prompt(t_alloc *alloc);
-void	input_loop(t_alloc *alloc_prog);
+void	throw_error(t_ctx *ctx, t_shell_error err, char *arg);
 
 #endif

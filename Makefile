@@ -5,7 +5,7 @@ TEST_BIN := tests
 CC := cc
 CFLAGS = -Wall -Wextra -I$(INC_DIR)
 LDFLAGS = -lreadline
-VALGRIND_FLAGS := --leak-check=full --show-leak-kinds=all --track-fds=yes --trace-children=yes --track-origins=yes --suppressions=./rl.supp
+VALGRIND_FLAGS := --quiet --leak-check=full --show-leak-kinds=all --track-fds=yes --trace-children=yes --track-origins=yes --suppressions=./rl.supp
 GDB_FLAGS := --quiet --args
 GDB_VALGRIND_ARGS =
 

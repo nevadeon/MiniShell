@@ -2,24 +2,26 @@
 #include "minishell.h"
 #include "signals.h"
 
-void	increase_shlvl(t_alloc *alloc)
+void	increase_shlvl(t_ctx *ctx)
 {
 	int	shlvl;
 
-	shlvl = str_atoi(env_get_var_value("SHLVL", NULL));
+	shlvl = str_atoi(env_get_var_value(*ctx->env, "SHLVL"));
 	shlvl++;
-	env_set_var_value(alloc, "SHLVL", num_itoa(alloc, shlvl));
+	env_set_var_value(ctx, "SHLVL", num_itoa(*ctx->prog, shlvl));
 }
 
-void handle_command(t_alloc **alloc_prog, t_alloc **alloc_cmd, char *input)
+void handle_command(t_ctx *ctx, char *input)
 {
 	t_ast	*ast;
 
-	ast = parsing(*alloc_cmd, &input);
-	execute_ast(alloc_prog, alloc_cmd, ast);
+	ast = parsing(ctx, &input);
+	if (!ast || ctx->last_error_type)
+		return ;
+	execute_ast(ctx, ast);
 }
 
-void	input_loop(t_alloc *alloc_prog)
+void	input_loop(t_ctx *ctx)
 {
 	char	*input;
 	t_alloc	*alloc_cmd;
@@ -27,42 +29,56 @@ void	input_loop(t_alloc *alloc_prog)
 	while (1)
 	{
 		alloc_cmd = new_mgc_allocator(ARENA_BLOCK_SIZE);
-		input = readline(readline_prompt(alloc_cmd));
+		ctx->cmd = &alloc_cmd;
+		input = readline(readline_prompt(*ctx->cmd));
 		if (!input || str_equals(input, "exit"))
 			break ;
 		if (input[0] != '\0')
 			add_history(input);
-		handle_command(&alloc_prog, &alloc_cmd, input);
-		free_allocator(&alloc_cmd);
+		handle_command(ctx, input);
+		free_allocator(ctx->cmd);
 		free(input);
 	}
 	printf("exit\n");
-	free_allocator(&alloc_cmd);
+	free_allocator(ctx->cmd);
 	free(input);
 }
 
+static t_ctx	*_new_ctx(t_alloc **alloc, char ***envp)
+{
+	t_ctx	*ctx;
+
+	ctx = mem_alloc(*alloc, sizeof(t_ctx));
+	*ctx = (t_ctx){
+		.prog = alloc,
+		.env = envp,
+		.last_error_type = ERR_NONE,
+		.last_exit_code = 0,
+	};
+	return (ctx);
+}
 
 int	main(int argc, __attribute__((unused)) char **argv, char **envp)
 {
 	struct sigaction	sa;
-	t_alloc				*alloc_prog;
+	t_ctx				*ctx;
+	t_alloc				*alloc;
 
 	rl_catch_signals = 0;
 	if (argc != 1)
 		return (EXIT_FAILURE);
-	env_set(envp);
-	alloc_prog = new_mgc_allocator(ARENA_BLOCK_SIZE);
-	increase_shlvl(alloc_prog);
-	memset(&sa, 0, sizeof(struct sigaction));
-	env_set(envp);
+	alloc = new_mgc_allocator(ARENA_BLOCK_SIZE);
+	ctx = _new_ctx(&alloc, &envp);
+	increase_shlvl(ctx);
+	str_memset(&sa, 0, sizeof(struct sigaction));
 	sa.sa_handler = signal_handler;
 	sigemptyset(&sa.sa_mask);
 	sa.sa_flags = 0;
 	sigaction(SIGINT, &sa, NULL);
 	sa.sa_handler = SIG_IGN;
 	sigaction(SIGQUIT, &sa, NULL);
-	input_loop(alloc_prog);
-	free_allocator(&alloc_prog);
+	input_loop(ctx);
+	free_allocator(ctx->prog);
 	rl_clear_history();
 	return (0);
 }
