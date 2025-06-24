@@ -25,7 +25,7 @@ static t_ast	*_handle_ope(t_alloc *alloc, t_ast_context *context)
 	context->prev = node;
 	context->prev_ope = node;
 	context->token_list_item = context->token_list_item->next;
-	if (context->token_list_item->content->type == E_CONTROL_OPE)
+	if (!context->token_list_item || context->token_list_item->content->type == E_CONTROL_OPE)
 		return (toggle_pars_err(E_PARS_UNEX_TOKEN, "|"), NULL);
 	return (_handle_word(alloc, context));
 }
