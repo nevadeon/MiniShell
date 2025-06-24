@@ -8,7 +8,7 @@ void	lst_print(t_list *list, void(*print_function)(void *))
 	current = list;
 	while (current)
 	{
-		print_function(current);
+		print_function(current->content);
 		current = current->next;
 		if (current)
 			printf(", ");

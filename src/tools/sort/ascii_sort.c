@@ -1,5 +1,4 @@
 #include "sort.h"
-#include "str.h"
 
 int	ascii_sort(void *a, void *b)
 {
