@@ -5,7 +5,7 @@
 # include <stdlib.h>
 # include <stdarg.h>
 # include <unistd.h>
-# include "allocator.h"
+# include "allocators/allocator.h"
 
 #define GNL_BUFFER_SIZE 4096
 

@@ -1,4 +1,4 @@
-#include "char.h"
+#include "tools/char.h"
 
 bool	char_isnum(char c)
 {

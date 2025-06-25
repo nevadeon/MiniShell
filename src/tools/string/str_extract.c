@@ -1,5 +1,5 @@
-#include "allocator.h"
-#include "str.h"
+#include "allocators/allocator.h"
+#include "tools/str.h"
 
 char	*str_extract(t_alloc *alloc, char *s, size_t start, size_t end)
 {

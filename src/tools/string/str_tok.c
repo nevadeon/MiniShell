@@ -1,4 +1,4 @@
-#include "str.h"
+#include "tools/str.h"
 
 char	*str_tok(t_alloc *alloc, char **str, const char *delim)
 {

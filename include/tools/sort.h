@@ -1,8 +1,8 @@
 #ifndef SORT_H
 # define SORT_H
 
-# include "str.h"
-# include "list.h"
+# include "tools/str.h"
+# include "tools/list.h"
 
 typedef struct s_list	t_list;
 

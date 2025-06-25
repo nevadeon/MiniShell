@@ -1,4 +1,4 @@
-#include "str.h"
+#include "tools/str.h"
 
 void	*str_memset(void *s, int c, size_t n)
 {

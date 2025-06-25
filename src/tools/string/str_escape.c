@@ -1,4 +1,4 @@
-#include "str.h"
+#include "tools/str.h"
 
 bool	str_escape(char *s, size_t *index, char start, char end)
 {

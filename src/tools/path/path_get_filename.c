@@ -1,4 +1,4 @@
-#include "path.h"
+#include "tools/path.h"
 #include "stdio.h"
 
 char	*path_get_filename(t_alloc *alloc, char *filepath)

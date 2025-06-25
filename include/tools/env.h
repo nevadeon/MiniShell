@@ -4,7 +4,7 @@
 # include "minishell.h"
 # include <unistd.h>
 # include <errno.h>
-# include "allocator.h"
+# include "allocators/allocator.h"
 
 char	*env_get_var(char **env, char *var_name);
 char	*env_set_var_value(t_ctx *ctx, char *var_name, char *var_value);

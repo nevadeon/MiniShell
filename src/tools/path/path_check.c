@@ -1,4 +1,4 @@
-#include "path.h"
+#include "tools/path.h"
 
 bool	path_check(char *path, t_path_check check)
 {

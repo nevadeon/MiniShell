@@ -1,4 +1,4 @@
-#include "str.h"
+#include "tools/str.h"
 
 static int	_count_words(const char *s, char c)
 {

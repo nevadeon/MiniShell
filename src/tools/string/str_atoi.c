@@ -1,5 +1,5 @@
-#include "str.h"
-#include "char.h"
+#include "tools/str.h"
+#include "tools/char.h"
 
 int	str_atoi(const char *s)
 {

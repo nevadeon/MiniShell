@@ -1,4 +1,4 @@
-#include "str.h"
+#include "tools/str.h"
 
 /*
 * @return the len added to the string (can be negative)

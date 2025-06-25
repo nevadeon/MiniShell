@@ -21,21 +21,22 @@
 #  include <linux/limits.h>
 # endif
 # include <limits.h>
-# include "parsing.h"
-# include "char.h"
-# include "env.h"
+
 # include "parsing.h"
 # include "builtins.h"
-# include "list.h"
-# include "num.h"
-# include "sort.h"
-# include "str.h"
-# include "allocator.h"
-# include "arena_allocator.h"
-# include "block_allocator.h"
-# include "malloc_allocator.h"
-# include "mgc_allocator.h"
 # include "executing.h"
+
+# include "tools/env.h"
+# include "tools/char.h"
+# include "tools/list.h"
+# include "tools/num.h"
+# include "tools/sort.h"
+# include "tools/str.h"
+
+# include "allocators/arena_allocator.h"
+# include "allocators/block_allocator.h"
+# include "allocators/malloc_allocator.h"
+# include "allocators/mgc_allocator.h"
 
 typedef struct s_str_list
 {

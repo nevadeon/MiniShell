@@ -5,8 +5,8 @@
 # include <dirent.h>
 # include <stdio.h>
 # include <unistd.h>
-# include "list.h"
-# include "str.h"
+# include "tools/list.h"
+# include "tools/str.h"
 
 typedef enum e_path_check
 {

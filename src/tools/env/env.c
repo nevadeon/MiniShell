@@ -1,6 +1,6 @@
-#include "env.h"
-#include "str.h"
-#include "num.h"
+#include "tools/env.h"
+#include "tools/str.h"
+#include "tools/num.h"
 
 char	*env_get_var(char **env, char *var_name)
 {

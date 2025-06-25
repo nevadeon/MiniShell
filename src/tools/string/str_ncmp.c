@@ -1,4 +1,4 @@
-#include "str.h"
+#include "tools/str.h"
 
 int	str_ncmp(char *s1, char *s2, size_t n)
 {

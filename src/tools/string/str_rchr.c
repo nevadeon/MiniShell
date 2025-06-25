@@ -1,4 +1,4 @@
-#include "str.h"
+#include "tools/str.h"
 
 char	*str_rchr(const char *s, int c)
 {

@@ -1,7 +1,7 @@
 #ifndef LIST_H
 # define LIST_H
 
-# include "allocator.h"
+# include "allocators/allocator.h"
 
 typedef enum e_lifetime	t_lifetime;
 

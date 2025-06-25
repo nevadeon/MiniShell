@@ -1,4 +1,4 @@
-#include "str.h"
+#include "tools/str.h"
 
 bool	str_equals(const char *str1, const char *str2)
 {
