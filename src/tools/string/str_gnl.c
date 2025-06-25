@@ -12,14 +12,14 @@ static void	_strccat(char *dest, const char *src, char c, bool include_char)
 	*dest = '\0';
 }
 
-static char	*_strcdup(const char *str, char c, bool include_char)
+static char	*_strcdup(t_alloc *a, const char *str, char c, bool include_char)
 {
 	char	*copy;
 	size_t	len;
 	size_t	i;
 
 	len = str_clen(str, c, include_char);
-	copy = (char *) malloc((len + 1) * sizeof(char));
+	copy = (char *) mem_alloc(a, (len + 1) * sizeof(char));
 	if (copy == NULL)
 		return (NULL);
 	i = -1;
@@ -36,18 +36,17 @@ static void	_strcpy(char *dest, const char *src)
 	*dest = '\0';
 }
 
-static char	*_strcjoinfree(char *str1, char *str2, char c)
+static char	*_strcjoin(t_alloc *a, char *str1, char *str2, char c)
 {
 	char	*output;
 
-	output = malloc((str_clen(str1, c, 1) + str_clen(str2, c, 1) + 1));
+	output = mem_alloc(a, (str_clen(str1, c, 1) + str_clen(str2, c, 1) + 1));
 	_strcpy(output, str1);
 	_strccat(output, str2, c, true);
-	free(str1);
 	return (output);
 }
 
-char	*str_gnl(int fd)
+char	*str_gnl(t_alloc *alloc, int fd)
 {
 	static char	buffer[GNL_BUFFER_SIZE + 1] = {0};
 	char		*line;
@@ -55,16 +54,16 @@ char	*str_gnl(int fd)
 
 	if (fd < 0 || fd > 1024 || GNL_BUFFER_SIZE <= 0)
 		return (NULL);
-	line = _strcdup(buffer, '\n', true);
+	line = _strcdup(alloc, buffer, '\n', true);
 	while (str_chr(buffer, '\n') == NULL)
 	{
 		read_bytes = read(fd, buffer, GNL_BUFFER_SIZE);
 		if (read_bytes == -1 || (read_bytes == 0 && line[0] == '\0'))
-			return (free(line), buffer[0] = '\0', NULL);
+			return (buffer[0] = '\0', NULL);
 		buffer[read_bytes] = '\0';
 		if (read_bytes == 0)
 			break ;
-		line = _strcjoinfree(line, buffer, '\n');
+		line = _strcjoin(alloc, line, buffer, '\n');
 	}
 	_strcpy(buffer, buffer + str_clen(buffer, '\n', true));
 	return (line);

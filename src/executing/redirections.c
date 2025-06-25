@@ -1,6 +1,6 @@
 #include "executing.h"
 
-static int	_heredoc(char *stop)
+static int	_heredoc(t_alloc *alloc, char *stop)
 {
 	int		pipe_fd[2];
 	char	*line;
@@ -13,18 +13,16 @@ static int	_heredoc(char *stop)
 	while (1)
 	{
 		str_putfd("> ", STDOUT_FILENO);
-		line = str_gnl(STDIN_FILENO);
+		line = str_gnl(alloc, STDIN_FILENO);
 		if (!line || str_ncmp(line, stop, str_clen(line, '\n', false)) == 0)
 			break ;
 		str_putfd(line, pipe_fd[1]);
-		free(line);
 	}
-	free(line);
 	close(pipe_fd[1]);
 	return (pipe_fd[0]);
 }
 
-int	handle_input_redir(t_redir_list *redir, int pipe_fd)
+int	handle_input_redir(t_alloc *a, t_redir_list *redir, int pipe_fd)
 {
 	t_redir_list	*redir_origin;
 	int				fd;
@@ -38,7 +36,7 @@ int	handle_input_redir(t_redir_list *redir, int pipe_fd)
 		if (redir->type == E_REDIR_IN)
 			fd = open(redir->content, O_RDONLY);
 		else if (redir->type == E_REDIR_HEREDOC)
-			fd = _heredoc(redir->content);
+			fd = _heredoc(a, redir->content);
 		if (redir->next)
 			close(fd);
 		redir = redir->next;

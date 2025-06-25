@@ -43,7 +43,7 @@ static void	_handle_leaf(t_ctx *ctx, t_ast *a, t_exec_data *d, int pipe_out, int
 	if (pid == 0)
 	{
 		toggle_signal(S_CHILD);
-		final_in = handle_input_redir(a->s_leaf.redir_in, pipe_out);
+		final_in = handle_input_redir(*ctx->cmd, a->s_leaf.redir_in, pipe_out);
 		final_out = handle_output_redir(a->s_leaf.redir_out, pipe_in);
 		if (d->to_close)
 			close(d->to_close);

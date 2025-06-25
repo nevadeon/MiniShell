@@ -33,7 +33,7 @@ char	*str_rchr(const char *s, int c);
 int		str_atoi(const char *s);
 size_t	str_putfd(const char *s, int fd);
 size_t	str_clen(const char *str, char c, bool include_char);
-char	*str_gnl(int fd);
+char	*str_gnl(t_alloc *alloc, int fd);
 bool	str_escape(char *s, size_t *index, char start, char end);
 char	*str_extract(t_alloc *alloc, char *s, size_t start, size_t end);
 bool	str_contains(const char *str, const char *substr);
