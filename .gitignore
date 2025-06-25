@@ -2,3 +2,5 @@ minishell
 obj
 tests
 fuzzer
+test/seed_corpus/*
+!test/seed_corpus/.gitkeep

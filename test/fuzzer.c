@@ -25,14 +25,40 @@ int	LLVMFuzzerTestOneInput(const uint8_t *Data, size_t Size)
 	t_alloc	*prog;
 	char	*input;
 
+	if (Size == 0)
+		return (0);
+
+	// for (size_t i = 0; i < Size; i++)
+	// {
+	// 	if (Data[i] < 32 || Data[i] > 126)
+	// 		return 0;
+	// }
+
+	for (size_t i = 0; i < Size; i++) {
+		unsigned char c = Data[i];
+		switch (c) {
+			case '\n': fputs("\\n", stderr); break;
+			case '\r': fputs("\\r", stderr); break;
+			case '\t': fputs("\\t", stderr); break;
+			case '\\': fputs("\\\\", stderr); break;
+			case '"':  fputs("\\\"", stderr); break;
+			default:
+				if (c < 32 || c > 126)
+					fprintf(stderr, "%02X", c);
+				else
+					fputc(c, stderr);
+		}
+	}
+	fputc('\n', stderr);
+
 	input = malloc(Size + 1);
+	if (!input)
+		return (0);
 	memcpy(input, Data, Size);
 	input[Size] = '\0';
 	prog = new_mgc_allocator(ARENA_BLOCK_SIZE);
 	ctx = _new_ctx(&prog, &environ);
-	fprintf(stderr, ">>> Data:  \"%.*s\" <<<\n", (int)Size, Data);
-	fprintf(stderr, ">>> Input: \"%s\" <<<\n", input);
-	parsing(ctx, &input);
+	parsing(ctx, input);
 	free_allocator(ctx->prog);
 	free(input);
 	return 0;

@@ -32,7 +32,7 @@ bool			is_redir(char c);
 t_redir_type	get_redir_type(char *s);
 t_token			*new_token(t_alloc *alloc, char *str, \
 					bool expanded, t_token_type type);
-t_ast			*parsing(t_ctx *ctx, char **input);
+t_ast			*parsing(t_ctx *ctx, char *input);
 void			remove_comment(t_alloc *alloc, char **input);
 t_token_list	*tokenize(t_ctx *ctx, char **input);
 void			print_token(t_token *t);

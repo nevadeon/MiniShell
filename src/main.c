@@ -15,7 +15,7 @@ void handle_command(t_ctx *ctx, char *input)
 {
 	t_ast	*ast;
 
-	ast = parsing(ctx, &input);
+	ast = parsing(ctx, input);
 	if (!ast || ctx->last_error_type)
 		return ;
 	execute_ast(ctx, ast);
