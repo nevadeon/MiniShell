@@ -3,15 +3,17 @@
 #include "parsing.h"
 #include "stdio.h"
 
-t_ast	*parsing(t_ctx *ctx, char **inp)
+t_ast	*parsing(t_ctx *ctx, char *inp)
 {
 	t_token_list	*token_list;
 	t_ast_context	data;
 	t_ast			*ast;
 
+	if (*inp || inp[0] == '\0')
+		return (NULL);
 	ctx->last_error_type = ERR_NONE;
-	remove_comment(*ctx->cmd, inp);
-	token_list = tokenize(ctx, inp);
+	remove_comment(*ctx->cmd, &inp);
+	token_list = tokenize(ctx, &inp);
 	if (ctx->last_error_type)
 		return (NULL);
 	tilde_expanding(ctx, token_list);
