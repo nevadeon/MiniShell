@@ -11,6 +11,7 @@
 # define ARENA_BLOCK_SIZE 4096
 
 # include "forward.h"
+# include "signals.h"
 # include <assert.h>
 # include <stdio.h>
 # include <readline/readline.h>

@@ -1,12 +1,67 @@
 #include "signals.h"
+#include "str.h"
 
-sig_atomic_t	g_signal = 0;
+// sig_atomic_t	g_signal = 0;
 
-void signal_handler(int sig)
+void	handle_sigint(int signal, siginfo_t *info, void *ucontext)
 {
-	(void)sig;
-	write(STDERR_FILENO, "^C\n", 3);
-	rl_replace_line("", 0);
+	(void)signal;
+	(void)info;
+	(void)ucontext;
+	write(1, "\n", 1);
 	rl_on_new_line();
+	rl_replace_line("", 0);
 	rl_redisplay();
+	return ;
+}
+
+void	init_handler_int(void *func)
+{
+	struct sigaction	sigint_handler;
+
+	str_memset(&sigint_handler, 0, sizeof(struct sigaction));
+	sigint_handler.sa_flags = SA_SIGINFO;
+	sigint_handler.sa_sigaction = func;
+	sigaction(SIGINT, &sigint_handler, NULL);
+}
+
+void	init_handler_quit(void *func)
+{
+	struct sigaction	sigquit_handler;
+
+	str_memset(&sigquit_handler, 0, sizeof(struct sigaction));
+	sigquit_handler.sa_flags = SA_SIGINFO;
+	sigquit_handler.sa_handler = func;
+	sigaction(SIGQUIT, &sigquit_handler, NULL);
+}
+
+void	init_handler_pipe(void *func)
+{
+	struct sigaction	sigpipe_handler;
+
+	str_memset(&sigpipe_handler, 0, sizeof(struct sigaction));
+	sigpipe_handler.sa_handler = func;
+	sigaction(SIGPIPE, &sigpipe_handler, NULL);
+}
+
+void	toggle_signal(int toggle)
+{
+	if (toggle == S_PARENT)
+	{
+		init_handler_int(&handle_sigint);
+		init_handler_pipe(SIG_IGN);
+		init_handler_quit(SIG_IGN);
+	}
+	else if (toggle == S_IGNORE)
+	{
+		init_handler_int(SIG_IGN);
+		init_handler_quit(SIG_IGN);
+		init_handler_pipe(SIG_IGN);
+	}
+	else if (toggle == S_CHILD)
+	{
+		init_handler_pipe(SIG_DFL);
+		init_handler_int(SIG_DFL);
+		init_handler_quit(SIG_DFL);
+	}
 }

@@ -1,14 +1,19 @@
 #ifndef SIGNALS_H
 # define SIGNALS_H
 
-# include "forward.h"
-# include <stdio.h>
-# include <signal.h>
-# include <readline/readline.h>
-# include <unistd.h>
+#include <unistd.h>
+#include <signal.h>
+#include <stdio.h>
+#include <readline/history.h>
+#include <readline/readline.h>
 
-extern sig_atomic_t	g_signal;
+typedef enum e_sigstatus
+{
+	S_IGNORE = 0,
+	S_PARENT,
+	S_CHILD,
+}	t_sigstatus;
 
-void	signal_handler(int sig);
+void	toggle_signal(int toggle);
 
 #endif
