@@ -60,7 +60,6 @@ static t_ctx	*_new_ctx(t_alloc **alloc, char ***envp)
 
 int	main(int argc, __attribute__((unused)) char **argv, char **envp)
 {
-	struct sigaction	sa;
 	t_ctx				*ctx;
 	t_alloc				*alloc;
 
@@ -70,13 +69,7 @@ int	main(int argc, __attribute__((unused)) char **argv, char **envp)
 	alloc = new_mgc_allocator(ARENA_BLOCK_SIZE);
 	ctx = _new_ctx(&alloc, &envp);
 	increase_shlvl(ctx);
-	str_memset(&sa, 0, sizeof(struct sigaction));
-	sa.sa_handler = signal_handler;
-	sigemptyset(&sa.sa_mask);
-	sa.sa_flags = 0;
-	sigaction(SIGINT, &sa, NULL);
-	sa.sa_handler = SIG_IGN;
-	sigaction(SIGQUIT, &sa, NULL);
+	toggle_signal(S_PARENT);
 	input_loop(ctx);
 	free_allocator(ctx->prog);
 	rl_clear_history();

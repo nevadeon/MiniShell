@@ -42,6 +42,7 @@ static void	_handle_leaf(t_ctx *ctx, t_ast *a, t_exec_data *d, int pipe_out, int
 		return (_error("fork"));
 	if (pid == 0)
 	{
+		toggle_signal(S_CHILD);
 		final_in = handle_input_redir(a->s_leaf.redir_in, pipe_out);
 		final_out = handle_output_redir(a->s_leaf.redir_out, pipe_in);
 		if (d->to_close)
@@ -98,7 +99,7 @@ void	execute_ast(t_ctx *ctx, t_ast *ast)
 		waitpid(data.processes->pid, &status, 0);
 		exit_status = WEXITSTATUS(status);
 		ctx->last_exit_code = exit_status;
-		printf("PID: %d | exit_status: %d\n", data.processes->pid, exit_status);
+		// printf("PID: %d | exit_status: %d\n", data.processes->pid, exit_status);
 		data.processes = data.processes->next;
 	}
 }
