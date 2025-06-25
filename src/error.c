@@ -2,7 +2,7 @@
 
 static const char	*g_err_msg[] = {
 	"",
-	"bad substitutions",
+	"bad substitution",
 	"syntax error near expexted token `",
 	"unexpected EOF while looking for matching `",
 	"Permission denied",
