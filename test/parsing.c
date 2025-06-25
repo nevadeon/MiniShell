@@ -26,23 +26,23 @@ void	test_tokenize(t_ctx *ctx)
 	assert(token_list);
 	assert(token_list->content->type == E_WORD);
 	assert(str_equals(token_list->content->str, "cmd"));
-	
+
 	current = token_list->next;
 	assert(current && current->content->type == E_REDIR_OPE);
 	assert(str_equals(current->content->str, ">>"));
-	
+
 	current = current->next;
 	assert(current && current->content->type == E_WORD);
 	assert(str_equals(current->content->str, "\">>\""));
-	
+
 	current = current->next;
 	assert(current && current->content->type == E_REDIR_OPE);
 	assert(str_equals(current->content->str, "<<"));
-	
+
 	current = current->next;
 	assert(current && current->content->type == E_REDIR_OPE);
 	assert(str_equals(current->content->str, "<"));
-	
+
 	current = current->next;
 	assert(current && current->content->type == E_WORD);
 	assert(str_equals(current->content->str, "'cmd '"));
@@ -57,20 +57,20 @@ void	test_tokenize_pipes(t_ctx *ctx)
 	input = str_dup(*ctx->cmd, "ls -la | grep test | wc -l");
 	token_list = tokenize(ctx, &input);
 	assert(token_list);
-	
+
 	// First command
 	assert(token_list->content->type == E_WORD);
 	assert(str_equals(token_list->content->str, "ls"));
-	
+
 	current = token_list->next;
 	assert(current && current->content->type == E_WORD);
 	assert(str_equals(current->content->str, "-la"));
-	
+
 	// First pipe
 	current = current->next;
 	assert(current && current->content->type == E_CONTROL_OPE);
 	assert(str_equals(current->content->str, "|"));
-	
+
 	// Second command
 	current = current->next;
 	assert(current && current->content->type == E_WORD);
@@ -161,7 +161,7 @@ void	test_parsing(char ***envp)
 	t_alloc	*alloc_test;
 	t_ctx	*ctx;
 
-	alloc_test = new_malloc_allocator(ARENA_BLOCK_SIZE);
+	alloc_test = new_mgc_allocator(ARENA_BLOCK_SIZE);
 	ctx = mem_alloc(alloc_test, sizeof(t_ctx));
 	*ctx = (t_ctx){
 		.prog = &alloc_test,

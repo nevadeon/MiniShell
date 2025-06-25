@@ -10,7 +10,7 @@ static	char *_get_usr_directory(t_alloc *alloc, char *user_name)
 	fd = open("/etc/passwd", O_RDONLY);
 	if (fd == -1)
 		return (NULL);
-	line = str_gnl(fd);
+	line = str_gnl(alloc, fd);
 	while (line)
 	{
 		split_line = str_split(alloc, line, ':');
@@ -18,7 +18,7 @@ static	char *_get_usr_directory(t_alloc *alloc, char *user_name)
 			return (close(fd), NULL);
 		if (str_equals(split_line[0], user_name))
 			return (close(fd), split_line[5]);
-		line = str_gnl(fd);
+		line = str_gnl(alloc, fd);
 	}
 	close (fd);
 	return (NULL);

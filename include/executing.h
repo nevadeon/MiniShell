@@ -41,6 +41,6 @@ void		exec_cmd(t_ctx *ctx, char **env_paths, char **args);
 void		dup_close(int source_fd, int dest_fd);
 t_pid_list	*lst_pid_new(t_alloc *alloc, pid_t pid);
 int			handle_output_redir(t_redir_list *redir, int pipe_fd);
-int			handle_input_redir(t_redir_list *redir, int pipe_fd);
+int			handle_input_redir(t_alloc *a, t_redir_list *redir, int pipe_fd);
 
 #endif

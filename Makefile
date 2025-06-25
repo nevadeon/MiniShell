@@ -6,7 +6,7 @@ CC := cc
 CFLAGS = -Wall -Wextra -Werror -I$(INC_DIR)
 # CFLAGS += $(foreach dir, $(shell find $(INC_DIR) -type d), -I$(dir))
 LDFLAGS = -lreadline
-VAL_FLAGS := --quiet --leak-check=full --show-leak-kinds=all --track-fds=yes --trace-children=yes --track-origins=yes --suppressions=./rl.supp
+VAL_FLAGS := --leak-check=full --show-leak-kinds=all --track-fds=yes --trace-children=yes --track-origins=yes --suppressions=./rl.supp
 GDB_FLAGS := --quiet --args
 FUZZER_ARGS := -max_len=15
 
@@ -68,18 +68,19 @@ $(OBJ_DIR)/$(TEST_DIR)/%.o: $(TEST_DIR)/%.c
 	@$(CC) $(CFLAGS) -c $< -o $@
 
 g: CFLAGS += -g
-g:
-	$(MAKE) re
+g: re
 
-valgrind: g
-	valgrind $(VALGRIND_FLAGS) ./$(NAME)
+valgrind: CFLAGS += -g
+valgrind: re
+	valgrind $(VAL_FLAGS) ./$(NAME)
 
-gdb: g
+gdb: CFLAGS += -g
+gdb: re
 	gdb $(GDB_FLAGS) ./$(NAME)
 
 val_test: CFLAGS += -g -DINCLUDE_TEST_HEADER
 val_test: fclean $(TEST_BIN)
-	valgrind $(VALGRIND_FLAGS) ./$(TEST_BIN)
+	valgrind $(VAL_FLAGS) ./$(TEST_BIN)
 
 gdb_test: CFLAGS += -g -DINCLUDE_TEST_HEADER
 gdb_test: fclean $(TEST_BIN)
@@ -87,12 +88,11 @@ gdb_test: fclean $(TEST_BIN)
 
 macro: CFLAGS += -D_GNU_SOURCE -DINCLUDE_TEST_MACRO -g
 macro: LDFLAGS += -ldl
-macro:
-	$(MAKE) re
+macro: re
 
 fuzz: CFLAGS += -g
 fuzz:
 	clang -g -O1 -fsanitize=fuzzer,address $(TEST_DIR)/fuzzer.c -o fuzzer -I$(INC_DIR) $(FUZZ_OBJ) $(LDFLAGS)
 	./fuzzer ./$(CORPUS_DIR) -artifact_prefix=./$(CORPUS_DIR)/ $(FUZZER_ARGS)
 
-.PHONY: all re clean fclean test valgrind gdb valgrind_test gdb_test macro g
+.PHONY: all re clean fclean test g valgrind gdb val_test gdb_test macro fuzz
