@@ -1,4 +1,4 @@
-#include "allocator.h"
+#include "allocators/allocator.h"
 #include "minishell.h"
 #include "parsing.h"
 #include "stdio.h"

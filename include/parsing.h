@@ -2,14 +2,14 @@
 # define PARSING_H
 
 # include "forward.h"
-# include "allocator.h"
+# include "allocators/allocator.h"
 # include <stdbool.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
-# include "str.h"
-# include "list.h"
-# include "env.h"
+# include "tools/str.h"
+# include "tools/list.h"
+# include "tools/env.h"
 
 typedef struct s_token
 {

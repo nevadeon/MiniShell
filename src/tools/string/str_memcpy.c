@@ -1,4 +1,4 @@
-#include "str.h"
+#include "tools/str.h"
 
 void	*str_memcpy(void *dst, void *src, size_t n)
 {

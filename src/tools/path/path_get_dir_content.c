@@ -1,5 +1,5 @@
-#include "path.h"
-#include "sort.h"
+#include "tools/path.h"
+#include "tools/sort.h"
 
 t_list	*path_get_dir_content(t_alloc *alloc, char *path)
 {

@@ -1,4 +1,4 @@
-#include "num.h"
+#include "tools/num.h"
 
 static int	_count_digit(long n)
 {

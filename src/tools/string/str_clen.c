@@ -1,4 +1,4 @@
-#include "str.h"
+#include "tools/str.h"
 
 size_t	str_clen(const char *str, char c, bool include_char)
 {

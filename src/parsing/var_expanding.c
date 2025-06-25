@@ -1,7 +1,7 @@
 #include "parsing.h"
 #include <errno.h>
-#include "num.h"
-#include "char.h"
+#include "tools/num.h"
+#include "tools/char.h"
 
 static bool	_is_var_name_valid(char *str)
 {

@@ -1,7 +1,7 @@
 #include "minishell.h"
-#include "sort.h"
-#include "list.h"
-#include "path.h"
+#include "tools/sort.h"
+#include "tools/list.h"
+#include "tools/path.h"
 #include "parsing.h"
 
 static void	_apply_wildcard(t_alloc *alloc,

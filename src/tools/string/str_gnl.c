@@ -1,4 +1,4 @@
-#include "str.h"
+#include "tools/str.h"
 #include "unistd.h"
 
 static void	_strccat(char *dest, const char *src, char c, bool include_char)

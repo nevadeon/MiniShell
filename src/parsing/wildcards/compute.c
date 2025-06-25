@@ -1,5 +1,5 @@
 #include "minishell.h"
-#include "path.h"
+#include "tools/path.h"
 
 static bool	_match(const char *pattern, const char *str)
 {

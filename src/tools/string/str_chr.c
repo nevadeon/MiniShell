@@ -1,4 +1,4 @@
-#include "str.h"
+#include "tools/str.h"
 
 char	*str_chr(const char *s, int c)
 {

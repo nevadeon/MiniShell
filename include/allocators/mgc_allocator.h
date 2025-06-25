@@ -1,7 +1,7 @@
 #ifndef MGC_ALLOCATOR_H
 # define MGC_ALLOCATOR_H
 
-# include "allocator.h"
+# include "allocators/allocator.h"
 
 typedef struct s_alloc_node
 {

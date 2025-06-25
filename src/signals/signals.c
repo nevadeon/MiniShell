@@ -1,5 +1,5 @@
 #include "signals.h"
-#include "str.h"
+#include "tools/str.h"
 
 // sig_atomic_t	g_signal = 0;
 

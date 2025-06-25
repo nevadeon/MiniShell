@@ -1,4 +1,4 @@
-*.subject.pdf
 minishell
 obj
 tests
+fuzzer

@@ -1,4 +1,4 @@
-#include "str.h"
+#include "tools/str.h"
 
 int	str_cmp(const char *s1, const char *s2)
 {

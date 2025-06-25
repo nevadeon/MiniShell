@@ -1,4 +1,4 @@
-#include "char.h"
+#include "tools/char.h"
 
 bool	char_isalnum(char c)
 {

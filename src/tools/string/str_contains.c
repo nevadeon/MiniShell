@@ -1,4 +1,4 @@
-#include "str.h"
+#include "tools/str.h"
 
 bool	str_contains(const char *str, const char *substr)
 {

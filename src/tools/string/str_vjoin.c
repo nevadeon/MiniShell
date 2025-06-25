@@ -1,4 +1,4 @@
-#include "str.h"
+#include "tools/str.h"
 
 static size_t	_get_length(size_t nb_args, va_list lst)
 {
