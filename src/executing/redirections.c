@@ -69,4 +69,3 @@ int	handle_output_redir(t_redir_list *redir, int pipe_fd)
 		dup_close(fd, STDOUT_FILENO);
 	return (fd);
 }
-

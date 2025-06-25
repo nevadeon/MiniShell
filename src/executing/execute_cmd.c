@@ -1,8 +1,8 @@
 #include "minishell.h"
 
-static void _exec_failure_print(t_ctx *ctx, char **args)
+static void	_exec_failure_print(t_ctx *ctx, char **args)
 {
-	if(errno == EACCES)
+	if (errno == EACCES)
 		throw_error(ctx, ERR_PERM_DENIED, args[CMD_NAME]);
 	else if (errno == ENOENT)
 		throw_error(ctx, ERR_CMD_NOT_FOUND, args[CMD_NAME]);
