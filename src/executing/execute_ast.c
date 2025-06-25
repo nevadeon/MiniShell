@@ -97,6 +97,7 @@ void	execute_ast(t_ctx *ctx, t_ast *ast)
 	{
 		waitpid(data.processes->pid, &status, 0);
 		exit_status = WEXITSTATUS(status);
+		ctx->last_exit_code = exit_status;
 		printf("PID: %d | exit_status: %d\n", data.processes->pid, exit_status);
 		data.processes = data.processes->next;
 	}
