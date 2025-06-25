@@ -7,8 +7,6 @@ void	remove_comment(t_alloc *alloc, char **input)
 	size_t	comment_end;
 
 	index = 0;
-	comment_start = 0;
-	comment_end = 0;
 	while ((*input)[index])
 	{
 		if ((*input)[index] == '#')
@@ -17,12 +15,9 @@ void	remove_comment(t_alloc *alloc, char **input)
 			while ((*input)[index] && (*input)[index] != '\n')
 				index++;
 			comment_end = index;
-			index += str_replace(alloc, (t_replace){\
-				.str = input, \
-				.rep = "", \
-				comment_start, \
-				comment_end \
-			});
+			str_replace(alloc, (t_replace){.str = input, .rep = "", .start = comment_start, .end = comment_end});
+			index = comment_start;
+			continue ;
 		}
 		index++;
 	}
