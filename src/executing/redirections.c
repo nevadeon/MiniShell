@@ -14,7 +14,9 @@ static int	_heredoc(t_alloc *alloc, char *stop)
 	{
 		str_putfd("> ", STDOUT_FILENO);
 		line = str_gnl(alloc, STDIN_FILENO);
-		if (str_ncmp(line, stop, str_clen(line, '\n', false)) == 0)
+		if (!line
+			|| (str_ncmp(line, stop, str_clen(line, '\n', false)) == 0 \
+			&& line[0] != '\n'))
 			break ;
 		str_putfd(line, pipe_fd[1]);
 	}
