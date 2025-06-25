@@ -11,6 +11,6 @@
 # include "allocator.h"
 
 bool	test_memory(void);
-void	test_parsing(void);
+void	test_parsing(char ***envp);
 
 #endif
