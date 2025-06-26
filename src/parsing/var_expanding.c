@@ -119,4 +119,3 @@ void	var_expanding(t_ctx *ctx, t_token_list *token_list)
 		current = current->next;
 	}
 }
-
