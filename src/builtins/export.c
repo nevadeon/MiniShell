@@ -35,10 +35,18 @@ int	builtin_export(t_ctx *ctx, char **args)
 	if (!args[1])
 		return (print_file(*ctx->cmd, "assets/skill_issue.ascii"), 0);
 	(void)ctx;
+	args++;
 	while (*args)
 	{
 		if (_is_var_name_valid(*args))
 			env_set_var_value(ctx, *args);
+		else
+		{
+			fprintf(stderr, "bash: export: `%s': not a valid ", *args);
+			fprintf(stderr, "identifier\n");
+			ctx->last_exit_code = ERR_UNKNOWN;
+			ctx->last_exit_code = 1;
+		}
 		args++;
 	}
 	return (0);
