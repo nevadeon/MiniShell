@@ -24,6 +24,30 @@ static int	_heredoc(t_alloc *alloc, char *stop)
 	return (pipe_fd[0]);
 }
 
+void	random_bash_redir(t_alloc *a, t_redir_list *in, t_redir_list *out)
+{
+	int	fd;
+
+	while (in)
+	{
+		if (in->type == E_REDIR_IN)
+			fd = open(in->content, O_RDONLY);
+		else if (in->type == E_REDIR_HEREDOC)
+			fd = _heredoc(a, in->content);
+		close(fd);
+		in = in->next;
+	}
+	while (out)
+	{
+		if (out->type == E_REDIR_OUT_TRUNC)
+			fd = open(out->content, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		else if (out->type == E_REDIR_OUT_APPEND)
+			fd = open(out->content, O_WRONLY | O_CREAT | O_APPEND, 0644);
+		close(fd);
+		out = out->next;
+	}
+}
+
 int	handle_input_redir(t_alloc *a, t_redir_list *redir, int pipe_fd)
 {
 	t_redir_list	*redir_origin;

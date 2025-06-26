@@ -42,6 +42,8 @@ char	**str_split(t_alloc *alloc, char const *s, char c)
 	char	**tab;
 	int		i;
 
+	if (!s)
+		return (NULL);
 	tab = mem_alloc(alloc, sizeof(char *) * (_count_words(s, c) + 1));
 	if (tab == NULL)
 		return (NULL);

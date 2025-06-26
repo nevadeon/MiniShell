@@ -8,7 +8,7 @@ void	increase_shlvl(t_ctx *ctx)
 
 	shlvl = str_atoi(env_get_var_value(*ctx->env, "SHLVL"));
 	shlvl++;
-	env_set_var_value(ctx, "SHLVL", num_itoa(*ctx->prog, shlvl));
+	env_set_var_value(ctx, str_vjoin(*ctx->prog, 2, "SHLVL=", num_itoa(*ctx->prog, shlvl)));
 }
 
 void handle_command(t_ctx *ctx, char *input)
