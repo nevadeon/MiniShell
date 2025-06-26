@@ -52,8 +52,8 @@ char	*env_set_var_value(t_ctx *ctx, char *var)
 	if (!eq)
 		return (NULL);
 	name_len = eq - var;
-	new_var = mem_alloc(*ctx->prog, strlen(var) + 1);
-	str_memcpy(new_var, var, strlen(var) + 1);
+	new_var = mem_alloc(*ctx->prog, str_len(var) + 1);
+	str_memcpy(new_var, var, str_len(var) + 1);
 	env = *ctx->env;
 	res = set_existing_env_var(env, new_var, name_len);
 	if (res)
