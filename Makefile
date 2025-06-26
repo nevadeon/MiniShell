@@ -8,7 +8,7 @@ CFLAGS = -Wall -Wextra -Werror -I$(INC_DIR)
 LDFLAGS = -lreadline
 VAL_FLAGS := --leak-check=full --show-leak-kinds=all --track-fds=yes --trace-children=yes --track-origins=yes --suppressions=./rl.supp
 GDB_FLAGS := --quiet --args
-FUZZER_ARGS := -max_len=64 -workers=16
+FUZZER_ARGS = $(FUZZ_DIR)/parsing $(FUZZ_DIR)/seed_corpus/ -artifact_prefix=$(FUZZ_DIR)/ -max_len=32 -only_ascii=0 -print_final_stats=1
 
 # OS detection
 UNAME_P := $(shell uname -p)
@@ -21,7 +21,7 @@ INC_DIR := include
 SRC_DIR := src
 OBJ_DIR := obj
 TEST_DIR := test
-CORPUS_DIR := $(TEST_DIR)/seed_corpus
+FUZZ_DIR := $(TEST_DIR)/fuzzer
 
 # Sources and objects
 SRC := $(shell find $(SRC_DIR) -type f -name "*.c")
@@ -92,7 +92,7 @@ macro: re
 
 fuzz: CFLAGS += -g
 fuzz:
-	clang -g -O1 -fsanitize=fuzzer,address $(TEST_DIR)/fuzzer.c -o fuzzer -I$(INC_DIR) $(FUZZ_OBJ) $(LDFLAGS)
-	./fuzzer $(CORPUS_DIR)/ -dict=$(TEST_DIR)/fuzz.dict -artifact_prefix=$(CORPUS_DIR)/ $(FUZZER_ARGS)
+	clang -g -O1 -fsanitize=fuzzer,address,signed-integer-overflow $(FUZZ_DIR)/fuzzer.c -o fuzz -I$(INC_DIR) $(FUZZ_OBJ) $(LDFLAGS)
+	./fuzz $(FUZZER_ARGS)
 
 .PHONY: all re clean fclean test g valgrind gdb val_test gdb_test macro fuzz

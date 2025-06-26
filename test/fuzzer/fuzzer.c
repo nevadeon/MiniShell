@@ -28,28 +28,22 @@ int	LLVMFuzzerTestOneInput(const uint8_t *Data, size_t Size)
 	if (Size == 0)
 		return (0);
 
-	// for (size_t i = 0; i < Size; i++)
-	// {
-	// 	if (Data[i] < 32 || Data[i] > 126)
-	// 		return 0;
+	// for (size_t i = 0; i < Size; i++) {
+	// 	unsigned char c = Data[i];
+	// 	switch (c) {
+	// 		case '\n': fputs("\\n", stderr); break;
+	// 		case '\r': fputs("\\r", stderr); break;
+	// 		case '\t': fputs("\\t", stderr); break;
+	// 		case '\\': fputs("\\\\", stderr); break;
+	// 		case '"':  fputs("\\\"", stderr); break;
+	// 		default:
+	// 			if (c < 32 || c > 126)
+	// 				fprintf(stderr, "%02X", c);
+	// 			else
+	// 				fputc(c, stderr);
+	// 	}
 	// }
-
-	for (size_t i = 0; i < Size; i++) {
-		unsigned char c = Data[i];
-		switch (c) {
-			case '\n': fputs("\\n", stderr); break;
-			case '\r': fputs("\\r", stderr); break;
-			case '\t': fputs("\\t", stderr); break;
-			case '\\': fputs("\\\\", stderr); break;
-			case '"':  fputs("\\\"", stderr); break;
-			default:
-				if (c < 32 || c > 126)
-					fprintf(stderr, "%02X", c);
-				else
-					fputc(c, stderr);
-		}
-	}
-	fputc('\n', stderr);
+	// fputc('\n', stderr);
 
 	input = malloc(Size + 1);
 	if (!input)
