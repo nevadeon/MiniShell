@@ -54,7 +54,7 @@ static t_replace	*\
 
 	if ((*s)[index] != '_' && !char_isalpha((*s)[index]))
 		return (NULL);
-	ret = mem_alloc(*ctx->cmd, sizeof(ret));
+	ret = mem_alloc(*ctx->cmd, sizeof(t_replace));
 	ret->str = s;
 	ret->start = index - 1;
 	while (char_isalnum((*s)[index]) || (*s)[index] == '_')
@@ -67,22 +67,27 @@ static t_replace	*\
 
 static void	_process_expanding(t_ctx *ctx, t_token *token, size_t index)
 {
-	char		**s;
-	t_replace	*var;
+	char		**str_ptr;
+	t_replace	*rep;
+	size_t		len;
 
-	s = &token->str;
-	var = NULL;
-	var = _replace_special_parameters(ctx, s, index);
-	if (!var && !ctx->last_error_type)
-		var = _replace_bracketed_variable(ctx, s, index);
-	if (!var && !ctx->last_error_type)
-		var = _replace_variable(ctx, s, index);
-	if (var && !ctx->last_error_type)
+	str_ptr = &token->str;
+	rep = NULL;
+	rep = _replace_special_parameters(ctx, str_ptr, index);
+	if (!rep && !ctx->last_error_type)
+		rep = _replace_bracketed_variable(ctx, str_ptr, index);
+	if (!rep && !ctx->last_error_type)
+		rep = _replace_variable(ctx, str_ptr, index);
+	if (rep && !ctx->last_error_type)
 	{
-		str_replace(*ctx->cmd, *var);
-		if (str_ncmp(token->str, "\"", 1) \
-			&& str_ncmp(token->str + str_len(token->str) - 1, "\"", 1))
+		str_replace(*ctx->cmd, *rep);
+		len = str_len(token->str);
+		if (len > 0
+			&& token->str[0] != '"'
+			&& token->str[len - 1] != '"')
+		{
 			token->expanded = true;
+		}
 	}
 }
 
@@ -90,19 +95,28 @@ void	var_expanding(t_ctx *ctx, t_token_list *token_list)
 {
 	t_token_list	*current;
 	size_t			index;
+	char			*s;
+	size_t			len;
 
 	current = token_list;
 	while (current)
 	{
 		index = 0;
-		while (current->content->type == E_WORD \
-			&& current->content->str[index] && !ctx->last_error_type)
+		while (current->content->type == E_WORD && !ctx->last_error_type)
 		{
-			str_escape(current->content->str, &index, '\'', '\'');
-			if (current->content->str[index] == '$')
+			s = current->content->str;
+			len = str_len(s);
+			if (index >= len)
+				break ;
+			str_escape(s, &index, '\'', '\'');
+			len = str_len(s);
+			if (index >= len)
+				break ;
+			if (s[index] == '$')
 				_process_expanding(ctx, current->content, index + 1);
 			index++;
 		}
 		current = current->next;
 	}
 }
+
