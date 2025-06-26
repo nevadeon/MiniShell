@@ -1,11 +1,24 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   tilde.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nevadeon <github@glhf.slmail.me>           +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/26 15:43:20 by nevadeon          #+#    #+#             */
+/*   Updated: 2025/06/26 23:16:33 by nevadeon         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "parsing.h"
 #include <fcntl.h>
 
-static	char	*_get_usr_directory(t_alloc *alloc, char *user_name)
+static char	*_get_usr_directory(t_alloc *alloc, char *user_name)
 {
 	char	*line;
-	char	**split_line;
 	int		fd;
+	int		index;
+	char	*sep_line;
 
 	fd = open("/etc/passwd", O_RDONLY);
 	if (fd == -1)
@@ -13,11 +26,14 @@ static	char	*_get_usr_directory(t_alloc *alloc, char *user_name)
 	line = str_gnl(alloc, fd);
 	while (line)
 	{
-		split_line = str_split(alloc, line, ':');
-		if (!split_line && !split_line[0] && !split_line[5])
-			return (close(fd), NULL);
-		if (str_equals(split_line[0], user_name))
-			return (close(fd), split_line[5]);
+		sep_line = str_tok(alloc, &line, ":");
+		if (!sep_line || str_equals(sep_line, user_name))
+		{
+			index = -1;
+			while (line && ++index < 5)
+				sep_line = str_tok(alloc, &line, ":");
+			return (close(fd), sep_line);
+		}
 		line = str_gnl(alloc, fd);
 	}
 	close (fd);
