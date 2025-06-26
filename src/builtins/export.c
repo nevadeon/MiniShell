@@ -13,7 +13,6 @@ void	print_file(t_alloc *a, const char *path)
 		if (!str)
 			break ;
 		printf("%s", str);
-		free(str);
 	}
 	close(fd);
 }
