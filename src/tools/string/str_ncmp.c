@@ -1,6 +1,6 @@
 #include "tools/str.h"
 
-int	str_ncmp(char *s1, char *s2, size_t n)
+int	str_ncmp(const char *s1, const char *s2, size_t n)
 {
 	size_t	index;
 

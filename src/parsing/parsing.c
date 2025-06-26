@@ -9,7 +9,7 @@ t_ast	*parsing(t_ctx *ctx, char *inp)
 	t_ast_context	data;
 	t_ast			*ast;
 
-	if (*inp || inp[0] == '\0')
+	if (!*inp || inp[0] == '\0')
 		return (NULL);
 	ctx->last_error_type = ERR_NONE;
 	remove_comment(*ctx->cmd, &inp);

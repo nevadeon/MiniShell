@@ -30,27 +30,27 @@ char	*env_get_var_value(char **env, char *var_name)
 	return (NULL);
 }
 
-char	*env_set_var_value(t_ctx *ctx, char *var_name, char *var_value)
+int	env_remove_var(t_ctx *ctx, const char *var_name)
 {
 	char	**env;
-	char	*new_var;
+	size_t	name_len;
 	int		i;
-	int		len;
-	char	**new_env;
+	int		j;
 
-	len = str_len(var_name);
 	env = *ctx->env;
-	new_var = str_vjoin(*ctx->prog, 3, var_name, "=", var_value);
-	i = 0;
-	while (env[i])
+	name_len = strlen(var_name);
+	if (!env || !var_name)
+		return (0);
+	i = -1;
+	while (env[++i])
 	{
-		if (str_ncmp(env[i], var_name, len) == 0 && env[i][len] == '=')
-			return (env[i] = new_var, env[i]);
-		i++;
+		if (!str_ncmp(env[i], var_name, name_len) && env[i][name_len] == '=')
+		{
+			j = i - 1;
+			while (env[++j])
+				env[j] = env[j + 1];
+			return (1);
+		}
 	}
-	new_env = mem_alloc(*ctx->prog, sizeof(char *) * (i + 2));
-	str_memcpy(new_env, env, sizeof(char *) * i);
-	new_env[i] = new_var;
-	new_env[i + 1] = NULL;
-	return (new_env[i]);
+	return (0);
 }
