@@ -38,7 +38,7 @@ int	env_remove_var(t_ctx *ctx, const char *var_name)
 	int		j;
 
 	env = *ctx->env;
-	name_len = strlen(var_name);
+	name_len = str_len(var_name);
 	if (!env || !var_name)
 		return (0);
 	i = -1;
