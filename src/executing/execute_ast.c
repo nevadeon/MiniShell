@@ -10,7 +10,7 @@ static void	_handle_exec_failure(t_exec_data *d, int final_in, int final_out)
 		close(final_out);
 	free_allocator(d->c->cmd);
 	free_allocator(d->c->prog);
-	exit(errno);
+	exit(d->c->last_exit_code);
 }
 
 static void	_handle_leaf(t_exec_data *d, t_ast *a, int pipe_out, int pipe_in)
