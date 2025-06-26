@@ -1,13 +1,13 @@
 #include "tools/list.h"
 #include "parsing.h"
+#include <string.h>
 
 static void	plstr(void *content)
 {
 	printf("%s", (char *)content);
 }
 
-#include <string.h>
-static void plredir(t_redir_list *l)
+static void	plredir(t_redir_list *l)
 {
 	t_redir_list	*current;
 	char			*type_str;

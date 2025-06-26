@@ -25,7 +25,8 @@ static t_ast	*_handle_ope(t_ctx *ctx, t_ast_context *context)
 	context->prev = node;
 	context->prev_ope = node;
 	context->token_list_item = context->token_list_item->next;
-	if (!context->token_list_item || context->token_list_item->content->type == E_CONTROL_OPE)
+	if (!context->token_list_item
+		|| context->token_list_item->content->type == E_CONTROL_OPE)
 		return (throw_error(ctx, ERR_UNEXPECTED_TOKEN, "|"), NULL);
 	return (_handle_word(ctx, context));
 }
@@ -48,7 +49,7 @@ static void	_handle_redir(t_ctx *ctx, t_ast_context *context, t_ast *node)
 		lst_add_back((t_list **)&node->s_leaf.redir_out, (t_list *)redir);
 }
 
-static t_ast	*_create_leaf(t_ctx *ctx, t_ast_context *context)
+static t_ast	*_create_leaf(t_ctx *ctx, t_ast_context *data)
 {
 	t_ast	*node;
 
@@ -57,18 +58,18 @@ static t_ast	*_create_leaf(t_ctx *ctx, t_ast_context *context)
 	node->s_leaf.redir_in = NULL;
 	node->s_leaf.redir_out = NULL;
 	node->s_leaf.func = NULL;
-	while (context->token_list_item
-		&& (context->token_list_item->content->type == E_WORD
-			|| context->token_list_item->content->type == E_REDIR_OPE))
+	while (data->token_list_item
+		&& (data->token_list_item->content->type == E_WORD
+			|| data->token_list_item->content->type == E_REDIR_OPE))
 	{
-		if (context->token_list_item->content->type == E_WORD)
+		if (data->token_list_item->content->type == E_WORD)
 			lst_add_back((t_list **)&node->s_leaf.func, \
-			(t_list *)lst_new(*ctx->cmd, context->token_list_item->content->str));
+			(t_list *)lst_new(*ctx->cmd, data->token_list_item->content->str));
 		else
-			_handle_redir(ctx, context, node);
+			_handle_redir(ctx, data, node);
 		if (ctx->last_error_type)
 			return (NULL);
-		context->token_list_item = context->token_list_item->next;
+		data->token_list_item = data->token_list_item->next;
 	}
 	return (node);
 }

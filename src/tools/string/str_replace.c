@@ -3,7 +3,7 @@
 /*
 * @return the len added to the string (can be negative)
 */
-int	str_replace(t_alloc *alloc, t_replace data)
+int	str_replace(t_alloc *alloc, t_replace d)
 {
 	char	*old_str;
 	char	*new_word;
@@ -11,17 +11,17 @@ int	str_replace(t_alloc *alloc, t_replace data)
 	size_t	rep_l;
 	size_t	new_word_l;
 
-	old_str = *data.str;
-	rep_l = str_len(data.rep);
+	old_str = *d.str;
+	rep_l = str_len(d.rep);
 	str_l = str_len(old_str);
-	new_word_l = str_l - (data.end - data.start) + rep_l;
+	new_word_l = str_l - (d.end - d.start) + rep_l;
 	new_word = mem_alloc(alloc, (new_word_l + 1) * sizeof(char));
 	assert(new_word);
-	str_memcpy(new_word, old_str, data.start);
-	str_memcpy(new_word + data.start, data.rep, rep_l);
-	str_memcpy(new_word + data.start + rep_l, old_str + data.end, str_l - data.end);
+	str_memcpy(new_word, old_str, d.start);
+	str_memcpy(new_word + d.start, d.rep, rep_l);
+	str_memcpy(new_word + d.start + rep_l, old_str + d.end, str_l - d.end);
 	new_word[new_word_l] = '\0';
-	*data.str = NULL;
-	*data.str = new_word;
+	*d.str = NULL;
+	*d.str = new_word;
 	return (new_word_l - str_l);
 }

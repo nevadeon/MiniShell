@@ -1,7 +1,8 @@
 #include "parsing.h"
 
 // TODO -> handle space, tab and \n as the same char in order to handle this
-// IFS=$' \t\n', TEST=$' \t word' (because split handle char by char, not the whole set)
+// IFS=$' \t\n', TEST=$' \t word' (because split handle char by char, not the
+// whole set)
 static void	_execute_split_default(t_alloc *alloc,
 	t_token_list *item, char ifs_char)
 {

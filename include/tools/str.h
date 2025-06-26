@@ -7,7 +7,7 @@
 # include <unistd.h>
 # include "allocators/allocator.h"
 
-#define GNL_BUFFER_SIZE 4096
+# define GNL_BUFFER_SIZE 4096
 
 typedef enum e_lifetime	t_lifetime;
 
@@ -25,7 +25,7 @@ size_t	str_len(const char *str);
 void	*str_memcpy(void *dst, void *src, size_t n);
 char	*str_dup(t_alloc *alloc, char *s);
 char	*str_vjoin(t_alloc *alloc, size_t nb_args, ...);
-int		str_replace(t_alloc *alloc, t_replace data);
+int		str_replace(t_alloc *alloc, t_replace d);
 int		str_cmp(const char *s1, const char *s2);
 char	**str_split(t_alloc *alloc, char const *s, char c);
 char	*str_chr(const char *s, int c);
@@ -40,8 +40,9 @@ bool	str_contains(const char *str, const char *substr);
 void	*str_memset(void *s, int c, size_t n);
 
 /**
- * @brief return an allocated string with the content between each delim. The content can be empty;
- * @warning DOES NOT USE IT LIKE STANDARD STRTOK FUNCTION. Modify the str string.
+ * @brief return an allocated string with the content between each delim.
+ * The content can be empty;
+ * @warning DOES NOT USE IT LIKE STANDARD STRTOK FUNCTION. Modify the str string
  * @param `alloc` The allocator.
  * @param `str` A string ptr.
  * @param `delim` An array of delimiters.

@@ -8,6 +8,6 @@ char	*str_rchr(const char *s, int c)
 	while (index > 0 && s[index] != (unsigned char) c)
 		index--;
 	if (s[index] == (unsigned char) c)
-		return ((char *) (s + index));
+		return ((char *)(s + index));
 	return ((char *)s);
 }

@@ -1,7 +1,7 @@
 #include "parsing.h"
 #include <fcntl.h>
 
-static	char *_get_usr_directory(t_alloc *alloc, char *user_name)
+static	char	*_get_usr_directory(t_alloc *alloc, char *user_name)
 {
 	char	*line;
 	char	**split_line;
