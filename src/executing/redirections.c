@@ -1,7 +1,8 @@
 #include "executing.h"
 
-static int	_heredoc(t_alloc *alloc, char *stop)
+static int	_heredoc(char *stop)
 {
+	t_alloc	*cmd;
 	int		pipe_fd[2];
 	char	*line;
 
@@ -10,45 +11,65 @@ static int	_heredoc(t_alloc *alloc, char *stop)
 		perror("pipe");
 		exit(666);
 	}
+	cmd = new_mgc_allocator(GNL_BUFFER_SIZE);
 	while (1)
 	{
 		str_putfd("> ", STDOUT_FILENO);
-		line = str_gnl(alloc, STDIN_FILENO);
+		line = str_gnl(cmd, STDIN_FILENO);
 		if (!line
 			|| (str_ncmp(line, stop, str_clen(line, '\n', false)) == 0 \
 			&& line[0] != '\n'))
 			break ;
 		str_putfd(line, pipe_fd[1]);
 	}
+	free_allocator(&cmd);
 	close(pipe_fd[1]);
 	return (pipe_fd[0]);
 }
 
-void	builtin_redir(t_alloc *a, t_redir_list *in, t_redir_list *out)
+int	builtin_redir_out(t_redir_list *out)
 {
+	int	stdout_backup;
 	int	fd;
 
-	while (in)
-	{
-		if (in->type == E_REDIR_IN)
-			fd = open(in->content, O_RDONLY);
-		else if (in->type == E_REDIR_HEREDOC)
-			fd = _heredoc(a, in->content);
-		close(fd);
-		in = in->next;
-	}
+	stdout_backup = 0;
+	if (out)
+		stdout_backup = dup(STDIN_FILENO);
 	while (out)
 	{
 		if (out->type == E_REDIR_OUT_TRUNC)
 			fd = open(out->content, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-		else if (out->type == E_REDIR_OUT_APPEND)
+		else
 			fd = open(out->content, O_WRONLY | O_CREAT | O_APPEND, 0644);
-		close(fd);
+		if (fd >= 0)
+			dup_close(fd, STDOUT_FILENO);
 		out = out->next;
 	}
+	return (stdout_backup);
 }
 
-int	handle_input_redir(t_alloc *a, t_redir_list *redir, int pipe_fd)
+int	builtin_redir_in(t_redir_list *in)
+{
+	int	stdin_backup;
+	int	fd;
+
+	stdin_backup = 0;
+	if (in)
+		stdin_backup = dup(STDIN_FILENO);
+	while (in)
+	{
+		if (in->type == E_REDIR_IN)
+			fd = open(in->content, O_RDONLY);
+		else
+			fd = _heredoc(in->content);
+		if (fd >= 0)
+			dup_close(fd, STDIN_FILENO);
+		in = in->next;
+	}
+	return (stdin_backup);
+}
+
+int	handle_input_redir(t_redir_list *redir, int pipe_fd)
 {
 	t_redir_list	*redir_origin;
 	int				fd;
@@ -62,7 +83,7 @@ int	handle_input_redir(t_alloc *a, t_redir_list *redir, int pipe_fd)
 		if (redir->type == E_REDIR_IN)
 			fd = open(redir->content, O_RDONLY);
 		else if (redir->type == E_REDIR_HEREDOC)
-			fd = _heredoc(a, redir->content);
+			fd = _heredoc(redir->content);
 		if (redir->next)
 			close(fd);
 		redir = redir->next;
