@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   qsort.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: antoinemura <antoinemura@student.42.fr>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/26 15:43:20 by nevadeon          #+#    #+#             */
+/*   Updated: 2025/06/26 17:04:34 by antoinemura      ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "tools/sort.h"
 
 static t_list	*\
@@ -28,44 +40,45 @@ static t_list	*\
 	return (result);
 }
 
-static void	_partition_list(t_list *list, t_list *pivot, int (*f)(void *, void *),
-						t_list **smaller, t_list **equal, t_list **greater)
+static void	_partition_list(t_partition *p)
 {
 	t_list	*current;
 	t_list	*next;
 	int		cmp_result;
 
-	current = list;
-	*smaller = NULL;
-	*equal = NULL;
-	*greater = NULL;
+	current = p->list;
+	*(p->smaller) = NULL;
+	*(p->equal) = NULL;
+	*(p->greater) = NULL;
 	while (current)
 	{
 		next = current->next;
 		current->next = NULL;
-		if (current == pivot)
+		if (current == p->pivot)
 			cmp_result = 0;
 		else
-			cmp_result = f(current->content, pivot->content);
+			cmp_result = p->compare(current->content, p->pivot->content);
 		if (cmp_result < 0)
-			lst_add_back(smaller, current);
+			lst_add_back(p->smaller, current);
 		else if (cmp_result > 0)
-			lst_add_back(greater, current);
+			lst_add_back(p->greater, current);
 		else
-			lst_add_back(equal, current);
+			lst_add_back(p->equal, current);
 		current = next;
 	}
 }
 
 t_list	*ft_qsort(t_list *list, int (*f)(void *, void *))
 {
-	t_list	*smaller;
-	t_list	*equal;
-	t_list	*greater;
+	t_list		*smaller;
+	t_list		*equal;
+	t_list		*greater;
+	t_partition	partition;
 
 	if (!list || !list->next)
 		return (list);
-	_partition_list(list, list, f, &smaller, &equal, &greater);
+	partition = (t_partition){list, list, f, &smaller, &equal, &greater};
+	_partition_list(&partition);
 	smaller = ft_qsort(smaller, f);
 	greater = ft_qsort(greater, f);
 	return (_merge_sorted_lists(smaller, equal, greater));
