@@ -12,6 +12,7 @@ static t_ctx	*_new_ctx(t_alloc **alloc, char ***envp)
 	ctx = mem_alloc(*alloc, sizeof(t_ctx));
 	*ctx = (t_ctx){
 		.prog = alloc,
+		.cmd = alloc,
 		.env = envp,
 		.last_error_type = ERR_NONE,
 		.last_exit_code = 0,
@@ -22,7 +23,7 @@ static t_ctx	*_new_ctx(t_alloc **alloc, char ***envp)
 int	LLVMFuzzerTestOneInput(const uint8_t *Data, size_t Size)
 {
 	t_ctx	*ctx;
-	t_alloc	*prog;
+	t_alloc	*alloc;
 	char	*input;
 
 	if (Size == 0)
@@ -50,10 +51,10 @@ int	LLVMFuzzerTestOneInput(const uint8_t *Data, size_t Size)
 		return (0);
 	memcpy(input, Data, Size);
 	input[Size] = '\0';
-	prog = new_mgc_allocator(ARENA_BLOCK_SIZE);
-	ctx = _new_ctx(&prog, &environ);
+	alloc = new_mgc_allocator(ARENA_BLOCK_SIZE);
+	ctx = _new_ctx(&alloc, &environ);
 	parsing(ctx, input);
-	free_allocator(ctx->prog);
+	free_allocator(&alloc);
 	free(input);
 	return 0;
 }
