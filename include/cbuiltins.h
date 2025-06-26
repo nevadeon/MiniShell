@@ -9,20 +9,12 @@
 
 typedef int	(*t_builtin_fn)(t_ctx *ctx, char **args);
 
-typedef enum	e_error_cd
-{
-	E_ERR_CD_OK = 0,
-	E_ERR_CD_FILE_EXIST,
-	E_ERR_CD_ARGS,
-	E_ERR_CD_NOT_DIR
-}	t_error_cd;
-
-int	builtin_echo(t_ctx *ctx, char **args);
-int	builtin_cd(t_ctx *ctx, char **args);
-int	builtin_pwd(t_ctx *ctx, char **args);
-int	builtin_export(t_ctx *ctx, char **args);
-int	builtin_unset(t_ctx *ctx, char **args);
-int	builtin_env(t_ctx *ctx, char **args);
-int	builtin_exit(t_ctx *ctx, char **args);
+int		builtin_echo(t_ctx *ctx, char **args);
+int		builtin_cd(t_ctx *ctx, char **args);
+int		builtin_pwd(t_ctx *ctx, char **args);
+int		builtin_export(t_ctx *ctx, char **args);
+int		builtin_unset(t_ctx *ctx, char **args);
+int		builtin_env(t_ctx *ctx, char **args);
+int		builtin_exit(t_ctx *ctx, char **args);
 
 #endif
