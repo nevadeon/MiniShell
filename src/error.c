@@ -3,7 +3,7 @@
 static const char	*_err_msg[] = {
 	"",
 	"bad substitution",
-	"syntax error near expexted token `",
+	"syntax error near expected token `",
 	"unexpected EOF while looking for matching `",
 	"Permission denied",
 	"No such file or directory",
