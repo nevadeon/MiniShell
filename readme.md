@@ -1,5 +1,95 @@
 # Minishell
 
+## 🚀 Installation & Lancement
+
+### Prérequis
+
+Assure-toi d’avoir les éléments suivants installés sur ton système :
+
+* **Unix/Linux ou macOS**
+* **Make**
+* **GCC (ou Clang)**
+* **`readline`** (librairie nécessaire à la compilation)
+
+  ```bash
+  # Sur Debian/Ubuntu
+  sudo apt-get install libreadline-dev
+
+  # Sur macOS (avec Homebrew)
+  brew install readline
+  ```
+
+### Compilation du projet
+
+Clone le dépôt et compile avec `make` :
+
+```bash
+git clone https://github.com/nevadeon/minishell.git
+cd minishell
+make
+```
+
+Cela génère un exécutable appelé `minishell`.
+
+### Lancer Minishell
+
+Pour exécuter le shell :
+
+```bash
+./minishell
+```
+
+Tu peux maintenant taper des commandes comme dans un shell classique. Le shell gère les commandes internes (`cd`, `export`, etc.), les redirections, les pipes, les variables d’environnement, etc.
+
+### Nettoyage
+
+* Supprimer les fichiers objets :
+
+  ```bash
+  make clean
+  ```
+
+* Supprimer les fichiers objets **et** l’exécutable :
+
+  ```bash
+  make fclean
+  ```
+
+* Recompiler depuis zéro :
+
+  ```bash
+  make re
+  ```
+
+### Tests
+
+Le projet inclut également un binaire de tests (si fourni) :
+
+```bash
+make test
+./tests
+```
+
+### Debug & Analyse mémoire
+
+* **Mode debug** avec symboles :
+
+  ```bash
+  make g
+  ```
+
+* **Valgrind** (analyse mémoire) :
+
+  ```bash
+  make valgrind
+  ```
+
+* **GDB** (debug interactif) :
+
+  ```bash
+  make gdb
+  ```
+
 ## 📌 Project Overview
 
 **Minishell** is a group project developed as part of the curriculum at **42 Le Havre**, by two students: [nevadeon](https://github.com/nevadeon) and [Weldd2](https://github.com/Weldd2). This project aims to recreate a simplified version of a Unix shell, providing us with an opportunity to delve deep into the fundamentals of process handling, input parsing, and command execution at the core of operating systems.
