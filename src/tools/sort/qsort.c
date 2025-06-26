@@ -1,6 +1,7 @@
 #include "tools/sort.h"
 
-static t_list	*_merge_sorted_lists(t_list *smaller, t_list *equal, t_list *greater)
+static t_list	*\
+	_merge_sorted_lists(t_list *smaller, t_list *equal, t_list *greater)
 {
 	t_list	*result;
 	t_list	*tmp;

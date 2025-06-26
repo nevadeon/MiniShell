@@ -15,7 +15,12 @@ void	remove_comment(t_alloc *alloc, char **input)
 			while ((*input)[index] && (*input)[index] != '\n')
 				index++;
 			comment_end = index;
-			str_replace(alloc, (t_replace){.str = input, .rep = "", .start = comment_start, .end = comment_end});
+			str_replace(alloc, (t_replace){
+				.str = input,
+				.rep = "",
+				.start = comment_start,
+				.end = comment_end
+			});
 			index = comment_start;
 			continue ;
 		}

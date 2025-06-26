@@ -3,20 +3,8 @@
 #include "tools/num.h"
 #include "tools/char.h"
 
-static bool	_is_var_name_valid(char *str)
-{
-	size_t	index;
-
-	index = 0;
-	if ((str)[index] != '_' && !char_isalpha((str)[index]))
-		return (false);
-	while (char_isalnum((str)[index]) || (str)[index] == '_')
-		index++;
-	return (index == str_len(str));
-}
-
-static t_replace	*_replace_special_parameters(t_ctx *ctx, \
-	char **s, size_t index)
+static t_replace	*\
+	_replace_special_parameters(t_ctx *ctx, char **s, size_t index)
 {
 	t_replace	*ret;
 
@@ -35,30 +23,31 @@ static t_replace	*_replace_special_parameters(t_ctx *ctx, \
 	return (NULL);
 }
 
-static t_replace	*_replace_bracketed_variable(t_ctx *ctx, char **s, size_t index)
+static t_replace	*\
+	_replace_bracketed_variable(t_ctx *ctx, char **s, size_t index)
 {
-	t_replace	*ret;
+	t_replace	*r;
 	char		*var_name;
 
 	if ((*s)[index] == '{')
 	{
-		ret = mem_alloc(*ctx->cmd, sizeof(t_replace));
-		ret->start = index - 1;
-		ret->str = s;
+		r = mem_alloc(*ctx->cmd, sizeof(t_replace));
+		r->start = index - 1;
+		r->str = s;
 		if (!str_escape(*s, &index, '{', '}'))
 			return (throw_error(ctx, ERR_UNCLOSED, "{"), NULL);
-		ret->end = index;
-		var_name = str_extract(*ctx->cmd, *ret->str, ret->start + 2, ret->end - 1);
-		if (!_is_var_name_valid(var_name))
+		r->end = index;
+		var_name = str_extract(*ctx->cmd, *r->str, r->start + 2, r->end - 1);
+		if (!is_var_name_valid(var_name))
 			return (throw_error(ctx, ERR_BAD_SUBSTITUTION, *s), NULL);
-		ret->rep = env_get_var_value(*ctx->env, var_name);
-		return (ret);
+		r->rep = env_get_var_value(*ctx->env, var_name);
+		return (r);
 	}
 	return (NULL);
 }
 
-static t_replace	*_replace_variable(t_ctx *ctx, char **s, \
-	size_t index)
+static t_replace	*\
+	_replace_variable(t_ctx *ctx, char **s, size_t index)
 {
 	t_replace	*ret;
 	char		*var_name;

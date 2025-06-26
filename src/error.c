@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-static const char	*g_err_msg[] = {
+static const char	*_err_msg[] = {
 	"",
 	"bad substitution",
 	"syntax error near expexted token `",
@@ -11,7 +11,7 @@ static const char	*g_err_msg[] = {
 	"command not found",
 };
 
-static const int	g_err_code[] = {
+static const int	_err_code[] = {
 	0,
 	1,
 	2,
@@ -22,18 +22,18 @@ static const int	g_err_code[] = {
 	127
 };
 
-static const size_t			g_err_msg_size = \
-	sizeof(g_err_msg) / sizeof(g_err_msg[0]);
-static const size_t			g_err_code_size = \
-	sizeof(g_err_code) / sizeof(g_err_code[0]);
+static const size_t	_err_msg_size = \
+	sizeof(_err_msg) / sizeof(_err_msg[0]);
+static const size_t	_err_code_size = \
+	sizeof(_err_code) / sizeof(_err_code[0]);
 
 void	throw_error(t_ctx *ctx, t_shell_error err, char *arg)
 {
-	assert(g_err_code_size == g_err_msg_size);
+	assert(_err_code_size == _err_msg_size);
 	if (err == ERR_UNEXPECTED_TOKEN || err == ERR_UNCLOSED)
-		fprintf(stderr, "bash: %s%s'\n", g_err_msg[err], arg);
+		fprintf(stderr, "bash: %s%s'\n", _err_msg[err], arg);
 	else
-		fprintf(stderr, "bash: %s: %s\n", arg, g_err_msg[err]);
-	ctx->last_exit_code = g_err_code[err];
+		fprintf(stderr, "bash: %s: %s\n", arg, _err_msg[err]);
+	ctx->last_exit_code = _err_code[err];
 	ctx->last_error_type = err;
 }

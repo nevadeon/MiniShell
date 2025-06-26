@@ -25,6 +25,11 @@ static char	*_get_git_head(void)
 	return (NULL);
 }
 
+static const char	*_prefix = GREEN"minishell "PURPLE;
+static const char	*_middle = GREEN" git:("BROWN;
+static const char	*_suffix = GREEN")# "RESET;
+static const char	*_suffix2 = GREEN"# "RESET;
+
 char	*readline_prompt(t_alloc *alloc)
 {
 	char	cwd[PATH_MAX];
@@ -34,6 +39,6 @@ char	*readline_prompt(t_alloc *alloc)
 		cwd[0] = '\0';
 	git_head = _get_git_head();
 	if (git_head)
-		return (str_vjoin(alloc, 5, "\001\033[1;32m\002minishell \001\033[1;35m\002", cwd, "\001\033[1;32m\002 git:(\001\033[1;33m\002", git_head, "\001\033[1;32m\002)\001\033[1;32m\002#\001\033[0m\002 "));
-	return (str_vjoin(alloc, 3, "\001\033[1;32m\002minishell \001\033[1;35m\002", cwd, "\001\033[1;32m\002\001\033[1;32m\002#\001\033[0m\002 "));
+		return (str_vjoin(alloc, 5, _prefix, cwd, _middle, git_head, _suffix));
+	return (str_vjoin(alloc, 3, _prefix, cwd, _suffix2));
 }

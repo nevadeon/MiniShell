@@ -10,6 +10,11 @@
 
 # define ARENA_BLOCK_SIZE 16384
 
+# define GREEN "\001\033[1;32m\002"
+# define PURPLE "\001\033[1;35m\002"
+# define BROWN "\001\033[1;33m\002"
+# define RESET "\001\033[0m\002"
+
 # include "forward.h"
 # include "signals.h"
 # include <assert.h>

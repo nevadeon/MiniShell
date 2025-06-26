@@ -1,11 +1,11 @@
 #ifndef SIGNALS_H
 # define SIGNALS_H
 
-#include <unistd.h>
-#include <signal.h>
-#include <stdio.h>
-#include <readline/history.h>
-#include <readline/readline.h>
+# include <unistd.h>
+# include <signal.h>
+# include <stdio.h>
+# include <readline/history.h>
+# include <readline/readline.h>
 
 typedef enum e_sigstatus
 {

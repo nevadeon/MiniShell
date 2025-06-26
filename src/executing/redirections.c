@@ -24,7 +24,7 @@ static int	_heredoc(t_alloc *alloc, char *stop)
 	return (pipe_fd[0]);
 }
 
-void	random_bash_redir(t_alloc *a, t_redir_list *in, t_redir_list *out)
+void	builtin_redir(t_alloc *a, t_redir_list *in, t_redir_list *out)
 {
 	int	fd;
 
