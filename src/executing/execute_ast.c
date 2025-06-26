@@ -75,9 +75,11 @@ void	execute_ast(t_ctx *ctx, t_ast *ast)
 	int			exit_status;
 
 	data = make_exec_data(ctx);
+	toggle_signal(S_IGNORE);
 	if (ast->type == E_WORD
 		&& try_single_builtin(ctx, ast))
 		return ;
+	toggle_signal(S_PARENT);
 	_exec_ast(&data, ast, 0, 0);
 	while (data.processes)
 	{
