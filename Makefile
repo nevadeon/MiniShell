@@ -6,7 +6,7 @@ CC := cc
 CFLAGS = -Wall -Wextra -Werror -I$(INC_DIR)
 # CFLAGS += $(foreach dir, $(shell find $(INC_DIR) -type d), -I$(dir))
 LDFLAGS = -lreadline
-VAL_FLAGS := --leak-check=full --show-leak-kinds=all --track-fds=yes --trace-children=yes --track-origins=yes --suppressions=./rl.supp
+VAL_FLAGS := --leak-check=full --quiet --show-leak-kinds=all --track-fds=yes --trace-children=yes --track-origins=yes --suppressions=./rl.supp
 GDB_FLAGS := --quiet --args
 FUZZER_ARGS = $(FUZZ_DIR)/parsing $(FUZZ_DIR)/seed_corpus/ -artifact_prefix=$(FUZZ_DIR)/ -max_len=32 -only_ascii=0 -print_final_stats=1
 
