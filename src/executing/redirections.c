@@ -12,13 +12,12 @@ static int	_heredoc(char *stop)
 		exit(666);
 	}
 	cmd = new_mgc_allocator(GNL_BUFFER_SIZE);
+	stop = str_vjoin(cmd, 2, stop, "\n");
 	while (1)
 	{
 		str_putfd("> ", STDOUT_FILENO);
 		line = str_gnl(cmd, STDIN_FILENO);
-		if (!line
-			|| (str_ncmp(line, stop, str_clen(line, '\n', false)) == 0 \
-			&& line[0] != '\n'))
+		if (!line || str_equals(line, stop))
 			break ;
 		str_putfd(line, pipe_fd[1]);
 	}
