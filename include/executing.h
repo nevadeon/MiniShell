@@ -38,11 +38,12 @@ typedef struct s_exec_data
 t_exec_data	make_exec_data(t_ctx *c);
 void		execute_ast(t_ctx *ctx, t_ast *ast);
 void		exec_cmd(t_ctx *ctx, char **env_paths, char **args);
-int			handle_input_redir(t_alloc *a, t_redir_list *redir, int pipe_fd);
+int			handle_input_redir(t_redir_list *redir, int pipe_fd);
 int			handle_output_redir(t_redir_list *redir, int pipe_fd);
-void		builtin_redir(t_alloc *a, t_redir_list *in, t_redir_list *out);
 void		dup_close(int source_fd, int dest_fd);
 t_pid_list	*lst_pid_new(t_alloc *alloc, pid_t pid);
 bool		try_single_builtin(t_ctx *ctx, t_ast *ast);
+int			builtin_redir_in(t_redir_list *in);
+int			builtin_redir_out(t_redir_list *out);
 
 #endif

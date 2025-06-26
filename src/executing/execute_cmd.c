@@ -43,15 +43,22 @@ bool	try_single_builtin(t_ctx *ctx, t_ast *a)
 {
 	char	**args;
 	int		i;
+	int		stdin_cpy;
+	int		stdout_cpy;
 
 	args = (char **)lst_to_array(*ctx->cmd, (t_list *)a->s_leaf.func);
 	i = -1;
-	while (++i < NO_FORK_MAX_INDEX)
+	while (++i < (int)_array_size)
 	{
 		if (str_cmp(_builtin_name[i], args[CMD_NAME]) == 0)
 		{
-			builtin_redir(*ctx->cmd, a->s_leaf.redir_in, a->s_leaf.redir_out);
+			stdin_cpy = builtin_redir_in(a->s_leaf.redir_in);
+			stdout_cpy = builtin_redir_out(a->s_leaf.redir_out);
 			_builtin_fn[i](ctx, args);
+			if (stdin_cpy)
+				dup_close(stdin_cpy, STDIN_FILENO);
+			if (stdout_cpy)
+				dup_close(stdout_cpy, STDOUT_FILENO);
 			return (true);
 		}
 	}
@@ -70,7 +77,7 @@ void	exec_cmd(t_ctx *ctx, char **env_paths, char **args)
 		i = -1;
 		while (++i < (int)_array_size)
 			if (str_cmp(_builtin_name[i], args[CMD_NAME]) == 0)
-				exit(_builtin_fn[i](ctx, args));
+				return ((void)_builtin_fn[i](ctx, args));
 		i = -1;
 		while (env_paths[++i])
 		{

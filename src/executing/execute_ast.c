@@ -2,15 +2,18 @@
 
 static void	_exec_ast(t_exec_data *d, t_ast *ast, int fd1, int fd2);
 
-static void	_handle_exec_failure(t_exec_data *d, int final_in, int final_out)
+static void	_clean_exit(t_exec_data *d, int final_in, int final_out)
 {
+	int	exit_status;
+
 	if (final_in)
 		close(final_in);
 	if (final_out)
 		close(final_out);
+	exit_status = d->c->last_exit_code;
 	free_allocator(d->c->cmd);
 	free_allocator(d->c->prog);
-	exit(d->c->last_exit_code);
+	exit(exit_status);
 }
 
 static void	_handle_leaf(t_exec_data *d, t_ast *a, int pipe_out, int pipe_in)
@@ -25,13 +28,13 @@ static void	_handle_leaf(t_exec_data *d, t_ast *a, int pipe_out, int pipe_in)
 	if (pid == 0)
 	{
 		toggle_signal(S_CHILD);
-		final_in = handle_input_redir(*d->c->cmd, a->s_leaf.redir_in, pipe_out);
+		final_in = handle_input_redir(a->s_leaf.redir_in, pipe_out);
 		final_out = handle_output_redir(a->s_leaf.redir_out, pipe_in);
 		if (d->to_close)
 			close(d->to_close);
 		exec_cmd(d->c, d->paths, \
 			(char **)lst_to_array(*(d->c->cmd), (t_list *)a->s_leaf.func));
-		_handle_exec_failure(d, final_in, final_out);
+		_clean_exit(d, final_in, final_out);
 	}
 	else
 		lst_add_front((t_list **) &d->processes,
