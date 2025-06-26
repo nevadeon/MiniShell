@@ -1,13 +1,13 @@
 #include "cbuiltins.h"
 
-int	builtin_pwd(t_ctx *ctx, char **unused_args)
+int	builtin_pwd(t_ctx *unused_ctx, char **unused_args)
 {
-	char	*pwd;
+	char	cwd[PATH_MAX];
 
+	(void)unused_ctx;
 	(void)unused_args;
-	pwd = env_get_var_value(*ctx->env, "PWD");
-	if (!pwd)
-		return (printf("bash: pwd: PWD not set\n"), 1);
-	printf("%s\n", pwd);
+	if (getcwd(cwd, sizeof(cwd)) == NULL)
+		cwd[0] = '\0';
+	printf("%s\n", cwd);
 	return (0);
 }
