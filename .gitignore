@@ -2,3 +2,5 @@ minishell
 obj
 tests
 fuzz
+test/fuzzer/crash
+test/fuzzer/parsing

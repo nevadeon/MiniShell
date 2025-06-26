@@ -8,7 +8,7 @@ CFLAGS = -Wall -Wextra -Werror -I$(INC_DIR)
 LDFLAGS = -lreadline
 VAL_FLAGS := --leak-check=full --quiet --show-leak-kinds=all --track-fds=yes --trace-children=yes --track-origins=yes --suppressions=./rl.supp
 GDB_FLAGS := --quiet --args
-FUZZER_ARGS = $(FUZZ_DIR)/parsing $(FUZZ_DIR)/seed_corpus/ -artifact_prefix=$(FUZZ_DIR)/ -max_len=32 -only_ascii=0 -print_final_stats=1
+FUZZER_ARGS = $(FUZZ_DIR)/parsing $(FUZZ_DIR)/seed_corpus/ -artifact_prefix=$(FUZZ_DIR)/crash/ -max_len=32 -only_ascii=0 -print_final_stats=1
 
 # OS detection
 UNAME_P := $(shell uname -p)
@@ -91,7 +91,7 @@ macro: LDFLAGS += -ldl
 macro: re
 
 fuzz: CFLAGS += -g
-fuzz:
+fuzz: re
 	clang -g -O1 -fsanitize=fuzzer,address,signed-integer-overflow $(FUZZ_DIR)/fuzzer.c -o fuzz -I$(INC_DIR) $(FUZZ_OBJ) $(LDFLAGS)
 	./fuzz $(FUZZER_ARGS)
 
