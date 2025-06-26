@@ -54,6 +54,7 @@ typedef enum e_shell_error
 	ERR_NO_FILE_OR_DIR,
 	ERR_IS_DIR,
 	ERR_CMD_NOT_FOUND,
+	ERR_UNKNOWN,
 }	t_shell_error;
 
 typedef struct s_ctx
