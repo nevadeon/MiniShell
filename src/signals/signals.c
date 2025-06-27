@@ -1,7 +1,7 @@
 #include "signals.h"
 #include "tools/str.h"
 
-// sig_atomic_t	g_signal = 0;
+static t_ctx	*g_ctx = NULL;
 
 void	handle_sigint(int signal, siginfo_t *info, void *ucontext)
 {
@@ -12,6 +12,8 @@ void	handle_sigint(int signal, siginfo_t *info, void *ucontext)
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
+	if (g_ctx)
+		g_ctx->last_exit_code = 1;
 	return ;
 }
 
@@ -44,8 +46,9 @@ void	init_handler_pipe(void *func)
 	sigaction(SIGPIPE, &sigpipe_handler, NULL);
 }
 
-void	toggle_signal(int toggle)
+void	toggle_signal(t_ctx *ctx, int toggle)
 {
+	g_ctx = ctx;
 	if (toggle == S_PARENT)
 	{
 		init_handler_int(&handle_sigint);
