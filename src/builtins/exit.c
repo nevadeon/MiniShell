@@ -1,38 +1,89 @@
 #include "cbuiltins.h"
+#include <stdio.h>
+#include <limits.h>
 
-static int	_print_error(t_ctx *ctx, const char *msg, const char *arg)
+typedef struct s_parser
 {
-	if (arg)
-		io_dprintf(STDERR, "bash: exit: %s: %s\n", arg, msg);
-	else
-		io_dprintf(STDERR, "bash: exit: %s\n", msg);
-	ctx->last_exit_code = 1;
+	int					sign;
+	unsigned long long	acc;
+	unsigned long long	limit;
+}	t_parser;
+
+static int	_parse_digits(const char *s, t_parser *parser, long long *res)
+{
+	int	digit;
+
+	while (*s)
+	{
+		if (!char_isnum(*s))
+			return (0);
+		digit = *s - '0';
+		if (parser->acc > (parser->limit - digit) / 10)
+			return (-1);
+		parser->acc = parser->acc * 10 + digit;
+		s++;
+	}
+	*res = (long long)parser->acc * parser->sign;
 	return (1);
+}
+
+static int	_parse_number(const char *s, long long *res)
+{
+	t_parser	parser;
+
+	parser.sign = 1;
+	parser.acc = 0;
+	if (*s == '+' || *s == '-')
+	{
+		if (*s == '-')
+			parser.sign = -1;
+		s++;
+	}
+	if (!*s)
+		return (0);
+	if (parser.sign > 0)
+		parser.limit = (unsigned long long)LLONG_MAX;
+	else
+		parser.limit = (unsigned long long)LLONG_MAX + 1ULL;
+	return (_parse_digits(s, &parser, res));
+}
+
+
+static void	cleanup(t_ctx *ctx)
+{
+	free_allocator(ctx->cmd);
+	free_allocator(ctx->prog);
+}
+
+static void	cleanup_and_exit(t_ctx *ctx, unsigned char code)
+{
+	cleanup(ctx);
+	exit(code);
 }
 
 int	builtin_exit(t_ctx *ctx, char **args)
 {
-	int	status;
-	int	i;
+	long long	status;
+	int			parsed;
 
+	/* Toujours afficher "exit" */
 	printf("exit\n");
-	if (args[1] && args[2])
-		return (_print_error(ctx, "too many arguments", NULL));
 	if (!args[1])
-		exit(EXIT_SUCCESS);
-	i = -1;
-	while (args[1][++i])
+		cleanup_and_exit(ctx, (unsigned char)ctx->last_exit_code);
+	parsed = _parse_number(args[1], &status);
+	if (parsed != 1)
 	{
-		if (!char_isnum(args[1][i]))
-		{
-			_print_error(ctx, "numeric argument required", args[1]);
-			free_allocator(ctx->cmd);
-			free_allocator(ctx->prog);
-			exit(2);
-		}
+		io_dprintf(STDERR, "bash: exit: %s: numeric argument required\n", args[1]);
+		free_allocator(ctx->cmd);
+		free_allocator(ctx->prog);
+		exit(2);
 	}
-	status = str_atoi(args[1]);
-	free_allocator(ctx->cmd);
-	free_allocator(ctx->prog);
-	exit(status);
+	if (args[2])
+	{
+		io_dprintf(STDERR, "bash: exit: too many arguments\n");
+		ctx->last_exit_code = 1;
+		return (1);
+	}
+	cleanup_and_exit(ctx, (unsigned char)status);
+	return (1);
 }
