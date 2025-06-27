@@ -6,6 +6,8 @@
 # include <stdio.h>
 # include <readline/history.h>
 # include <readline/readline.h>
+# include "minishell.h"
+
 
 typedef enum e_sigstatus
 {
@@ -14,6 +16,6 @@ typedef enum e_sigstatus
 	S_CHILD,
 }	t_sigstatus;
 
-void	toggle_signal(int toggle);
+void	toggle_signal(t_ctx *ctx, int toggle);
 
 #endif

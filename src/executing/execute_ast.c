@@ -27,7 +27,7 @@ static void	_handle_leaf(t_exec_data *d, t_ast *a, int pipe_out, int pipe_in)
 		return (perror("fork"));
 	if (pid == 0)
 	{
-		toggle_signal(S_CHILD);
+		toggle_signal(d->c, S_CHILD);
 		final_in = handle_input_redir(a->s_leaf.redir_in, pipe_out);
 		final_out = handle_output_redir(a->s_leaf.redir_out, pipe_in);
 		if (d->to_close)
@@ -37,8 +37,10 @@ static void	_handle_leaf(t_exec_data *d, t_ast *a, int pipe_out, int pipe_in)
 		_clean_exit(d, final_in, final_out);
 	}
 	else
+	{
 		lst_add_front((t_list **) &d->processes,
 			(t_list *) lst_pid_new(*d->c->cmd, pid));
+	}
 }
 
 static void	_handle_ope(t_exec_data *d, t_ast *a, int std_in, int prev_in)
@@ -78,11 +80,10 @@ void	execute_ast(t_ctx *ctx, t_ast *ast)
 	int			exit_status;
 
 	data = make_exec_data(ctx);
-	toggle_signal(S_IGNORE);
+	toggle_signal(ctx, S_IGNORE);
 	if (ast->type == E_WORD
 		&& try_single_builtin(ctx, ast))
 		return ;
-	toggle_signal(S_PARENT);
 	_exec_ast(&data, ast, 0, 0);
 	while (data.processes)
 	{

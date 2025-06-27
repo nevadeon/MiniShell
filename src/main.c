@@ -20,6 +20,7 @@ void	handle_command(t_ctx *ctx, char *input)
 	if (!ast || ctx->last_error_type)
 		return ;
 	execute_ast(ctx, ast);
+	toggle_signal(ctx, S_PARENT);
 }
 
 void	input_loop(t_ctx *ctx)
@@ -70,7 +71,7 @@ int	main(int argc, __attribute__((unused)) char **argv, char **envp)
 	alloc = new_mgc_allocator(ARENA_BLOCK_SIZE);
 	ctx = _new_ctx(&alloc, &envp);
 	increase_shlvl(ctx);
-	toggle_signal(S_PARENT);
+	toggle_signal(ctx, S_PARENT);
 	input_loop(ctx);
 	free_allocator(ctx->prog);
 	rl_clear_history();
