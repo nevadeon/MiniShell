@@ -26,9 +26,13 @@ int	builtin_exit(t_ctx *ctx, char **args)
 		if (!char_isnum(args[1][i]))
 		{
 			_print_error(ctx, "numeric argument required", args[1]);
+			free_allocator(ctx->cmd);
+			free_allocator(ctx->prog);
 			exit(2);
 		}
 	}
 	status = str_atoi(args[1]);
+	free_allocator(ctx->cmd);
+	free_allocator(ctx->prog);
 	exit(status);
 }
