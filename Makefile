@@ -66,18 +66,18 @@ $(OBJ_DIR)/$(TEST_DIR)/%.o: $(TEST_DIR)/%.c
 	@mkdir -p $(dir $@)
 	@$(CC) $(CFLAGS) -c $< -o $@
 
-valgrind: re
+valgrind: all
 	valgrind ./$(NAME)
 
-gdb: re
+gdb: all
 	gdb $(GDB_FLAGS) ./$(NAME)
 
-val_test: CFLAGS += -DINCLUDE_TEST_HEADER
-val_test: fclean $(TEST_BIN)
+testval: CFLAGS += -DINCLUDE_TEST_HEADER
+testval: fclean $(TEST_BIN)
 	valgrind ./$(TEST_BIN)
 
-gdb_test: CFLAGS += -DINCLUDE_TEST_HEADER
-gdb_test: fclean $(TEST_BIN)
+testgdb: CFLAGS += -DINCLUDE_TEST_HEADER
+testgdb: fclean $(TEST_BIN)
 	gdb $(GDB_FLAGS) ./$(TEST_BIN)
 
 macro: CFLAGS += -D_GNU_SOURCE -DINCLUDE_TEST_MACRO
@@ -89,4 +89,4 @@ fuzz: re
 	clang -g -O1 -fsanitize=fuzzer,address,signed-integer-overflow $(FUZZ_DIR)/fuzzer.c -o fuzz -I$(INC_DIR) $(FUZZ_OBJ) $(LDFLAGS)
 	./fuzz $(FUZZER_ARGS)
 
-.PHONY: all re clean fclean test g valgrind gdb val_test gdb_test macro fuzz
+.PHONY: all re clean fclean test valgrind gdb testval testgdb macro fuzz
