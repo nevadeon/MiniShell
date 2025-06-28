@@ -22,3 +22,9 @@
 	...
 	obj:/usr/bin/bash
 }
+{
+   ignore_cat_leak
+   Memcheck:Leak
+   ...
+   obj:/usr/bin/cat
+}

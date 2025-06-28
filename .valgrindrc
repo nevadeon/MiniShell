@@ -5,3 +5,4 @@
 --trace-children=yes
 --track-origins=yes
 --suppressions=./rl.supp
+--show-below-main=no
