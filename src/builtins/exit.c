@@ -3,9 +3,9 @@
 static int	_print_error(t_ctx *ctx, const char *msg, const char *arg)
 {
 	if (arg)
-		fprintf(stderr, "bash: exit: %s: %s\n", arg, msg);
+		io_dprintf(STDERR, "bash: exit: %s: %s\n", arg, msg);
 	else
-		fprintf(stderr, "bash: exit: %s\n", msg);
+		io_dprintf(STDERR, "bash: exit: %s\n", msg);
 	ctx->last_exit_code = 1;
 	return (1);
 }

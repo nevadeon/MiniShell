@@ -41,8 +41,8 @@ int	builtin_export(t_ctx *ctx, char **args)
 			env_set_var_value(ctx, *args);
 		else
 		{
-			fprintf(stderr, "bash: export: `%s': not a valid ", *args);
-			fprintf(stderr, "identifier\n");
+			io_dprintf(STDERR, "bash: export: `%s': not a valid ", *args);
+			io_dprintf(STDERR, "identifier\n");
 			ctx->last_exit_code = ERR_UNKNOWN;
 			ctx->last_exit_code = 1;
 		}

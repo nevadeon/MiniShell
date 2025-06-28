@@ -3,7 +3,7 @@
 
 static int	_print_error(t_ctx *ctx, const char *msg)
 {
-	fprintf(stderr, "bash: env: %s\n", msg);
+	io_dprintf(STDERR, "bash: env: %s\n", msg);
 	ctx->last_exit_code = 1;
 	return (1);
 }
