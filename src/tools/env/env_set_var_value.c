@@ -1,6 +1,7 @@
 #include "tools/env.h"
 #include "tools/str.h"
 #include "tools/num.h"
+#include "tools/memory.h"
 
 static char	*set_existing_env_var(char **env,
 	char *new_var, size_t name_len)
@@ -32,7 +33,7 @@ static char	*add_new_env_var(t_ctx *ctx, char *new_var)
 		count++;
 	new_env = mem_alloc(*ctx->prog, sizeof(char *) * (count + 2));
 	if (env)
-		memcpy(new_env, env, sizeof(char *) * count);
+		mem_cpy(new_env, env, sizeof(char *) * count);
 	new_env[count] = new_var;
 	new_env[count + 1] = NULL;
 	*ctx->env = new_env;
