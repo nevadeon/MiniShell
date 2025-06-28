@@ -33,7 +33,7 @@ static void	_exec_failure_print(t_ctx *ctx, char **args)
 		throw_error(ctx, ERR_CMD_NOT_FOUND, args[CMD_NAME]);
 	else
 	{
-		fprintf(stderr, "%s: %s\n", args[CMD_NAME], strerror(errno));
+		io_dprintf(STDERR, "%s: %s\n", args[CMD_NAME], strerror(errno));
 		ctx->last_exit_code = errno;
 		ctx->last_error_type = ERR_UNKNOWN;
 	}

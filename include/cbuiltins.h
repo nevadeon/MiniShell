@@ -4,6 +4,7 @@
 # include "minishell.h"
 # include "forward.h"
 # include "allocators/allocator.h"
+# include "tools/io.h"
 
 # define NO_FORK_MAX_INDEX 4
 

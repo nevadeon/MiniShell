@@ -31,9 +31,9 @@ void	throw_error(t_ctx *ctx, t_shell_error err, char *arg)
 {
 	assert(_err_code_size == _err_msg_size);
 	if (err == ERR_UNEXPECTED_TOKEN || err == ERR_UNCLOSED)
-		fprintf(stderr, "bash: %s%s'\n", _err_msg[err], arg);
+		io_dprintf(STDERR, "bash: %s%s'\n", _err_msg[err], arg);
 	else
-		fprintf(stderr, "bash: %s: %s\n", arg, _err_msg[err]);
+		io_dprintf(STDERR, "bash: %s: %s\n", arg, _err_msg[err]);
 	ctx->last_exit_code = _err_code[err];
 	ctx->last_error_type = err;
 }
