@@ -13,7 +13,7 @@ void	handle_sigint(int signal, siginfo_t *info, void *ucontext)
 	rl_replace_line("", 0);
 	rl_redisplay();
 	if (g_ctx)
-		g_ctx->last_exit_code = 1;
+		g_ctx->last_exit_code = 130;
 	return ;
 }
 
