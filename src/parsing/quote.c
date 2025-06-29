@@ -1,42 +1,57 @@
 #include "parsing.h"
 
-static void	_process_removal(t_alloc *alloc, char **item_content_ptr)
+static bool	handle_quote_state(char c, char *quote_char, int *inside_quotes)
 {
-	char	*original;
-	char	*new_str;
-	char	*write_ptr;
-	int		i;
-	int		len;
-
-	original = *item_content_ptr;
-	len = str_len(original);
-	new_str = mem_alloc(alloc, len + 1);
-	write_ptr = new_str;
-	i = 0;
-	while (original[i])
+	if (!*inside_quotes && (c == '\'' || c == '"'))
 	{
-		if (original[i] != '\'' && original[i] != '"')
-		{
-			*write_ptr = original[i];
-			write_ptr++;
-		}
-		i++;
+		*quote_char = c;
+		*inside_quotes = 1;
+		return (true);
 	}
-	*write_ptr = '\0';
+	if (*inside_quotes && c == *quote_char)
+	{
+		*inside_quotes = 0;
+		*quote_char = '\0';
+		return (true);
+	}
+	return (false);
+}
+
+static void	process_removal(t_alloc *alloc, char **item_content_ptr)
+{
+	char	*src;
+	char	*dst;
+	char	*new_str;
+	char	quote_char;
+	int		inside_quotes;
+
+	src = *item_content_ptr;
+	new_str = mem_alloc(alloc, str_len(src) + 1);
+	dst = new_str;
+	inside_quotes = 0;
+	quote_char = '\0';
+	while (*src)
+	{
+		if (!handle_quote_state(*src, &quote_char, &inside_quotes))
+		{
+			*dst = *src;
+			dst++;
+		}
+		src++;
+	}
+	*dst = '\0';
 	*item_content_ptr = new_str;
 }
 
 void	quote_removal(t_alloc *alloc, t_token_list *token_list)
 {
-	t_token_list	*current;
-	char			*token_str;
+	char	*token_str;
 
-	current = token_list;
-	while (current)
+	while (token_list)
 	{
-		token_str = current->content->str;
+		token_str = token_list->content->str;
 		if (str_chr(token_str, '\'') || str_chr(token_str, '"'))
-			_process_removal(alloc, &current->content->str);
-		current = current->next;
+			process_removal(alloc, &token_list->content->str);
+		token_list = token_list->next;
 	}
 }
