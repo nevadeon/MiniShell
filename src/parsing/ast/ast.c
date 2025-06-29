@@ -27,7 +27,7 @@ static t_ast	*_handle_ope(t_ctx *ctx, t_ast_context *context)
 	context->token_list_item = context->token_list_item->next;
 	if (!context->token_list_item
 		|| context->token_list_item->content->type == E_CONTROL_OPE)
-		return (throw_error(ctx, ERR_UNEXPECTED_TOKEN, "|"), NULL);
+		return (throw_error(ctx, E_UNEXPECTED_TOKEN, "|"), NULL);
 	return (_handle_word(ctx, context));
 }
 
@@ -41,7 +41,7 @@ static void	_handle_redir(t_ctx *ctx, t_ast_context *context, t_ast *node)
 	redir->type = get_redir_type(context->token_list_item->content->str);
 	context->token_list_item = context->token_list_item->next;
 	if (!context->token_list_item)
-		return (throw_error(ctx, ERR_UNEXPECTED_TOKEN, "newline"));
+		return (throw_error(ctx, E_UNEXPECTED_TOKEN, "newline"));
 	redir->content = context->token_list_item->content->str;
 	if (redir->type == E_REDIR_IN || redir->type == E_REDIR_HEREDOC)
 		lst_add_back((t_list **)&node->s_leaf.redir_in, (t_list *)redir);

@@ -11,7 +11,7 @@ t_ast	*parsing(t_ctx *ctx, char *inp)
 
 	if (!inp || inp[0] == '\0')
 		return (NULL);
-	ctx->last_error_type = ERR_NONE;
+	ctx->last_error_type = E_NONE;
 	remove_comment(*ctx->cmd, &inp);
 	token_list = tokenize(ctx, &inp);
 	if (ctx->last_error_type)

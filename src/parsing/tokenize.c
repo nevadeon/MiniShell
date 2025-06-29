@@ -31,9 +31,9 @@ static char	*_process_tokenize(t_ctx *ctx, char **input)
 	while ((*input)[index] && !is_meta((*input)[index]))
 	{
 		if (!str_escape(*input, &index, '"', '"'))
-			return (throw_error(ctx, ERR_UNCLOSED, "\""), NULL);
+			return (throw_error(ctx, E_UNCLOSED, "\""), NULL);
 		if (!str_escape(*input, &index, '\'', '\''))
-			return (throw_error(ctx, ERR_UNCLOSED, "'"), NULL);
+			return (throw_error(ctx, E_UNCLOSED, "'"), NULL);
 		str_escape(*input, &index, '{', '}');
 		if ((*input)[index] && !is_meta((*input)[index]))
 			index++;

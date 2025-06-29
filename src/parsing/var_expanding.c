@@ -35,11 +35,11 @@ static t_replace	*\
 		r->start = index - 1;
 		r->str = s;
 		if (!str_escape(*s, &index, '{', '}'))
-			return (throw_error(ctx, ERR_UNCLOSED, "{"), NULL);
+			return (throw_error(ctx, E_UNCLOSED, "{"), NULL);
 		r->end = index;
 		var_name = str_extract(*ctx->cmd, *r->str, r->start + 2, r->end - 1);
 		if (!is_var_name_valid(var_name))
-			return (throw_error(ctx, ERR_BAD_SUBSTITUTION, *s), NULL);
+			return (throw_error(ctx, E_BAD_SUBSTITUTION, *s), NULL);
 		r->rep = env_get_var_value(*ctx->env, var_name);
 		return (r);
 	}
