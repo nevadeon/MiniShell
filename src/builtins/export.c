@@ -60,6 +60,7 @@ int	builtin_export(t_ctx *ctx, char **args)
 		return (skill_issue(), 0);
 	(void)ctx;
 	args++;
+	ctx->last_exit_code = 0;
 	while (*args)
 	{
 		if (_is_var_name_valid(*args))
@@ -73,5 +74,5 @@ int	builtin_export(t_ctx *ctx, char **args)
 		}
 		args++;
 	}
-	return (0);
+	return (ctx->last_exit_code);
 }

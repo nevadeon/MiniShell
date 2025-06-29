@@ -41,7 +41,7 @@ bool	try_single_builtin(t_ctx *ctx, t_ast *a, char **args)
 			if (stdin_cpy == -1)
 				return (ctx->last_exit_code = 1, true);
 			stdout_cpy = builtin_redir_out(a->s_leaf.redir_out);
-			g_builtin_fn[i](ctx, args);
+			ctx->last_exit_code = g_builtin_fn[i](ctx, args);
 			if (stdin_cpy)
 				dup_close(stdin_cpy, STDIN_FILENO);
 			if (stdout_cpy)

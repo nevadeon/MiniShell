@@ -10,6 +10,13 @@
 
 typedef int	(*t_builtin_fn)(t_ctx *ctx, char **args);
 
+typedef struct s_parser
+{
+	int					sign;
+	unsigned long long	acc;
+	unsigned long long	limit;
+}	t_parser;
+
 int	builtin_echo(t_ctx *ctx, char **args);
 int	builtin_cd(t_ctx *ctx, char **args);
 int	builtin_pwd(t_ctx *ctx, char **args);

@@ -2,13 +2,6 @@
 #include <stdio.h>
 #include <limits.h>
 
-typedef struct s_parser
-{
-	int					sign;
-	unsigned long long	acc;
-	unsigned long long	limit;
-}	t_parser;
-
 static int	_parse_digits(const char *s, t_parser *parser, long long *res)
 {
 	int	digit;
@@ -48,7 +41,6 @@ static int	_parse_number(const char *s, long long *res)
 	return (_parse_digits(s, &parser, res));
 }
 
-
 static void	cleanup(t_ctx *ctx)
 {
 	free_allocator(ctx->cmd);
@@ -66,14 +58,14 @@ int	builtin_exit(t_ctx *ctx, char **args)
 	long long	status;
 	int			parsed;
 
-	/* Toujours afficher "exit" */
 	printf("exit\n");
 	if (!args[1])
 		cleanup_and_exit(ctx, (unsigned char)ctx->last_exit_code);
 	parsed = _parse_number(args[1], &status);
 	if (parsed != 1)
 	{
-		io_dprintf(STDERR, "bash: exit: %s: numeric argument required\n", args[1]);
+		io_dprintf(\
+			STDERR, "bash: exit: %s: numeric argument required\n", args[1]);
 		free_allocator(ctx->cmd);
 		free_allocator(ctx->prog);
 		exit(2);

@@ -20,5 +20,4 @@ size_t	io_dputulbase(int fd, uint64_t ul, char *base);
 void	io_dputendl(int fd, const char *s);
 void	io_dputnbr(int fd, int n);
 
-
 #endif
