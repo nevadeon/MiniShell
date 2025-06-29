@@ -44,7 +44,7 @@ static char	*_process_tokenize(t_ctx *ctx, char **input)
 		return (NULL);
 	ret = _tokenize_meta(ctx, input);
 	if (ret)
-		return (ret);
+		return (*input += str_len(ret), ret);
 	index = 0;
 	while ((*input)[index] && !is_meta((*input)[index]))
 	{
@@ -56,7 +56,7 @@ static char	*_process_tokenize(t_ctx *ctx, char **input)
 			return (NULL);
 	}
 	ret = str_extract(*ctx->cmd, *input, 0, index);
-	*input += index;
+	*input += str_len(ret);
 	return (ret);
 }
 
