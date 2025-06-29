@@ -1,6 +1,6 @@
 #include "parsing.h"
 
-static bool	handle_quote_state(char c, char *quote_char, int *inside_quotes)
+static bool	_handle_quote_state(char c, char *quote_char, int *inside_quotes)
 {
 	if (!*inside_quotes && (c == '\'' || c == '"'))
 	{
@@ -17,7 +17,7 @@ static bool	handle_quote_state(char c, char *quote_char, int *inside_quotes)
 	return (false);
 }
 
-static void	process_removal(t_alloc *alloc, char **item_content_ptr)
+static void	_process_removal(t_alloc *alloc, char **item_content_ptr)
 {
 	char	*src;
 	char	*dst;
@@ -32,7 +32,7 @@ static void	process_removal(t_alloc *alloc, char **item_content_ptr)
 	quote_char = '\0';
 	while (*src)
 	{
-		if (!handle_quote_state(*src, &quote_char, &inside_quotes))
+		if (!_handle_quote_state(*src, &quote_char, &inside_quotes))
 		{
 			*dst = *src;
 			dst++;
@@ -51,7 +51,7 @@ void	quote_removal(t_alloc *alloc, t_token_list *token_list)
 	{
 		token_str = token_list->content->str;
 		if (str_chr(token_str, '\'') || str_chr(token_str, '"'))
-			process_removal(alloc, &token_list->content->str);
+			_process_removal(alloc, &token_list->content->str);
 		token_list = token_list->next;
 	}
 }
