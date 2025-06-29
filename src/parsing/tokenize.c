@@ -1,6 +1,6 @@
 #include "parsing.h"
 
-static char	*tokenize_meta(t_ctx *ctx, char **input)
+static char	*_tokenize_meta(t_ctx *ctx, char **input)
 {
 	if (**input == '|')
 		return (str_dup(*ctx->cmd, "|"));
@@ -17,7 +17,7 @@ static char	*tokenize_meta(t_ctx *ctx, char **input)
 	return (NULL);
 }
 
-static bool	handle_quote_char(char **input, size_t *index, t_ctx *ctx)
+static bool	_handle_quote_char(char **input, size_t *index, t_ctx *ctx)
 {
 	char	quote;
 
@@ -42,13 +42,13 @@ static char	*_process_tokenize(t_ctx *ctx, char **input)
 		(*input)++;
 	if (!**input)
 		return (NULL);
-	ret = tokenize_meta(ctx, input);
+	ret = _tokenize_meta(ctx, input);
 	if (ret)
 		return (ret);
 	index = 0;
 	while ((*input)[index] && !is_meta((*input)[index]))
 	{
-		if (handle_quote_char(input, &index, ctx))
+		if (_handle_quote_char(input, &index, ctx))
 			continue ;
 		if (!ctx->last_error_type)
 			index++;
