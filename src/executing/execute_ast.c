@@ -81,7 +81,6 @@ void	execute_ast(t_ctx *ctx, t_ast *ast)
 {
 	t_exec_data	data;
 	int			status;
-	int			exit_status;
 
 	data = make_exec_data(ctx);
 	toggle_signal(ctx, S_IGNORE);
@@ -92,8 +91,15 @@ void	execute_ast(t_ctx *ctx, t_ast *ast)
 	while (data.processes)
 	{
 		waitpid(data.processes->pid, &status, 0);
-		exit_status = WEXITSTATUS(status);
-		ctx->last_exit_code = exit_status;
+		if (WIFSIGNALED(status))
+		{
+			if (WTERMSIG(status) == SIGINT || WTERMSIG(status) == SIGQUIT)
+				write(STDOUT_FILENO, "\n", 1);
+			ctx->last_exit_code = 128 + WTERMSIG(status);
+			break ;
+		}
+		else if (WIFEXITED(status))
+			ctx->last_exit_code = WEXITSTATUS(status);
 		data.processes = data.processes->next;
 	}
 }
