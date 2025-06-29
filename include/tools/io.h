@@ -7,8 +7,8 @@
 # include "tools/str.h"
 
 # define DEC "0123456789"
-# define HEXA_LOW "0123456789abcdef"
-# define HEXA_UPP "0123456789ABCDEF"
+# define HEX_LOW "0123456789abcdef"
+# define HEX_UPP "0123456789ABCDEF"
 # define STDERR 2
 
 size_t	io_dprintf(int fd, const char *format, ...);

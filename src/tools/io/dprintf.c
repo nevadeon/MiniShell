@@ -13,9 +13,9 @@ static size_t	_dprintarg(int fd, char c, va_list *args)
 	else if (c == 'u')
 		return (io_dputulbase(fd, (uint64_t) va_arg(*args, uint32_t), DEC));
 	else if (c == 'x')
-		return (io_dputulbase(fd, (uint64_t) va_arg(*args, uint32_t), HEXA_LOW));
+		return (io_dputulbase(fd, (uint64_t) va_arg(*args, uint32_t), HEX_LOW));
 	else if (c == 'X')
-		return (io_dputulbase(fd, (uint64_t) va_arg(*args, uint32_t), HEXA_UPP));
+		return (io_dputulbase(fd, (uint64_t) va_arg(*args, uint32_t), HEX_UPP));
 	else if (c == '%')
 		return (io_dputchar(fd, '%'));
 	return (0);
