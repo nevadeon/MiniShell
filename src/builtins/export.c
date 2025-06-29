@@ -1,6 +1,19 @@
 #include "cbuiltins.h"
 #include "stdlib.h"
 
+static const char	*g_assets[] = {
+	"assets/segfault.ascii",
+	"assets/willem_dafoe.ascii",
+	"assets/absolute_cinema.ascii",
+	"assets/got_them.ascii",
+	"assets/monkashh.ascii",
+	"assets/well.ascii",
+	"assets/calamardo.ascii",
+	"assets/moai_statue.ascii",
+};
+
+static const int	g_assets_size = sizeof(g_assets) / sizeof(g_assets[0]);
+
 void	print_file(const char *path)
 {
 	t_alloc	*cmd;
@@ -22,23 +35,11 @@ void	print_file(const char *path)
 
 void	skill_issue(void)
 {
-	static int	i = 1;
+	static int	i = 0;
 
-	if (i == 7)
-		i = 2;
-	if (i == 1)
-		print_file("assets/segfault.ascii");
-	else if (i == 2)
-		print_file("assets/willem_dafoe.ascii");
-	else if (i == 3)
-		print_file("assets/absolute_cinema.ascii");
-	else if (i == 4)
-		print_file("assets/well.ascii");
-	else if (i == 5)
-		print_file("assets/monkashh.ascii");
-	else if (i == 6)
-		print_file("assets/calamardo.ascii");
-	i++;
+	print_file(g_assets[i++]);
+	if (i >= g_assets_size)
+		i = 1;
 }
 
 static bool	_is_var_name_valid(char *str)
