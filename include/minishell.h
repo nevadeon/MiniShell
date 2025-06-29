@@ -63,6 +63,7 @@ typedef enum e_shell_error
 	E_NOT_EXECUTABLE,
 	E_ACCESS,
 	E_USE_ERRNO,
+	E_UNHANDLED,
 	E_UNKNOWN,
 }	t_shell_error;
 

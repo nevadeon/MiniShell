@@ -5,6 +5,7 @@ static const char	*_err_msg[] = {
 	[E_BAD_SUBSTITUTION] = "bad substitution",
 	[E_UNEXPECTED_TOKEN] = "syntax error near expected token `",
 	[E_UNCLOSED] = "unexpected EOF while looking for matching `",
+	[E_UNHANDLED] = "not handled char `",
 	[E_PERM_DENIED] = "Permission denied",
 	[E_NO_FILE_OR_DIR] = "No such file or directory",
 	[E_IS_DIR] = "Is a directory",
@@ -20,6 +21,7 @@ static const int	_err_code[] = {
 	[E_BAD_SUBSTITUTION] = 1,
 	[E_UNEXPECTED_TOKEN] = 2,
 	[E_UNCLOSED] = 2,
+	[E_UNHANDLED] = 2,
 	[E_PERM_DENIED] = 126,
 	[E_NO_FILE_OR_DIR] = 127,
 	[E_IS_DIR] = 127,
@@ -45,7 +47,8 @@ void	throw_error(t_ctx *ctx, t_shell_error err, char *arg)
 		ctx->last_exit_code = errno;
 		io_dprintf(STDERR, "bash: %s: %s\n", arg, strerror(errno));
 	}
-	else if (err == E_UNEXPECTED_TOKEN || err == E_UNCLOSED)
+	else if (err == E_UNEXPECTED_TOKEN || err == E_UNCLOSED
+		|| err == E_UNHANDLED)
 		io_dprintf(STDERR, "bash: %s%s'\n", _err_msg[err], arg);
 	else
 		io_dprintf(STDERR, "bash: %s: %s\n", arg, _err_msg[err]);
