@@ -14,10 +14,7 @@ static t_ast	*_handle_ope(t_ctx *ctx, t_ast_context *context)
 	if (!context->token_list_item || !context->token_list_item->content)
 		return (context->root);
 	node = mem_alloc(*ctx->cmd, sizeof(t_ast));
-	node->type = E_CONTROL_OPE;
-	node->s_ope.left = NULL;
-	node->s_ope.right = NULL;
-	node->s_ope.type = E_OPE_PIPE;
+	*node = (t_ast){.type = E_CONTROL_OPE, .s_ope.type = E_OPE_PIPE,};
 	if (context->prev_ope)
 		node_to_append = context->prev_ope;
 	else

@@ -25,10 +25,10 @@ static char	*_get_git_head(void)
 	return (NULL);
 }
 
-static const char	*_prefix = GREEN"minishell "PURPLE;
-static const char	*_middle = GREEN" git:("BROWN;
-static const char	*_suffix = GREEN")# "RESET;
-static const char	*_suffix2 = GREEN"# "RESET;
+static const char	*g_prefix = GREEN"minishell "PURPLE;
+static const char	*g_mid = GREEN" git:("BROWN;
+static const char	*g_suffix = GREEN")# "RESET;
+static const char	*g_suffix2 = GREEN"# "RESET;
 
 char	*readline_prompt(t_alloc *alloc)
 {
@@ -39,6 +39,6 @@ char	*readline_prompt(t_alloc *alloc)
 		cwd[0] = '\0';
 	git_head = _get_git_head();
 	if (git_head)
-		return (str_vjoin(alloc, 5, _prefix, cwd, _middle, git_head, _suffix));
-	return (str_vjoin(alloc, 3, _prefix, cwd, _suffix2));
+		return (str_vjoin(alloc, 5, g_prefix, cwd, g_mid, git_head, g_suffix));
+	return (str_vjoin(alloc, 3, g_prefix, cwd, g_suffix2));
 }

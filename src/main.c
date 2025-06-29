@@ -33,7 +33,7 @@ void	input_loop(t_ctx *ctx)
 		alloc_cmd = new_mgc_allocator(ARENA_BLOCK_SIZE);
 		ctx->cmd = &alloc_cmd;
 		input = readline(readline_prompt(*ctx->cmd));
-		if (!input || str_equals(input, "exit"))
+		if (!input)
 			break ;
 		if (input[0] != '\0')
 			add_history(input);

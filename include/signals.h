@@ -8,7 +8,6 @@
 # include <readline/readline.h>
 # include "minishell.h"
 
-
 typedef enum e_sigstatus
 {
 	S_IGNORE = 0,
