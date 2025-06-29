@@ -6,11 +6,13 @@ static void	_clean_exit(t_exec_data *d, int final_in, int final_out)
 {
 	int	exit_status;
 
-	if (final_in)
+	if (final_in > 0)
 		close(final_in);
 	if (final_out)
 		close(final_out);
 	exit_status = d->c->last_exit_code;
+	if (final_in == -1)
+	exit_status = 1;
 	free_allocator(d->c->cmd);
 	free_allocator(d->c->prog);
 	exit(exit_status);
@@ -29,6 +31,8 @@ static void	_handle_leaf(t_exec_data *d, t_ast *a, int pipe_out, int pipe_in)
 	{
 		toggle_signal(d->c, S_CHILD);
 		final_in = handle_input_redir(a->s_leaf.redir_in, pipe_out);
+		if (final_in == -1)
+			_clean_exit(d,-1, 0);
 		final_out = handle_output_redir(a->s_leaf.redir_out, pipe_in);
 		if (d->to_close)
 			close(d->to_close);
@@ -81,8 +85,8 @@ void	execute_ast(t_ctx *ctx, t_ast *ast)
 
 	data = make_exec_data(ctx);
 	toggle_signal(ctx, S_IGNORE);
-	if (ast->type == E_WORD
-		&& try_single_builtin(ctx, ast))
+	if (ast->type == E_WORD && try_single_builtin(ctx, ast,\
+		(char **)lst_to_array(*ctx->cmd, (t_list *)ast->s_leaf.func)))
 		return ;
 	_exec_ast(&data, ast, 0, 0);
 	while (data.processes)

@@ -58,7 +58,12 @@ int	builtin_redir_in(t_redir_list *in)
 	while (in)
 	{
 		if (in->type == E_REDIR_IN)
+		{
 			fd = open(in->content, O_RDONLY);
+			if (fd == -1)
+				return (io_dprintf(\
+					2, "bash: %s: %s\n", in->content, strerror(errno)), -1);
+		}
 		else
 			fd = _heredoc(in->content);
 		if (fd >= 0)
@@ -80,7 +85,12 @@ int	handle_input_redir(t_redir_list *redir, int pipe_fd)
 	while (redir)
 	{
 		if (redir->type == E_REDIR_IN)
+		{
 			fd = open(redir->content, O_RDONLY);
+			if (fd == -1)
+				return (io_dprintf(\
+					2, "bash: %s: %s\n", redir->content, strerror(errno)), -1);
+		}
 		else if (redir->type == E_REDIR_HEREDOC)
 			fd = _heredoc(redir->content);
 		if (redir->next)

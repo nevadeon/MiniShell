@@ -24,14 +24,12 @@ static const t_builtin_fn	g_builtin_fn[] = {
 static const size_t			g_array_size = \
 sizeof(g_builtin_name) / sizeof(g_builtin_name[0]);
 
-bool	try_single_builtin(t_ctx *ctx, t_ast *a)
+bool	try_single_builtin(t_ctx *ctx, t_ast *a, char **args)
 {
-	char	**args;
 	int		i;
 	int		stdin_cpy;
 	int		stdout_cpy;
 
-	args = (char **)lst_to_array(*ctx->cmd, (t_list *)a->s_leaf.func);
 	if (!args)
 		return (false);
 	i = -1;
@@ -40,6 +38,8 @@ bool	try_single_builtin(t_ctx *ctx, t_ast *a)
 		if (str_cmp(g_builtin_name[i], args[CMD_NAME]) == 0)
 		{
 			stdin_cpy = builtin_redir_in(a->s_leaf.redir_in);
+			if (stdin_cpy == -1)
+				return (ctx->last_exit_code = 1, true);
 			stdout_cpy = builtin_redir_out(a->s_leaf.redir_out);
 			g_builtin_fn[i](ctx, args);
 			if (stdin_cpy)

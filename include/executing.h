@@ -43,7 +43,7 @@ int			handle_input_redir(t_redir_list *redir, int pipe_fd);
 int			handle_output_redir(t_redir_list *redir, int pipe_fd);
 void		dup_close(int source_fd, int dest_fd);
 t_pid_list	*lst_pid_new(t_alloc *alloc, pid_t pid);
-bool		try_single_builtin(t_ctx *ctx, t_ast *ast);
+bool		try_single_builtin(t_ctx *ctx, t_ast *ast, char **args);
 int			builtin_redir_in(t_redir_list *in);
 int			builtin_redir_out(t_redir_list *out);
 void		execve_on_path(\
