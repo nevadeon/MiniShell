@@ -69,7 +69,7 @@ static char	*_process_tokenize(t_ctx *ctx, char **input)
 			return (NULL);
 	}
 	ret = str_extract(*ctx->cmd, *input, 0, index);
-	*input += str_len(ret);
+	*input += index;
 	return (ret);
 }
 
