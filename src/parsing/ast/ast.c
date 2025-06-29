@@ -8,6 +8,8 @@ static t_ast	*_handle_ope(t_ctx *ctx, t_ast_context *context)
 	t_ast	*node;
 	t_ast	*node_to_append;
 
+	if (!context->root)
+		return (throw_error(ctx, E_UNEXPECTED_TOKEN, "|"), NULL);
 	node_to_append = NULL;
 	if (!context->token_list_item || !context->token_list_item->content)
 		return (context->root);
@@ -42,6 +44,8 @@ static void	_handle_redir(t_ctx *ctx, t_ast_context *context, t_ast *node)
 	context->token_list_item = context->token_list_item->next;
 	if (!context->token_list_item)
 		return (throw_error(ctx, E_UNEXPECTED_TOKEN, "newline"));
+	if (context->token_list_item->content->type == E_CONTROL_OPE)
+		return (throw_error(ctx, E_UNEXPECTED_TOKEN, "|"));
 	redir->content = context->token_list_item->content->str;
 	if (redir->type == E_REDIR_IN || redir->type == E_REDIR_HEREDOC)
 		lst_add_back((t_list **)&node->s_leaf.redir_in, (t_list *)redir);
@@ -81,6 +85,8 @@ static t_ast	*_handle_word(t_ctx *ctx, t_ast_context *context)
 	if (!context->token_list_item || !context->token_list_item->content)
 		return (context->root);
 	node = _create_leaf(ctx, context);
+	if (ctx->last_error_type)
+		return (NULL);
 	if (context->prev && context->prev->type == E_CONTROL_OPE)
 	{
 		if (!context->prev->s_ope.left)
