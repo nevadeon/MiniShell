@@ -167,7 +167,7 @@ void	test_parsing(char ***envp)
 		.prog = &alloc_test,
 		.cmd = &alloc_test,
 		.env = envp,
-		.last_error_type = ERR_NONE,
+		.last_error_type = E_NONE,
 		.last_exit_code = 0,
 	};
 

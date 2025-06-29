@@ -6,6 +6,7 @@
 # include "parsing.h"
 # include <unistd.h>
 # include <sys/wait.h>
+# include <sys/stat.h>
 # include <fcntl.h>
 # include <errno.h>
 # include "allocators/allocator.h"
@@ -17,8 +18,8 @@
 typedef enum e_error
 {
 	OK,
-	ERR_PIPE,
-	ERR_UNEXPECTED_NODE_TYPE,
+	E_PIPE,
+	E_UNEXPECTED_NODE_TYPE,
 }	t_error;
 
 typedef struct s_pid_list
@@ -45,5 +46,7 @@ t_pid_list	*lst_pid_new(t_alloc *alloc, pid_t pid);
 bool		try_single_builtin(t_ctx *ctx, t_ast *ast);
 int			builtin_redir_in(t_redir_list *in);
 int			builtin_redir_out(t_redir_list *out);
+void		execve_on_path(\
+				t_ctx *ctx, char *path, char **args, int not_found_err);
 
 #endif

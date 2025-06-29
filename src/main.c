@@ -54,7 +54,7 @@ static t_ctx	*_new_ctx(t_alloc **alloc, char ***envp)
 	*ctx = (t_ctx){
 		.prog = alloc,
 		.env = envp,
-		.last_error_type = ERR_NONE,
+		.last_error_type = E_NONE,
 		.last_exit_code = 0,
 	};
 	return (ctx);
