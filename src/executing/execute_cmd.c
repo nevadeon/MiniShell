@@ -1,8 +1,7 @@
 #include "minishell.h"
-#include "cbuiltins.h"
 
 //Adding elements is safe, changing the order is not
-static const char			*_builtin_name[] = {
+static const char			*g_builtin_name[] = {
 	"cd",
 	"exit",
 	"export",
@@ -12,7 +11,7 @@ static const char			*_builtin_name[] = {
 	"env",
 };
 
-static const t_builtin_fn	_builtin_fn[] = {
+static const t_builtin_fn	g_builtin_fn[] = {
 	builtin_cd,
 	builtin_exit,
 	builtin_export,
@@ -22,22 +21,8 @@ static const t_builtin_fn	_builtin_fn[] = {
 	builtin_env,
 };
 
-static const size_t			_array_size = \
-sizeof(_builtin_name) / sizeof(_builtin_name[0]);
-
-static void	_exec_failure_print(t_ctx *ctx, char **args)
-{
-	if (errno == EACCES)
-		throw_error(ctx, ERR_PERM_DENIED, args[CMD_NAME]);
-	else if (errno == ENOENT)
-		throw_error(ctx, ERR_CMD_NOT_FOUND, args[CMD_NAME]);
-	else
-	{
-		io_dprintf(STDERR, "%s: %s\n", args[CMD_NAME], strerror(errno));
-		ctx->last_exit_code = errno;
-		ctx->last_error_type = ERR_UNKNOWN;
-	}
-}
+static const size_t			g_array_size = \
+sizeof(g_builtin_name) / sizeof(g_builtin_name[0]);
 
 bool	try_single_builtin(t_ctx *ctx, t_ast *a)
 {
@@ -48,13 +33,13 @@ bool	try_single_builtin(t_ctx *ctx, t_ast *a)
 
 	args = (char **)lst_to_array(*ctx->cmd, (t_list *)a->s_leaf.func);
 	i = -1;
-	while (++i < (int)_array_size)
+	while (++i < (int)g_array_size)
 	{
-		if (str_cmp(_builtin_name[i], args[CMD_NAME]) == 0)
+		if (str_cmp(g_builtin_name[i], args[CMD_NAME]) == 0)
 		{
 			stdin_cpy = builtin_redir_in(a->s_leaf.redir_in);
 			stdout_cpy = builtin_redir_out(a->s_leaf.redir_out);
-			_builtin_fn[i](ctx, args);
+			g_builtin_fn[i](ctx, args);
 			if (stdin_cpy)
 				dup_close(stdin_cpy, STDIN_FILENO);
 			if (stdout_cpy)
@@ -65,27 +50,49 @@ bool	try_single_builtin(t_ctx *ctx, t_ast *a)
 	return (false);
 }
 
-void	exec_cmd(t_ctx *ctx, char **env_paths, char **args)
+static bool	_try_builtin(t_ctx *ctx, char **args)
+{
+	int	i;
+
+	i = -1;
+	while (++i < (int)g_array_size)
+		if (str_cmp(g_builtin_name[i], args[CMD_NAME]) == 0)
+			return (g_builtin_fn[i](ctx, args), true);
+	return (false);
+}
+
+static void	_try_relative_path(t_ctx *ctx, char **args)
 {
 	char	*path;
-	int		i;
 
-	if (str_chr(args[CMD_NAME], '/'))
-		execve(args[CMD_NAME], args, *ctx->env);
-	else
+	path = str_vjoin(*ctx->cmd, 2, "./", args[CMD_NAME]);
+	if (!path)
+		return (throw_error(ctx, E_ALLOC_FAIL, args[CMD_NAME]));
+	execve_on_path(ctx, path, args, E_NO_FILE_OR_DIR);
+}
+
+static void	_try_env_paths(t_ctx *ctx, char **env_paths, char **args)
+{
+	char	*path;
+
+	while (*env_paths)
 	{
-		i = -1;
-		while (++i < (int)_array_size)
-			if (str_cmp(_builtin_name[i], args[CMD_NAME]) == 0)
-				return ((void)_builtin_fn[i](ctx, args));
-		i = -1;
-		while (env_paths[++i])
-		{
-			path = str_vjoin(*ctx->cmd, 3, env_paths[i], "/", args[CMD_NAME]);
-			execve(path, args, *ctx->env);
-			if (errno != ENOENT)
-				break ;
-		}
+		path = str_vjoin(*ctx->cmd, 3, *env_paths, "/", args[CMD_NAME]);
+		if (!path)
+			return (throw_error(ctx, E_ALLOC_FAIL, args[CMD_NAME]));
+		execve_on_path(ctx, path, args, 0);
+		env_paths++;
 	}
-	_exec_failure_print(ctx, args);
+	return (throw_error(ctx, E_CMD_NOT_FOUND, args[CMD_NAME]));
+}
+
+void	exec_cmd(t_ctx *ctx, char **env_paths, char **args)
+{
+	if (str_chr(args[CMD_NAME], '/'))
+		return (execve_on_path(ctx, args[CMD_NAME], args, E_NO_FILE_OR_DIR));
+	if (!env_paths)
+		return (_try_relative_path(ctx, args));
+	if (_try_builtin(ctx, args))
+		return ;
+	_try_env_paths(ctx, env_paths, args);
 }
