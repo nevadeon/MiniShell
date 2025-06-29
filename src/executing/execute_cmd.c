@@ -32,6 +32,8 @@ bool	try_single_builtin(t_ctx *ctx, t_ast *a)
 	int		stdout_cpy;
 
 	args = (char **)lst_to_array(*ctx->cmd, (t_list *)a->s_leaf.func);
+	if (!args)
+		return (false);
 	i = -1;
 	while (++i < (int)g_array_size)
 	{
@@ -88,6 +90,8 @@ static void	_try_env_paths(t_ctx *ctx, char **env_paths, char **args)
 
 void	exec_cmd(t_ctx *ctx, char **env_paths, char **args)
 {
+	if (!args)
+		return ;
 	if (str_chr(args[CMD_NAME], '/'))
 		return (execve_on_path(ctx, args[CMD_NAME], args, E_NO_FILE_OR_DIR));
 	if (!env_paths)
