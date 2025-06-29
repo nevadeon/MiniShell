@@ -1,19 +1,32 @@
 #include "parsing.h"
+#include "minishell.h"
 
 static char	*_tokenize_meta(t_ctx *ctx, char **input)
 {
 	if (**input == '|')
-		return (str_dup(*ctx->cmd, "|"));
+	{
+		if (*(*input + 1) == '|')
+			return (throw_error(ctx, E_UNHANDLED, "||"), NULL);
+		return ((*input)++, str_dup(*ctx->cmd, "|"));
+	}
+	else if (**input == ';')
+		return (throw_error(ctx, E_UNHANDLED, ";"), NULL);
 	else if (**input == '<' && *(*input + 1) == '<')
+	{
+		if (*(*input + 2) == '<')
+			return (throw_error(ctx, E_UNHANDLED, "<<<"), NULL);
 		return (*input += 2, str_dup(*ctx->cmd, "<<"));
+	}
 	else if (**input == '>' && *(*input + 1) == '>')
+	{
+		if (*(*input + 2) == '>')
+			return (throw_error(ctx, E_UNHANDLED, ">>>"), NULL);
 		return (*input += 2, str_dup(*ctx->cmd, ">>"));
+	}
 	else if (**input == '<')
 		return ((*input)++, str_dup(*ctx->cmd, "<"));
 	else if (**input == '>')
 		return ((*input)++, str_dup(*ctx->cmd, ">"));
-	else if (**input == '|')
-		return ((*input)++, str_dup(*ctx->cmd, "|"));
 	return (NULL);
 }
 
@@ -43,8 +56,8 @@ static char	*_process_tokenize(t_ctx *ctx, char **input)
 	if (!**input)
 		return (NULL);
 	ret = _tokenize_meta(ctx, input);
-	if (ret)
-		return (*input += str_len(ret), ret);
+	if (ret || ctx->last_error_type)
+		return (ret);
 	index = 0;
 	while ((*input)[index] && !is_meta((*input)[index]))
 	{
