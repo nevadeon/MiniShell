@@ -1,0 +1,313 @@
+==2905466== Invalid read of size 8
+==2905466==    at 0x404F84: exec_cmd (execute_cmd.c:81)
+==2905466==    by 0x404AAB: _handle_leaf (execute_ast.c:35)
+==2905466==    by 0x4049A5: _exec_ast (execute_ast.c:71)
+==2905466==    by 0x404914: execute_ast (execute_ast.c:87)
+==2905466==    by 0x4096AB: handle_command (main.c:22)
+==2905466==    by 0x409757: input_loop (main.c:40)
+==2905466==    by 0x409819: main (main.c:75)
+==2905466==  Address 0x0 is not stack'd, malloc'd or (recently) free'd
+==2905466==
+==2905466==
+==2905466== Process terminating with default action of signal 11 (SIGSEGV)
+==2905466==  Access not within mapped region at address 0x0
+==2905466==    at 0x404F84: exec_cmd (execute_cmd.c:81)
+==2905466==    by 0x404AAB: _handle_leaf (execute_ast.c:35)
+==2905466==    by 0x4049A5: _exec_ast (execute_ast.c:71)
+==2905466==    by 0x404914: execute_ast (execute_ast.c:87)
+==2905466==    by 0x4096AB: handle_command (main.c:22)
+==2905466==    by 0x409757: input_loop (main.c:40)
+==2905466==    by 0x409819: main (main.c:75)
+==2905466==  If you believe this happened as a result of a stack
+==2905466==  overflow in your program's main thread (unlikely but
+==2905466==  possible), you can try to increase the size of the
+==2905466==  main thread stack using the --main-stacksize= flag.
+==2905466==  The main thread stack size used in this run was 8388608.
+==2905466== 2 bytes in 1 blocks are still reachable in loss record 1 of 111
+==2905466==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2905466==    by 0x4092C0: mgc_alloc_fn (mgc_allocator.c:11)
+==2905466==    by 0x40873F: mem_alloc (allocator.c:10)
+==2905466==    by 0x405D77: num_itoa (num_itoa.c:28)
+==2905466==    by 0x409621: increase_shlvl (main.c:12)
+==2905466==    by 0x409802: main (main.c:73)
+==2905466==
+==2905466== 3 bytes in 1 blocks are still reachable in loss record 3 of 111
+==2905466==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2905466==    by 0x4092C0: mgc_alloc_fn (mgc_allocator.c:11)
+==2905466==    by 0x40873F: mem_alloc (allocator.c:10)
+==2905466==    by 0x406BE4: str_extract (str_extract.c:10)
+==2905466==    by 0x402D1B: _process_tokenize (tokenize.c:41)
+==2905466==    by 0x402A44: tokenize (tokenize.c:53)
+==2905466==    by 0x402283: parsing (parsing.c:16)
+==2905466==    by 0x40967C: handle_command (main.c:19)
+==2905466==    by 0x409757: input_loop (main.c:40)
+==2905466==    by 0x409819: main (main.c:75)
+==2905466==
+==2905466== 4 bytes in 1 blocks are still reachable in loss record 4 of 111
+==2905466==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2905466==    by 0x4092C0: mgc_alloc_fn (mgc_allocator.c:11)
+==2905466==    by 0x40873F: mem_alloc (allocator.c:10)
+==2905466==    by 0x406959: str_dup (str_dup.c:11)
+==2905466==    by 0x402542: word_splitting (splitting.c:76)
+==2905466==    by 0x4022E4: parsing (parsing.c:23)
+==2905466==    by 0x40967C: handle_command (main.c:19)
+==2905466==    by 0x409757: input_loop (main.c:40)
+==2905466==    by 0x409819: main (main.c:75)
+==2905466==
+==2905466== 8 bytes in 1 blocks are still reachable in loss record 5 of 111
+==2905466==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2905466==    by 0x4093FA: new_mgc_allocator (mgc_allocator.c:52)
+==2905466==    by 0x4097E4: main (main.c:71)
+==2905466==
+==2905466== 8 bytes in 1 blocks are still reachable in loss record 6 of 111
+==2905466==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2905466==    by 0x4092C0: mgc_alloc_fn (mgc_allocator.c:11)
+==2905466==    by 0x40873F: mem_alloc (allocator.c:10)
+==2905466==    by 0x4079A3: str_vjoin (str_vjoin.c:29)
+==2905466==    by 0x40963E: increase_shlvl (main.c:12)
+==2905466==    by 0x409802: main (main.c:73)
+==2905466==
+==2905466== 8 bytes in 1 blocks are still reachable in loss record 7 of 111
+==2905466==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2905466==    by 0x4092C0: mgc_alloc_fn (mgc_allocator.c:11)
+==2905466==    by 0x40873F: mem_alloc (allocator.c:10)
+==2905466==    by 0x40587F: env_set_var_value (env_set_var_value.c:55)
+==2905466==    by 0x40964A: increase_shlvl (main.c:11)
+==2905466==    by 0x409802: main (main.c:73)
+==2905466==
+==2905466== 8 bytes in 1 blocks are still reachable in loss record 8 of 111
+==2905466==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2905466==    by 0x4093FA: new_mgc_allocator (mgc_allocator.c:52)
+==2905466==    by 0x4096D5: input_loop (main.c:33)
+==2905466==    by 0x409819: main (main.c:75)
+==2905466==
+==2905466== 16 bytes in 1 blocks are still reachable in loss record 20 of 111
+==2905466==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2905466==    by 0x4092E6: mgc_alloc_fn (mgc_allocator.c:14)
+==2905466==    by 0x40873F: mem_alloc (allocator.c:10)
+==2905466==    by 0x409860: _new_ctx (main.c:53)
+==2905466==    by 0x4097F5: main (main.c:72)
+==2905466==
+==2905466== 16 bytes in 1 blocks are still reachable in loss record 21 of 111
+==2905466==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2905466==    by 0x4092E6: mgc_alloc_fn (mgc_allocator.c:14)
+==2905466==    by 0x40873F: mem_alloc (allocator.c:10)
+==2905466==    by 0x405D77: num_itoa (num_itoa.c:28)
+==2905466==    by 0x409621: increase_shlvl (main.c:12)
+==2905466==    by 0x409802: main (main.c:73)
+==2905466==
+==2905466== 16 bytes in 1 blocks are still reachable in loss record 22 of 111
+==2905466==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2905466==    by 0x4092E6: mgc_alloc_fn (mgc_allocator.c:14)
+==2905466==    by 0x40873F: mem_alloc (allocator.c:10)
+==2905466==    by 0x4079A3: str_vjoin (str_vjoin.c:29)
+==2905466==    by 0x40963E: increase_shlvl (main.c:12)
+==2905466==    by 0x409802: main (main.c:73)
+==2905466==
+==2905466== 16 bytes in 1 blocks are still reachable in loss record 23 of 111
+==2905466==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2905466==    by 0x4092E6: mgc_alloc_fn (mgc_allocator.c:14)
+==2905466==    by 0x40873F: mem_alloc (allocator.c:10)
+==2905466==    by 0x40587F: env_set_var_value (env_set_var_value.c:55)
+==2905466==    by 0x40964A: increase_shlvl (main.c:11)
+==2905466==    by 0x409802: main (main.c:73)
+==2905466==
+==2905466== 16 bytes in 1 blocks are still reachable in loss record 24 of 111
+==2905466==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2905466==    by 0x4092E6: mgc_alloc_fn (mgc_allocator.c:14)
+==2905466==    by 0x40873F: mem_alloc (allocator.c:10)
+==2905466==    by 0x4079A3: str_vjoin (str_vjoin.c:29)
+==2905466==    by 0x403A04: readline_prompt (readline_prompt.c:42)
+==2905466==    by 0x4096F5: input_loop (main.c:35)
+==2905466==    by 0x409819: main (main.c:75)
+==2905466==
+==2905466== 16 bytes in 1 blocks are still reachable in loss record 26 of 111
+==2905466==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2905466==    by 0x4092E6: mgc_alloc_fn (mgc_allocator.c:14)
+==2905466==    by 0x40873F: mem_alloc (allocator.c:10)
+==2905466==    by 0x406BE4: str_extract (str_extract.c:10)
+==2905466==    by 0x402D1B: _process_tokenize (tokenize.c:41)
+==2905466==    by 0x402A44: tokenize (tokenize.c:53)
+==2905466==    by 0x402283: parsing (parsing.c:16)
+==2905466==    by 0x40967C: handle_command (main.c:19)
+==2905466==    by 0x409757: input_loop (main.c:40)
+==2905466==    by 0x409819: main (main.c:75)
+==2905466==
+==2905466== 16 bytes in 1 blocks are still reachable in loss record 27 of 111
+==2905466==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2905466==    by 0x4092C0: mgc_alloc_fn (mgc_allocator.c:11)
+==2905466==    by 0x40873F: mem_alloc (allocator.c:10)
+==2905466==    by 0x4029E7: new_token (token.c:32)
+==2905466==    by 0x402A9F: tokenize (tokenize.c:58)
+==2905466==    by 0x402283: parsing (parsing.c:16)
+==2905466==    by 0x40967C: handle_command (main.c:19)
+==2905466==    by 0x409757: input_loop (main.c:40)
+==2905466==    by 0x409819: main (main.c:75)
+==2905466==
+==2905466== 16 bytes in 1 blocks are still reachable in loss record 28 of 111
+==2905466==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2905466==    by 0x4092E6: mgc_alloc_fn (mgc_allocator.c:14)
+==2905466==    by 0x40873F: mem_alloc (allocator.c:10)
+==2905466==    by 0x4029E7: new_token (token.c:32)
+==2905466==    by 0x402A9F: tokenize (tokenize.c:58)
+==2905466==    by 0x402283: parsing (parsing.c:16)
+==2905466==    by 0x40967C: handle_command (main.c:19)
+==2905466==    by 0x409757: input_loop (main.c:40)
+==2905466==    by 0x409819: main (main.c:75)
+==2905466==
+==2905466== 16 bytes in 1 blocks are still reachable in loss record 29 of 111
+==2905466==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2905466==    by 0x4092C0: mgc_alloc_fn (mgc_allocator.c:11)
+==2905466==    by 0x40873F: mem_alloc (allocator.c:10)
+==2905466==    by 0x405BCD: lst_new (lst_new.c:7)
+==2905466==    by 0x402ABF: tokenize (tokenize.c:59)
+==2905466==    by 0x402283: parsing (parsing.c:16)
+==2905466==    by 0x40967C: handle_command (main.c:19)
+==2905466==    by 0x409757: input_loop (main.c:40)
+==2905466==    by 0x409819: main (main.c:75)
+==2905466==
+==2905466== 16 bytes in 1 blocks are still reachable in loss record 30 of 111
+==2905466==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2905466==    by 0x4092E6: mgc_alloc_fn (mgc_allocator.c:14)
+==2905466==    by 0x40873F: mem_alloc (allocator.c:10)
+==2905466==    by 0x405BCD: lst_new (lst_new.c:7)
+==2905466==    by 0x402ABF: tokenize (tokenize.c:59)
+==2905466==    by 0x402283: parsing (parsing.c:16)
+==2905466==    by 0x40967C: handle_command (main.c:19)
+==2905466==    by 0x409757: input_loop (main.c:40)
+==2905466==    by 0x409819: main (main.c:75)
+==2905466==
+==2905466== 16 bytes in 1 blocks are still reachable in loss record 31 of 111
+==2905466==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2905466==    by 0x4092E6: mgc_alloc_fn (mgc_allocator.c:14)
+==2905466==    by 0x40873F: mem_alloc (allocator.c:10)
+==2905466==    by 0x406959: str_dup (str_dup.c:11)
+==2905466==    by 0x402542: word_splitting (splitting.c:76)
+==2905466==    by 0x4022E4: parsing (parsing.c:23)
+==2905466==    by 0x40967C: handle_command (main.c:19)
+==2905466==    by 0x409757: input_loop (main.c:40)
+==2905466==    by 0x409819: main (main.c:75)
+==2905466==
+==2905466== 16 bytes in 1 blocks are still reachable in loss record 32 of 111
+==2905466==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2905466==    by 0x4092E6: mgc_alloc_fn (mgc_allocator.c:14)
+==2905466==    by 0x40873F: mem_alloc (allocator.c:10)
+==2905466==    by 0x401684: _create_leaf (ast.c:56)
+==2905466==    by 0x40158D: _handle_word (ast.c:83)
+==2905466==    by 0x4013C5: create_ast (ast.c:105)
+==2905466==    by 0x402351: parsing (parsing.c:27)
+==2905466==    by 0x40967C: handle_command (main.c:19)
+==2905466==    by 0x409757: input_loop (main.c:40)
+==2905466==    by 0x409819: main (main.c:75)
+==2905466==
+==2905466== 16 bytes in 1 blocks are still reachable in loss record 33 of 111
+==2905466==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2905466==    by 0x4092C0: mgc_alloc_fn (mgc_allocator.c:11)
+==2905466==    by 0x40873F: mem_alloc (allocator.c:10)
+==2905466==    by 0x405BCD: lst_new (lst_new.c:7)
+==2905466==    by 0x40174B: _create_leaf (ast.c:67)
+==2905466==    by 0x40158D: _handle_word (ast.c:83)
+==2905466==    by 0x4013C5: create_ast (ast.c:105)
+==2905466==    by 0x402351: parsing (parsing.c:27)
+==2905466==    by 0x40967C: handle_command (main.c:19)
+==2905466==    by 0x409757: input_loop (main.c:40)
+==2905466==    by 0x409819: main (main.c:75)
+==2905466==
+==2905466== 16 bytes in 1 blocks are still reachable in loss record 34 of 111
+==2905466==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2905466==    by 0x4092E6: mgc_alloc_fn (mgc_allocator.c:14)
+==2905466==    by 0x40873F: mem_alloc (allocator.c:10)
+==2905466==    by 0x405BCD: lst_new (lst_new.c:7)
+==2905466==    by 0x40174B: _create_leaf (ast.c:67)
+==2905466==    by 0x40158D: _handle_word (ast.c:83)
+==2905466==    by 0x4013C5: create_ast (ast.c:105)
+==2905466==    by 0x402351: parsing (parsing.c:27)
+==2905466==    by 0x40967C: handle_command (main.c:19)
+==2905466==    by 0x409757: input_loop (main.c:40)
+==2905466==    by 0x409819: main (main.c:75)
+==2905466==
+==2905466== 16 bytes in 1 blocks are still reachable in loss record 35 of 111
+==2905466==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2905466==    by 0x4092C0: mgc_alloc_fn (mgc_allocator.c:11)
+==2905466==    by 0x40873F: mem_alloc (allocator.c:10)
+==2905466==    by 0x405CC3: lst_to_array (lst_to_array.c:8)
+==2905466==    by 0x404D97: try_single_builtin (execute_cmd.c:43)
+==2905466==    by 0x4048F1: execute_ast (execute_ast.c:85)
+==2905466==    by 0x4096AB: handle_command (main.c:22)
+==2905466==    by 0x409757: input_loop (main.c:40)
+==2905466==    by 0x409819: main (main.c:75)
+==2905466==
+==2905466== 16 bytes in 1 blocks are still reachable in loss record 36 of 111
+==2905466==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2905466==    by 0x4092E6: mgc_alloc_fn (mgc_allocator.c:14)
+==2905466==    by 0x40873F: mem_alloc (allocator.c:10)
+==2905466==    by 0x405CC3: lst_to_array (lst_to_array.c:8)
+==2905466==    by 0x404D97: try_single_builtin (execute_cmd.c:43)
+==2905466==    by 0x4048F1: execute_ast (execute_ast.c:85)
+==2905466==    by 0x4096AB: handle_command (main.c:22)
+==2905466==    by 0x409757: input_loop (main.c:40)
+==2905466==    by 0x409819: main (main.c:75)
+==2905466==
+==2905466== 16 bytes in 1 blocks are still reachable in loss record 37 of 111
+==2905466==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2905466==    by 0x4092C0: mgc_alloc_fn (mgc_allocator.c:11)
+==2905466==    by 0x40873F: mem_alloc (allocator.c:10)
+==2905466==    by 0x405CC3: lst_to_array (lst_to_array.c:8)
+==2905466==    by 0x404A9B: _handle_leaf (execute_ast.c:36)
+==2905466==    by 0x4049A5: _exec_ast (execute_ast.c:71)
+==2905466==    by 0x404914: execute_ast (execute_ast.c:87)
+==2905466==    by 0x4096AB: handle_command (main.c:22)
+==2905466==    by 0x409757: input_loop (main.c:40)
+==2905466==    by 0x409819: main (main.c:75)
+==2905466==
+==2905466== 16 bytes in 1 blocks are still reachable in loss record 38 of 111
+==2905466==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2905466==    by 0x4092E6: mgc_alloc_fn (mgc_allocator.c:14)
+==2905466==    by 0x40873F: mem_alloc (allocator.c:10)
+==2905466==    by 0x405CC3: lst_to_array (lst_to_array.c:8)
+==2905466==    by 0x404A9B: _handle_leaf (execute_ast.c:36)
+==2905466==    by 0x4049A5: _exec_ast (execute_ast.c:71)
+==2905466==    by 0x404914: execute_ast (execute_ast.c:87)
+==2905466==    by 0x4096AB: handle_command (main.c:22)
+==2905466==    by 0x409757: input_loop (main.c:40)
+==2905466==    by 0x409819: main (main.c:75)
+==2905466==
+==2905466== 24 bytes in 1 blocks are still reachable in loss record 40 of 111
+==2905466==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2905466==    by 0x4093D4: new_mgc_allocator (mgc_allocator.c:49)
+==2905466==    by 0x4097E4: main (main.c:71)
+==2905466==
+==2905466== 24 bytes in 1 blocks are still reachable in loss record 41 of 111
+==2905466==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2905466==    by 0x4093D4: new_mgc_allocator (mgc_allocator.c:49)
+==2905466==    by 0x4096D5: input_loop (main.c:33)
+==2905466==    by 0x409819: main (main.c:75)
+==2905466==
+==2905466== 32 bytes in 1 blocks are still reachable in loss record 47 of 111
+==2905466==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2905466==    by 0x4092C0: mgc_alloc_fn (mgc_allocator.c:11)
+==2905466==    by 0x40873F: mem_alloc (allocator.c:10)
+==2905466==    by 0x409860: _new_ctx (main.c:53)
+==2905466==    by 0x4097F5: main (main.c:72)
+==2905466==
+==2905466== 32 bytes in 1 blocks are still reachable in loss record 49 of 111
+==2905466==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2905466==    by 0x4092C0: mgc_alloc_fn (mgc_allocator.c:11)
+==2905466==    by 0x40873F: mem_alloc (allocator.c:10)
+==2905466==    by 0x401684: _create_leaf (ast.c:56)
+==2905466==    by 0x40158D: _handle_word (ast.c:83)
+==2905466==    by 0x4013C5: create_ast (ast.c:105)
+==2905466==    by 0x402351: parsing (parsing.c:27)
+==2905466==    by 0x40967C: handle_command (main.c:19)
+==2905466==    by 0x409757: input_loop (main.c:40)
+==2905466==    by 0x409819: main (main.c:75)
+==2905466==
+==2905466== 113 bytes in 1 blocks are still reachable in loss record 58 of 111
+==2905466==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==2905466==    by 0x4092C0: mgc_alloc_fn (mgc_allocator.c:11)
+==2905466==    by 0x40873F: mem_alloc (allocator.c:10)
+==2905466==    by 0x4079A3: str_vjoin (str_vjoin.c:29)
+==2905466==    by 0x403A04: readline_prompt (readline_prompt.c:42)
+==2905466==    by 0x4096F5: input_loop (main.c:35)
+==2905466==    by 0x409819: main (main.c:75)
+==2905466==

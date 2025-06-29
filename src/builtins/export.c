@@ -1,20 +1,44 @@
 #include "cbuiltins.h"
 #include "stdlib.h"
 
-void	print_file(t_alloc *a, const char *path)
+void	print_file(const char *path)
 {
+	t_alloc	*cmd;
 	char	*str;
 	int		fd;
 
+	cmd = new_mgc_allocator(0);
 	fd = open(path, O_RDONLY);
 	while (1)
 	{
-		str = str_gnl(a, fd);
+		str = str_gnl(cmd, fd);
 		if (!str)
 			break ;
 		printf("%s", str);
 	}
 	close(fd);
+	free_allocator(&cmd);
+}
+
+void	skill_issue(void)
+{
+	static int	i = 1;
+
+	if (i == 7)
+		i = 2;
+	if (i == 1)
+		print_file("assets/segfault.ascii");
+	else if (i == 2)
+		print_file("assets/willem_dafoe.ascii");
+	else if (i == 3)
+		print_file("assets/absolute_cinema.ascii");
+	else if (i == 4)
+		print_file("assets/well.ascii");
+	else if (i == 5)
+		print_file("assets/monkashh.ascii");
+	else if (i == 6)
+		print_file("assets/calamardo.ascii");
+	i++;
 }
 
 static bool	_is_var_name_valid(char *str)
@@ -32,7 +56,7 @@ static bool	_is_var_name_valid(char *str)
 int	builtin_export(t_ctx *ctx, char **args)
 {
 	if (!args[1])
-		return (print_file(*ctx->cmd, "assets/skill_issue.ascii"), 0);
+		return (skill_issue(), 0);
 	(void)ctx;
 	args++;
 	while (*args)
