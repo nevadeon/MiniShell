@@ -12,6 +12,7 @@ static const char	*g_err_msg[] = {
 [E_CMD_NOT_FOUND] = "command not found",
 [E_NOT_EXECUTABLE] = "cannot execute binary file: Exec format error",
 [E_ALLOC_FAIL] = "allocation failed",
+[E_HDOC_QUIT] = "warning: here-document delimited by end-of-file (wanted `",
 [E_USE_ERRNO] = "",
 [E_UNKNOWN] = "",
 };
@@ -28,6 +29,7 @@ static const int	g_err_code[] = {
 [E_CMD_NOT_FOUND] = 127,
 [E_NOT_EXECUTABLE] = 126,
 [E_ALLOC_FAIL] = 1,
+[E_HDOC_QUIT] = 0,
 [E_USE_ERRNO] = 1,
 [E_UNKNOWN] = 1,
 };
@@ -52,6 +54,8 @@ void	throw_error(t_ctx *ctx, t_shell_error err, char *arg)
 	else if (err == E_UNEXPECTED_TOKEN || err == E_UNCLOSED
 		|| err == E_UNHANDLED)
 		io_dprintf(STDERR, "bash: %s%s'\n", g_err_msg[err], arg);
+	else if (err == E_HDOC_QUIT)
+		io_dprintf(STDERR, "bash: %s%s')\n", g_err_msg[err], arg);
 	else
 		io_dprintf(STDERR, "bash: %s: %s\n", arg, g_err_msg[err]);
 }

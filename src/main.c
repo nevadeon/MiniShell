@@ -19,8 +19,9 @@ void	handle_command(t_ctx *ctx, char *input)
 	ast = parsing(ctx, input);
 	if (!ast || ctx->last_error_type)
 		return ;
-	execute_ast(ctx, ast);
+	// execute_ast(ctx, ast);
 	toggle_signal(ctx, S_PARENT);
+	ctx->last_exit_code = 0;
 }
 
 void	input_loop(t_ctx *ctx)

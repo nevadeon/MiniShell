@@ -65,14 +65,14 @@ static t_replace	*\
 	return (ret);
 }
 
-static void	_process_expanding(t_ctx *ctx, t_token *token, size_t index)
+bool	process_expanding(t_ctx *ctx, char **str_ptr, size_t index)
 {
-	char		**str_ptr;
 	t_replace	*rep;
 	size_t		len;
+	bool		expanded;
 
-	str_ptr = &token->str;
 	rep = NULL;
+	expanded = false;
 	rep = _replace_special_parameters(ctx, str_ptr, index);
 	if (!rep && !ctx->last_error_type)
 		rep = _replace_bracketed_variable(ctx, str_ptr, index);
@@ -81,14 +81,15 @@ static void	_process_expanding(t_ctx *ctx, t_token *token, size_t index)
 	if (rep && !ctx->last_error_type)
 	{
 		str_replace(*ctx->cmd, *rep);
-		len = str_len(token->str);
+		len = str_len(*str_ptr);
 		if (len > 0
-			&& token->str[0] != '"'
-			&& token->str[len - 1] != '"')
+			&& (*str_ptr)[0] != '"'
+			&& (*str_ptr)[len - 1] != '"')
 		{
-			token->expanded = true;
+			expanded = true;
 		}
 	}
+	return (expanded);
 }
 
 void	var_expanding(t_ctx *ctx, t_token_list *token_list)
@@ -113,7 +114,10 @@ void	var_expanding(t_ctx *ctx, t_token_list *token_list)
 			if (index >= len)
 				break ;
 			if (s[index] == '$')
-				_process_expanding(ctx, current->content, index + 1);
+			{
+				if (process_expanding(ctx, &current->content->str, index + 1))
+					current->content->expanded = true;
+			}
 			index++;
 		}
 		current = current->next;

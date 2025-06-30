@@ -8,36 +8,35 @@
 # include <stdbool.h>
 # include "allocators/allocator.h"
 
-typedef struct s_redir_list
+# define IN 0
+# define OUT 1
+
+typedef struct s_leaf
 {
-	struct s_redir_list	*next;
-	char				*content;
-	t_redir_type		type;
-}	t_redir_list;
+	t_str_list	*func;
+	int			redir[2];
+}	t_leaf;
+
+typedef struct s_ope
+{
+	t_ope_type		type;
+	struct s_ast	*left;
+	struct s_ast	*right;
+}	t_ope;
 
 typedef struct s_ast
 {
 	t_node_type	type;
 	union
 	{
-		struct
-		{
-			t_str_list		*func;
-			t_redir_list	*redir_in;
-			t_redir_list	*redir_out;
-		}	s_leaf;
-		struct
-		{
-			t_ope_type		type;
-			struct s_ast	*left;
-			struct s_ast	*right;
-		}	s_ope;
+		t_leaf	leaf;
+		t_ope	ope;
 	};
 }	t_ast;
 
 typedef struct s_ast_context
 {
-	t_token_list	*token_list_item;
+	t_token_list	*tok_l;
 	t_ast			*root;
 	t_ast			*prev;
 	t_ast			*prev_ope;

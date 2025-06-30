@@ -23,8 +23,12 @@ t_ast	*parsing(t_ctx *ctx, char *inp)
 	word_splitting(ctx, token_list);
 	wildcard_expanding(*ctx->cmd, token_list);
 	quote_removal(*ctx->cmd, token_list);
-	data = (t_ast_context){.token_list_item = token_list};
+	data = (t_ast_context){.tok_l = token_list};
+	// for (t_token_list *current = token_list; current; current = current->next)
+	// 	printf("%s ", current->content->str);
+	printf("\n");
 	ast = create_ast(ctx, &data);
+	print_ast(ast, 0);
 	if (ctx->last_error_type)
 		return (NULL);
 	return (ast);
