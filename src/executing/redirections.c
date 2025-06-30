@@ -61,7 +61,7 @@ int	builtin_redir_in(t_redir_list *in)
 		{
 			fd = open(in->content, O_RDONLY);
 			if (fd == -1)
-				return (io_dprintf(\
+				return (close(stdin_backup), io_dprintf(\
 					2, "bash: %s: %s\n", in->content, strerror(errno)), -1);
 		}
 		else
