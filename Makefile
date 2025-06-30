@@ -7,7 +7,9 @@ CFLAGS = -Wall -Wextra -Werror -I$(INC_DIR) -g
 # CFLAGS += $(foreach dir, $(shell find $(INC_DIR) -type d), -I$(dir))
 LDFLAGS = -lreadline
 GDB_FLAGS := --quiet --args
-FUZZER_ARGS = $(FUZZ_DIR)/parsing $(FUZZ_DIR)/seed_corpus/ -artifact_prefix=$(FUZZ_DIR)/crash/ -max_len=32 -only_ascii=0 -print_final_stats=1
+FUZZER_ARGS = $(FUZZ_DIR)/parsing $(FUZZ_DIR)/seed_corpus/ \
+	-artifact_prefix=$(FUZZ_DIR)/crash/ -max_len=32 -only_ascii=1 \
+	-print_final_stats=1
 
 # OS detection
 UNAME_P := $(shell uname -p)
@@ -25,8 +27,6 @@ FUZZ_DIR := $(TEST_DIR)/fuzzer
 # Sources and objects
 SRC := $(shell find $(SRC_DIR) -type f -name "*.c")
 OBJ := $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRC))
-FUZZ_SRC := $(shell find $(SRC_DIR)/tools $(SRC_DIR)/parsing -type f -name "*.c") $(SRC_DIR)/error.c
-FUZZ_OBJ := $(filter $(OBJ_DIR)/parsing/% $(OBJ_DIR)/tools/%, $(OBJ)) $(OBJ_DIR)/error.o
 TEST_SRC := $(shell find $(TEST_DIR) -type f -name "*.c")
 TEST_OBJ := $(patsubst $(TEST_DIR)/%.c, $(OBJ_DIR)/$(TEST_DIR)/%.o, $(TEST_SRC))
 TEST_LINK_OBJ := $(filter-out $(OBJ_DIR)/main.o, $(OBJ)) $(TEST_OBJ)
@@ -86,7 +86,9 @@ macro: re
 
 fuzz: re
 	mkdir -p $(FUZZ_DIR)/crash $(FUZZ_DIR)/parsing
-	clang -g -O1 -fsanitize=fuzzer,address,signed-integer-overflow $(FUZZ_DIR)/fuzzer.c -o fuzz -I$(INC_DIR) $(FUZZ_OBJ) $(LDFLAGS)
+	clang -g -O1 -fsanitize=fuzzer,address,signed-integer-overflow \
+		$(FUZZ_DIR)/fuzzer.c -o fuzz -I$(INC_DIR) \
+		$(filter-out $(OBJ_DIR)/main.o, $(OBJ)) $(LDFLAGS)
 	./fuzz $(FUZZER_ARGS)
 
 .PHONY: all re clean fclean test valgrind gdb testval testgdb macro fuzz
