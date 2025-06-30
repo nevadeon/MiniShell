@@ -3,7 +3,7 @@
 static const char	*g_err_msg[] = {
 [E_NONE] = "",
 [E_BAD_SUBSTITUTION] = "bad substitution",
-[E_UNEXPECTED_TOKEN] = "syntax error near expected token `",
+[E_UNEXPECTED_TOKEN] = "syntax error near unexpected token `",
 [E_UNCLOSED] = "unexpected EOF while looking for matching `",
 [E_UNHANDLED] = "not handled char `",
 [E_PERM_DENIED] = "Permission denied",
