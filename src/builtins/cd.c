@@ -50,6 +50,8 @@ int	builtin_cd(t_ctx *ctx, char **args)
 	env_set_var_value(ctx, str_vjoin(*ctx->prog, 2, "OLDPWD=", cwd));
 	if (getcwd(cwd, sizeof(cwd)) == NULL)
 		cwd[0] = '\0';
+	if (args[1] && str_equals(args[1], "-"))
+		printf("%s\n", cwd);
 	env_set_var_value(ctx, str_vjoin(*ctx->prog, 2, "PWD=", cwd));
 	ctx->last_exit_code = 0;
 	return (0);
