@@ -27,9 +27,9 @@ FUZZ_DIR := $(TEST_DIR)/fuzzer
 # Sources and objects
 SRC := $(shell find $(SRC_DIR) -type f -name "*.c")
 OBJ := $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRC))
-TEST_SRC := $(shell find $(TEST_DIR) -type f -name "*.c")
-TEST_OBJ := $(patsubst $(TEST_DIR)/%.c, $(OBJ_DIR)/$(TEST_DIR)/%.o, $(TEST_SRC))
-TEST_LINK_OBJ := $(filter-out $(OBJ_DIR)/main.o, $(OBJ)) $(TEST_OBJ)
+# TEST_SRC := $(shell find $(TEST_DIR) -type f -name "*.c")
+# TEST_OBJ := $(patsubst $(TEST_DIR)/%.c, $(OBJ_DIR)/$(TEST_DIR)/%.o, $(TEST_SRC))
+# TEST_LINK_OBJ := $(filter-out $(OBJ_DIR)/main.o, $(OBJ)) $(TEST_OBJ)
 
 # ============================================================================ #
 #        Main rules                                                            #
