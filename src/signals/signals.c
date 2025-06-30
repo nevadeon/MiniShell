@@ -1,7 +1,21 @@
 #include "signals.h"
 #include "tools/str.h"
 
+#define CTRL_D 4
+
 static t_ctx	*g_ctx = NULL;
+
+int	rl_getc(FILE *stream)
+{
+	char	c;
+
+	(void)stream;
+	if (read(0, &c, 1) <= 0)
+		return EOF;
+	if (c == CTRL_D)
+		g_ctx->last_exit_code = 131;
+	return (unsigned char)c;
+}
 
 void	handle_sigint(int signal, siginfo_t *info, void *ucontext)
 {

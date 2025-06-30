@@ -60,6 +60,7 @@ typedef enum e_shell_error
 	E_IS_DIR,
 	E_CMD_NOT_FOUND,
 	E_ALLOC_FAIL,
+	E_HDOC_QUIT,
 	E_NOT_EXECUTABLE,
 	E_ACCESS,
 	E_USE_ERRNO,

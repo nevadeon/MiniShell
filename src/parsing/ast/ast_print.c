@@ -7,44 +7,43 @@ static void	plstr(void *content)
 	printf("%s", (char *)content);
 }
 
-static void	plredir(t_redir_list *l)
+static void	predir(t_ast *ast, int fds[2])
 {
-	t_redir_list	*current;
-	char			*type_str;
+	char	path[PATH_MAX + 1];
+	char	resolved_path[PATH_MAX + 1];
+	ssize_t	len;
 
-	current = l;
-	while (current)
-	{
-		if (current->type == E_REDIR_IN)
-			type_str = strdup("<");
-		if (current->type == E_REDIR_OUT_APPEND)
-			type_str = strdup(">>");
-		if (current->type == E_REDIR_OUT_TRUNC)
-			type_str = strdup(">");
-		if (current->type == E_REDIR_HEREDOC)
-			type_str = strdup("<<");
-		printf(" %s ", type_str);
-		free(type_str);
-		printf("%s", (char *)current->content);
-		current = current->next;
+	snprintf(path, sizeof(path), "/proc/self/fd/%d", fds[IN]);
+	len = readlink(path, resolved_path, sizeof(resolved_path) - 1);
+	if (len == -1) {
+		perror("readlink");
+		return;
 	}
+	resolved_path[len] = '\0';
+	printf(", in %s (fd: %d)", resolved_path, ast->leaf.redir[IN]);
+
+	snprintf(path, sizeof(path), "/proc/self/fd/%d", fds[OUT]);
+	len = readlink(path, resolved_path, sizeof(resolved_path) - 1);
+	if (len == -1) {
+		perror("readlink");
+		return;
+	}
+	resolved_path[len] = '\0';
+	printf(" out %s (fd: %d)", resolved_path, fds[OUT]);
 }
 
 static void	_print_leaf(t_ast *ast)
 {
-	if (!ast->s_leaf.func)
+	if (!ast->leaf.func)
 		return ;
-	printf("function : %s", ast->s_leaf.func->content);
-	if (ast->s_leaf.func->next)
+	printf("function : %s", ast->leaf.func->content);
+	if (ast->leaf.func->next)
 	{
 		printf(" [");
-		lst_print((t_list *)ast->s_leaf.func->next, (void (*)(void *))plstr);
+		lst_print((t_list *)ast->leaf.func->next, (void (*)(void *))plstr);
 		printf("]");
 	}
-	if (ast->s_leaf.redir_in)
-		plredir(ast->s_leaf.redir_in);
-	if (ast->s_leaf.redir_out)
-		plredir(ast->s_leaf.redir_out);
+	predir(ast, ast->leaf.redir);
 	printf("\n");
 }
 
@@ -62,7 +61,7 @@ void	print_ast(t_ast *ast, int indent)
 	else if (ast->type == E_CONTROL_OPE)
 	{
 		printf("Operator: |\n");
-		print_ast(ast->s_ope.left, indent + 1);
-		print_ast(ast->s_ope.right, indent + 1);
+		print_ast(ast->ope.left, indent + 1);
+		print_ast(ast->ope.right, indent + 1);
 	}
 }

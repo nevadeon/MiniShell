@@ -13,8 +13,11 @@ typedef enum e_sigstatus
 	S_IGNORE = 0,
 	S_PARENT,
 	S_CHILD,
+	S_HDOC,
 }	t_sigstatus;
 
 void	toggle_signal(t_ctx *ctx, int toggle);
+void	init_handler_int(void *func);
+int		rl_getc(FILE *stream);
 
 #endif

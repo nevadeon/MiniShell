@@ -13,9 +13,9 @@
 
 typedef struct s_token
 {
+	char			*str;
 	t_token_type	type;
 	bool			expanded;
-	char			*str;
 }	t_token;
 
 typedef struct s_token_list
@@ -46,5 +46,8 @@ t_str_list		*compute_pattern(\
 void			quote_removal(t_alloc *alloc, t_token_list *token_list);
 void			print_ast(t_ast *ast, int indent);
 bool			is_var_name_valid(char *str);
+bool			handle_redir(t_ctx *ctx, t_token_list **tok_l, t_ast *node);
+void			handle_heredoc(t_ctx *ctx, t_token *tok, t_ast *node);
+bool			process_expanding(t_ctx *ctx, char **str_ptr, size_t index);
 
 #endif
