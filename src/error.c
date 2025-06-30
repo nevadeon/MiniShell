@@ -42,7 +42,9 @@ void	throw_error(t_ctx *ctx, t_shell_error err, char *arg)
 	assert(g_err_code_size == g_err_msg_size);
 	ctx->last_exit_code = g_err_code[err];
 	ctx->last_error_type = err;
-	if (err == E_USE_ERRNO)
+	if (err == E_CMD_NOT_FOUND)
+		io_dprintf(STDERR, "%s: %s\n", arg, g_err_msg[err]);
+	else if (err == E_USE_ERRNO)
 	{
 		ctx->last_exit_code = errno;
 		io_dprintf(STDERR, "bash: %s: %s\n", arg, strerror(errno));
