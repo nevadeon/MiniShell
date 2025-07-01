@@ -45,20 +45,20 @@ static void	_handle_ope(t_ctx *ctx, t_exec_data *data, t_ope *ope, t_fds fds)
 		if (pipe(pipe_fd) == -1)
 			return (perror("pipe"));
 		_exec_ast(ctx, data, ope->left, (t_fds){
-			.in = pipe_fd[PIPE_OUT],
+			.in = pipe_fd[OUT],
 			.out = fds.prev,
-			.prev = pipe_fd[PIPE_IN]
+			.prev = pipe_fd[IN]
 		});
-		close(pipe_fd[PIPE_OUT]);
+		close(pipe_fd[OUT]);
 		if (fds.prev)
 			close(fds.prev);
 		_exec_ast(ctx, data, ope->right, (t_fds){
 			.in = fds.in,
-			.out = pipe_fd[PIPE_IN],
+			.out = pipe_fd[IN],
 			.prev = 0
 		});
 		if (ope->right->type == NODE_LEAF)
-			close(pipe_fd[PIPE_IN]);
+			close(pipe_fd[IN]);
 	}
 }
 

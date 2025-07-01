@@ -1,6 +1,9 @@
 #ifndef FORWARD_H
 # define FORWARD_H
 
+# define IN 1
+# define OUT 0
+
 typedef enum e_shell_error		t_shell_error;
 typedef enum e_token_type		t_token_type;
 typedef enum e_redir_type		t_redir_type;
