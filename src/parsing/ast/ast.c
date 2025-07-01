@@ -36,8 +36,8 @@ static t_ast	*_create_leaf(t_ctx *ctx, t_ast_context *data)
 
 	node = mem_alloc(*ctx->cmd, sizeof(t_ast));
 	node->type = NODE_LEAF;
-	node->leaf.redir[IN] = STDIN_FILENO;
-	node->leaf.redir[OUT] = STDOUT_FILENO;
+	node->leaf.redir[IN] = NO_REDIR
+	node->leaf.redir[OUT] = NO_REDIR;
 	node->leaf.func = NULL;
 	while (data->tok_l && (data->tok_l->content->type == TOK_WORD
 		|| data->tok_l->content->type == TOK_REDIR_OPE))
@@ -46,9 +46,11 @@ static t_ast	*_create_leaf(t_ctx *ctx, t_ast_context *data)
 			lst_add_back((t_list **)&node->leaf.func, \
 			(t_list *)lst_new(*ctx->cmd, data->tok_l->content->str));
 		else
+		{
 			if (!handle_redir(ctx, &data->tok_l, node))
 				return (NULL);
-		if (ctx->last_exit_code)
+		}
+		if (ctx->last_error_type)
 			return (NULL);
 		data->tok_l = data->tok_l->next;
 	}
@@ -62,7 +64,7 @@ static t_ast	*_handle_word(t_ctx *ctx, t_ast_context *context)
 	if (!context->tok_l || !context->tok_l->content)
 		return (context->root);
 	node = _create_leaf(ctx, context);
-	if (ctx->last_exit_code)
+	if (ctx->last_error_type)
 		return (NULL);
 	if (context->prev && context->prev->type == TOK_CONTROL_OPE)
 	{

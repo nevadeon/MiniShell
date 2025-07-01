@@ -7,29 +7,18 @@ static void	plstr(void *content)
 	printf("%s", (char *)content);
 }
 
-static void	predir(t_ast *ast, int fds[2])
+static void	predir(t_ast *ast)
 {
-	char	path[PATH_MAX + 1];
-	char	resolved_path[PATH_MAX + 1];
-	ssize_t	len;
 
-	snprintf(path, sizeof(path), "/proc/self/fd/%d", fds[IN]);
-	len = readlink(path, resolved_path, sizeof(resolved_path) - 1);
-	if (len == -1) {
-		perror("readlink");
-		return;
-	}
-	resolved_path[len] = '\0';
-	printf(", in %s (fd: %d)", resolved_path, ast->leaf.redir[IN]);
-
-	snprintf(path, sizeof(path), "/proc/self/fd/%d", fds[OUT]);
-	len = readlink(path, resolved_path, sizeof(resolved_path) - 1);
-	if (len == -1) {
-		perror("readlink");
-		return;
-	}
-	resolved_path[len] = '\0';
-	printf(" out %s (fd: %d)", resolved_path, fds[OUT]);
+	printf(", in: %d", ast->leaf.redir[IN]);
+	// char *line;
+	// t_alloc *t = new_arena_allocator(ARENA_BLOCK_SIZE);
+	// printf("\ncontenu : ");
+	// while ((line = str_gnl(t, ast->leaf.redir[IN])) != NULL)
+	// 	printf("%s", line);
+	// printf("\n");
+	// free_allocator(&t);
+	printf(" out: %d", ast->leaf.redir[OUT]);
 }
 
 static void	_print_leaf(t_ast *ast)
@@ -43,7 +32,7 @@ static void	_print_leaf(t_ast *ast)
 		lst_print((t_list *)ast->leaf.func->next, (void (*)(void *))plstr);
 		printf("]");
 	}
-	predir(ast, ast->leaf.redir);
+	predir(ast);
 	printf("\n");
 }
 
