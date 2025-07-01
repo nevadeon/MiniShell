@@ -13,7 +13,33 @@
  * next command
  */
 
-void	handle_ope(t_ctx *ctx, t_exec_data *data, t_ope *ope, t_fds next)
+// void	handle_ope(t_ctx *ctx, t_exec_data *data, t_ope *ope, t_fds next)
+// {
+// 	int	pipe_fd[2];
+
+// 	if (ope->type == OPE_PIPE)
+// 	{
+// 		if (pipe(pipe_fd) == -1)
+// 			return (perror("pipe"));
+// 		exec_recursive(ctx, data, ope->left, (t_fds){
+// 			.in = pipe_fd[OUT],
+// 			.out = next.in,
+// 			.to_close = pipe_fd[IN],
+// 		});
+// 		close(pipe_fd[OUT]);
+// 		if (next.in)
+// 			close(next.in);
+// 		exec_recursive(ctx, data, ope->right, (t_fds){
+// 			.in = pipe_fd[IN],
+// 			.out = next.out,
+// 			.to_close = NO_REDIR,
+// 		});
+// 		if (ope->right->type == NODE_LEAF)
+// 			close(pipe_fd[IN]);
+// 	}
+// }
+
+void	handle_ope(t_exec_data *data, t_ope *ope, int std_in, int prev_in)
 {
 	int	pipe_fd[2];
 
@@ -21,19 +47,13 @@ void	handle_ope(t_ctx *ctx, t_exec_data *data, t_ope *ope, t_fds next)
 	{
 		if (pipe(pipe_fd) == -1)
 			return (perror("pipe"));
-		exec_recursive(ctx, data, ope->left, (t_fds){
-			.in = pipe_fd[OUT],
-			.out = next.in,
-			.to_close = pipe_fd[IN],
-		});
+		data->to_close = pipe_fd[IN];
+		exec_recursive(data, ope->left, pipe_fd[OUT], prev_in);
 		close(pipe_fd[OUT]);
-		if (next.in)
-			close(next.in);
-		exec_recursive(ctx, data, ope->right, (t_fds){
-			.in = next.out,
-			.out = pipe_fd[IN],
-			.to_close = 0,
-		});
+		if (prev_in)
+			close(prev_in);
+		data->to_close = NO_REDIR;
+		exec_recursive(data, ope->right, std_in, pipe_fd[IN]);
 		if (ope->right->type == NODE_LEAF)
 			close(pipe_fd[IN]);
 	}

@@ -7,18 +7,20 @@ static t_exec_data	_make_exec_data(t_ctx *c, t_ast *root)
 	data = (t_exec_data){
 		.paths = str_split(*c->cmd, env_get_var_value(*c->env, "PATH"), ':'),
 		.root = root,
+		.to_close = NO_REDIR,
+		.c = c,
 	};
 	return (data);
 }
 
-void	exec_recursive(t_ctx *ctx, t_exec_data *data, t_ast *ast, t_fds fds)
+void	exec_recursive(t_exec_data *data, t_ast *ast, int fd1, int fd2)
 {
 	if (!ast)
 		return ;
 	if (ast->type == NODE_LEAF)
-		handle_leaf(ctx, data, &ast->leaf, fds);
+		handle_leaf(data, &ast->leaf, fd1, fd2);
 	else
-		handle_ope(ctx, data, &ast->ope, fds);
+		handle_ope(data, &ast->ope, fd1, fd2);
 }
 
 void	execute_ast(t_ctx *ctx, t_ast *ast)
@@ -31,7 +33,7 @@ void	execute_ast(t_ctx *ctx, t_ast *ast)
 	if (ast->type == NODE_LEAF && try_single_builtin(ctx, ast->leaf.redir, \
 		(char **)lst_to_array(*ctx->cmd, (t_list *)ast->leaf.func)))
 		return ;
-	exec_recursive(ctx, &data, ast, (t_fds){0});
+	exec_recursive(&data, ast, NO_REDIR, NO_REDIR);
 	while (data.processes)
 	{
 		waitpid(data.processes->pid, &status, 0);
