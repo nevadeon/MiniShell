@@ -14,7 +14,7 @@ static t_ast	*_handle_ope(t_ctx *ctx, t_ast_context *context)
 	if (!context->tok_l || !context->tok_l->content)
 		return (context->root);
 	node = mem_alloc(*ctx->cmd, sizeof(t_ast));
-	*node = (t_ast){.type = TOK_CONTROL_OPE, .ope.type = OPE_PIPE,};
+	*node = (t_ast){.type = NODE_BRANCH, .ope.type = OPE_PIPE,};
 	if (context->prev_ope)
 		node_to_append = context->prev_ope;
 	else
@@ -35,7 +35,7 @@ static t_ast	*_create_leaf(t_ctx *ctx, t_ast_context *data)
 	t_ast	*node;
 
 	node = mem_alloc(*ctx->cmd, sizeof(t_ast));
-	node->type = TOK_WORD;
+	node->type = NODE_LEAF;
 	node->leaf.redir[IN] = STDIN_FILENO;
 	node->leaf.redir[OUT] = STDOUT_FILENO;
 	node->leaf.func = NULL;

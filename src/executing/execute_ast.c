@@ -1,80 +1,75 @@
 #include "minishell.h"
 
-static void	_exec_ast(t_exec_data *d, t_ast *ast, int fd1, int fd2);
+static void	_exec_ast(t_ctx *ctx, t_exec_data *data, t_ast *ast, t_fds fds);
 
-static void	_clean_exit(t_exec_data *d, int final_in, int final_out)
+static void	_clean_exit(t_ctx *ctx)
 {
 	int	exit_status;
 
-	if (final_in > 0)
-		close(final_in);
-	if (final_out)
-		close(final_out);
-	exit_status = d->c->last_exit_code;
-	if (final_in == -1)
-		exit_status = 1;
-	free_allocator(d->c->cmd);
-	free_allocator(d->c->prog);
+	exit_status = ctx->last_exit_code;
+	free_allocator(ctx->cmd);
+	free_allocator(ctx->prog);
 	exit(exit_status);
 }
 
-static void	_handle_leaf(t_exec_data *d, t_ast *a, int pipe_out, int pipe_in)
+static void	_handle_leaf(\
+	t_ctx *ctx, t_exec_data *data, t_leaf *leaf, t_fds pipe_fd)
 {
+	char	**args;
 	pid_t	pid;
-	int		final_in;
-	int		final_out;
 
 	pid = fork();
 	if (pid == -1)
 		return (perror("fork"));
 	if (pid == 0)
 	{
-		toggle_signal(d->c, S_CHILD);
-		final_in = handle_input_redir(a->s_leaf.redir_in, pipe_out);
-		if (final_in == -1)
-			_clean_exit(d, -1, 0);
-		final_out = handle_output_redir(a->s_leaf.redir_out, pipe_in);
-		if (d->to_close)
-			close(d->to_close);
-		exec_cmd(d->c, d->paths, \
-			(char **)lst_to_array(*(d->c->cmd), (t_list *)a->s_leaf.func));
-		_clean_exit(d, final_in, final_out);
+		toggle_signal(ctx, S_CHILD);
+		handle_redirections(leaf->redir, pipe_fd);
+		args = (char **)lst_to_array(*(ctx->cmd), (t_list *)leaf->func);
+		execute_command(ctx, data->paths, args);
+		_clean_exit(ctx);
 	}
 	else
 	{
-		lst_add_front((t_list **) &d->processes,
-			(t_list *) lst_pid_new(*d->c->cmd, pid));
+		lst_add_front((t_list **) &data->processes,
+			(t_list *) lst_pid_new(*ctx->cmd, pid));
 	}
 }
 
-static void	_handle_ope(t_exec_data *d, t_ast *a, int std_in, int prev_in)
+static void	_handle_ope(t_ctx *ctx, t_exec_data *data, t_ope *ope, t_fds fds)
 {
 	int	pipe_fd[2];
 
-	if (a->s_ope.type == OPE_PIPE)
+	if (ope->type == OPE_PIPE)
 	{
 		if (pipe(pipe_fd) == -1)
 			return (perror("pipe"));
-		d->to_close = pipe_fd[PIPE_IN];
-		_exec_ast(d, a->s_ope.left, pipe_fd[PIPE_OUT], prev_in);
+		_exec_ast(ctx, data, ope->left, (t_fds){
+			.in = pipe_fd[PIPE_OUT],
+			.out = fds.prev,
+			.prev = pipe_fd[PIPE_IN]
+		});
 		close(pipe_fd[PIPE_OUT]);
-		if (prev_in)
-			close(prev_in);
-		d->to_close = 0;
-		_exec_ast(d, a->s_ope.right, std_in, pipe_fd[PIPE_IN]);
-		if (a->s_ope.right->type == NODE_LEAF)
+		if (fds.prev)
+			close(fds.prev);
+		_exec_ast(ctx, data, ope->right, (t_fds){
+			.in = fds.in,
+			.out = pipe_fd[PIPE_IN],
+			.prev = 0
+		});
+		if (ope->right->type == NODE_LEAF)
 			close(pipe_fd[PIPE_IN]);
 	}
 }
 
-static void	_exec_ast(t_exec_data *d, t_ast *ast, int fd1, int fd2)
+static void	_exec_ast(t_ctx *ctx, t_exec_data *data, t_ast *ast, t_fds fds)
 {
 	if (!ast)
 		return ;
 	if (ast->type == NODE_LEAF)
-		_handle_leaf(d, ast, fd1, fd2);
+		_handle_leaf(ctx, data, &ast->leaf, fds);
 	else
-		_handle_ope(d, ast, fd1, fd2);
+		_handle_ope(ctx, data, &ast->ope, fds);
 }
 
 void	execute_ast(t_ctx *ctx, t_ast *ast)
@@ -84,10 +79,10 @@ void	execute_ast(t_ctx *ctx, t_ast *ast)
 
 	data = make_exec_data(ctx);
 	toggle_signal(ctx, S_IGNORE);
-	if (ast->type == NODE_LEAF && try_single_builtin(ctx, ast, \
-		(char **)lst_to_array(*ctx->cmd, (t_list *)ast->s_leaf.func)))
+	if (ast->type == NODE_LEAF && try_single_builtin(ctx, ast->leaf.redir, \
+		(char **)lst_to_array(*ctx->cmd, (t_list *)ast->leaf.func)))
 		return ;
-	_exec_ast(&data, ast, 0, 0);
+	_exec_ast(ctx, &data, ast, (t_fds){0});
 	while (data.processes)
 	{
 		waitpid(data.processes->pid, &status, 0);
@@ -103,4 +98,4 @@ void	execute_ast(t_ctx *ctx, t_ast *ast)
 		data.processes = data.processes->next;
 	}
 }
-// printf("PID: %d | exit_status: %d\n", data.processes->pid, exit_status);
+// printf("PID: %data | exit_code: %data\n", data.processes->pid, exit_status);
