@@ -11,13 +11,6 @@
 # include "tools/list.h"
 # include "tools/env.h"
 
-# ifndef IN
-#  define IN 1
-# endif
-# ifndef OUT
-#  define OUT 0
-# endif
-
 typedef enum e_token_type
 {
 	TOK_WORD,

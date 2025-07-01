@@ -12,17 +12,6 @@
 # include "allocators/allocator.h"
 
 # define CMD_NAME 0
-# define PIPE_OUT 0
-# define PIPE_IN 1
-# define OUT 0
-# define IN 1
-
-# ifndef IN
-#  define IN 1
-# endif
-# ifndef OUT
-#  define OUT 0
-# endif
 
 typedef enum e_error
 {
