@@ -66,7 +66,7 @@ static t_ast	*_handle_word(t_ctx *ctx, t_ast_context *context)
 	node = _create_leaf(ctx, context);
 	if (ctx->last_error_type)
 		return (NULL);
-	if (context->prev && context->prev->type == TOK_CONTROL_OPE)
+	if (context->prev && context->prev->type == NODE_LEAF)
 	{
 		if (!context->prev->ope.left)
 			context->prev->ope.left = node;
