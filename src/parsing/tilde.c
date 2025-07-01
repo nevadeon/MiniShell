@@ -6,7 +6,7 @@
 /*   By: nevadeon <github@glhf.slmail.me>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 15:43:20 by nevadeon          #+#    #+#             */
-/*   Updated: 2025/06/26 23:16:33 by nevadeon         ###   ########.fr       */
+/*   Updated: 2025/07/01 13:24:59 by nevadeon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ void	tilde_expanding(t_ctx *ctx, t_token_list *token_list)
 	current = token_list;
 	while (current)
 	{
-		if (current->content->type == E_WORD)
+		if (current->content->type == TOK_WORD)
 			_process_tilde_token(ctx, current);
 		current = current->next;
 	}

@@ -103,7 +103,7 @@ void	var_expanding(t_ctx *ctx, t_token_list *token_list)
 	while (current)
 	{
 		index = 0;
-		while (current->content->type == E_WORD && !ctx->last_error_type)
+		while (current->content->type == TOK_WORD && !ctx->last_error_type)
 		{
 			s = current->content->str;
 			len = str_len(s);

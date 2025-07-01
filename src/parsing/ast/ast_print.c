@@ -56,9 +56,9 @@ void	print_ast(t_ast *ast, int indent)
 	i = -1;
 	while (++i < indent)
 		printf("  ");
-	if (ast->type == E_WORD)
+	if (ast->type == TOK_WORD)
 		_print_leaf(ast);
-	else if (ast->type == E_CONTROL_OPE)
+	else if (ast->type == TOK_CONTROL_OPE)
 	{
 		printf("Operator: |\n");
 		print_ast(ast->ope.left, indent + 1);

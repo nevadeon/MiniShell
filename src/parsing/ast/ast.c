@@ -14,7 +14,7 @@ static t_ast	*_handle_ope(t_ctx *ctx, t_ast_context *context)
 	if (!context->tok_l || !context->tok_l->content)
 		return (context->root);
 	node = mem_alloc(*ctx->cmd, sizeof(t_ast));
-	*node = (t_ast){.type = E_CONTROL_OPE, .ope.type = E_OPE_PIPE,};
+	*node = (t_ast){.type = TOK_CONTROL_OPE, .ope.type = OPE_PIPE,};
 	if (context->prev_ope)
 		node_to_append = context->prev_ope;
 	else
@@ -25,7 +25,7 @@ static t_ast	*_handle_ope(t_ctx *ctx, t_ast_context *context)
 	context->prev_ope = node;
 	context->tok_l = context->tok_l->next;
 	if (!context->tok_l
-		|| context->tok_l->content->type == E_CONTROL_OPE)
+		|| context->tok_l->content->type == TOK_CONTROL_OPE)
 		return (throw_error(ctx, E_UNEXPECTED_TOKEN, "|"), NULL);
 	return (_handle_word(ctx, context));
 }
@@ -35,14 +35,14 @@ static t_ast	*_create_leaf(t_ctx *ctx, t_ast_context *data)
 	t_ast	*node;
 
 	node = mem_alloc(*ctx->cmd, sizeof(t_ast));
-	node->type = E_WORD;
+	node->type = TOK_WORD;
 	node->leaf.redir[IN] = STDIN_FILENO;
 	node->leaf.redir[OUT] = STDOUT_FILENO;
 	node->leaf.func = NULL;
-	while (data->tok_l && (data->tok_l->content->type == E_WORD
-		|| data->tok_l->content->type == E_REDIR_OPE))
+	while (data->tok_l && (data->tok_l->content->type == TOK_WORD
+		|| data->tok_l->content->type == TOK_REDIR_OPE))
 	{
-		if (data->tok_l->content->type == E_WORD)
+		if (data->tok_l->content->type == TOK_WORD)
 			lst_add_back((t_list **)&node->leaf.func, \
 			(t_list *)lst_new(*ctx->cmd, data->tok_l->content->str));
 		else
@@ -64,7 +64,7 @@ static t_ast	*_handle_word(t_ctx *ctx, t_ast_context *context)
 	node = _create_leaf(ctx, context);
 	if (ctx->last_exit_code)
 		return (NULL);
-	if (context->prev && context->prev->type == E_CONTROL_OPE)
+	if (context->prev && context->prev->type == TOK_CONTROL_OPE)
 	{
 		if (!context->prev->ope.left)
 			context->prev->ope.left = node;
@@ -83,7 +83,7 @@ t_ast	*create_ast(t_ctx *ctx, t_ast_context *context)
 {
 	if (!context->tok_l)
 		return (context->root);
-	if (context->tok_l->content->type == E_CONTROL_OPE)
+	if (context->tok_l->content->type == TOK_CONTROL_OPE)
 		return (_handle_ope(ctx, context));
 	return (_handle_word(ctx, context));
 }

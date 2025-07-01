@@ -15,6 +15,13 @@
 # define PIPE_OUT 0
 # define PIPE_IN 1
 
+# ifndef IN
+#  define IN 1
+# endif
+# ifndef OUT
+#  define OUT 0
+# endif
+
 typedef enum e_error
 {
 	OK,

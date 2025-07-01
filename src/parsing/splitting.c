@@ -19,7 +19,7 @@ static void	_execute_split_default(t_alloc *alloc,
 	while (s[++word_index])
 	{
 		temp->next = (t_token_list *)lst_new(alloc, \
-			(void *)new_token(alloc, s[word_index], false, E_WORD));
+			(void *)new_token(alloc, s[word_index], false, TOK_WORD));
 		temp = temp->next;
 	}
 }
@@ -41,7 +41,7 @@ static void	_execute_split_custom(t_alloc *alloc, \
 	{
 		temp->next = (t_token_list *)lst_new(alloc, \
 			(void *)new_token(alloc, str_tok(alloc, &token_str, &ifs_char), \
-			false, E_WORD));
+			false, TOK_WORD));
 		temp = temp->next;
 	}
 }
