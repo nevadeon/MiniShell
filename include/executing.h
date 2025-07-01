@@ -13,6 +13,13 @@
 
 # define CMD_NAME 0
 
+# ifndef IN
+#  define IN 1
+# endif
+# ifndef OUT
+#  define OUT 0
+# endif
+
 typedef enum e_error
 {
 	OK,
