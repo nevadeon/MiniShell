@@ -15,6 +15,8 @@
 # define BROWN "\001\033[1;33m\002"
 # define RESET "\001\033[0m\002"
 
+# define CTRL_D_TEMP_EXIT_CODE 131
+
 # include "forward.h"
 # include "signals.h"
 # include <assert.h>
@@ -61,6 +63,7 @@ typedef enum e_shell_error
 	E_CMD_NOT_FOUND,
 	E_ALLOC_FAIL,
 	E_HDOC_QUIT,
+	E_HDOC_INT,
 	E_NOT_EXECUTABLE,
 	E_ACCESS,
 	E_USE_ERRNO,

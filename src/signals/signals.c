@@ -13,7 +13,7 @@ int	rl_getc(FILE *stream)
 	if (read(0, &c, 1) <= 0)
 		return EOF;
 	if (c == CTRL_D)
-		g_ctx->last_exit_code = 131;
+		g_ctx->last_exit_code = CTRL_D_TEMP_EXIT_CODE;
 	return (unsigned char)c;
 }
 

@@ -16,12 +16,13 @@ void	handle_command(t_ctx *ctx, char *input)
 {
 	t_ast	*ast;
 
+	ctx->last_error_type = E_NONE;
 	ast = parsing(ctx, input);
 	if (!ast || ctx->last_error_type)
 		return ;
+	ctx->last_exit_code = 0;
 	// execute_ast(ctx, ast);
 	toggle_signal(ctx, S_PARENT);
-	ctx->last_exit_code = 0;
 }
 
 void	input_loop(t_ctx *ctx)
