@@ -36,7 +36,7 @@ int	builtin_redir_out(t_redir_list *out)
 		stdout_backup = dup(STDIN_FILENO);
 	while (out)
 	{
-		if (out->type == E_REDIR_OUT_TRUNC)
+		if (out->type == REDIR_OUT_TRUNC)
 			fd = open(out->content, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 		else
 			fd = open(out->content, O_WRONLY | O_CREAT | O_APPEND, 0644);
@@ -57,7 +57,7 @@ int	builtin_redir_in(t_redir_list *in)
 		stdin_backup = dup(STDIN_FILENO);
 	while (in)
 	{
-		if (in->type == E_REDIR_IN)
+		if (in->type == REDIR_IN)
 		{
 			fd = open(in->content, O_RDONLY);
 			if (fd == -1)
@@ -84,14 +84,14 @@ int	handle_input_redir(t_redir_list *redir, int pipe_fd)
 		close(pipe_fd);
 	while (redir)
 	{
-		if (redir->type == E_REDIR_IN)
+		if (redir->type == REDIR_IN)
 		{
 			fd = open(redir->content, O_RDONLY);
 			if (fd == -1)
 				return (io_dprintf(\
 					2, "bash: %s: %s\n", redir->content, strerror(errno)), -1);
 		}
-		else if (redir->type == E_REDIR_HEREDOC)
+		else if (redir->type == REDIR_HEREDOC)
 			fd = _heredoc(redir->content);
 		if (redir->next)
 			close(fd);
@@ -113,9 +113,9 @@ int	handle_output_redir(t_redir_list *redir, int pipe_fd)
 		close(pipe_fd);
 	while (redir)
 	{
-		if (redir->type == E_REDIR_OUT_TRUNC)
+		if (redir->type == REDIR_OUT_TRUNC)
 			fd = open(redir->content, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-		else if (redir->type == E_REDIR_OUT_APPEND)
+		else if (redir->type == REDIR_OUT_APPEND)
 			fd = open(redir->content, O_WRONLY | O_CREAT | O_APPEND, 0644);
 		if (redir->next)
 			close(fd);

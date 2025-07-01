@@ -17,7 +17,7 @@ static void	_apply_wildcard(t_alloc *alloc,
 	while (current != NULL)
 	{
 		temp->next = (t_token_list *)lst_new(alloc,
-				(void *)new_token(alloc, current->content, false, E_WORD));
+				(void *)new_token(alloc, current->content, false, TOK_WORD));
 		current = current->next;
 		temp = temp->next;
 	}

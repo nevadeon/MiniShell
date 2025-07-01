@@ -8,8 +8,16 @@
 # include <stdbool.h>
 # include "allocators/allocator.h"
 
-# define IN 0
-# define OUT 1
+typedef enum e_node_type
+{
+	NODE_LEAF,
+	NODE_BRANCH,
+}	t_node_type;
+
+typedef enum e_ope_type
+{
+	OPE_PIPE,
+}	t_ope_type;
 
 typedef struct s_leaf
 {

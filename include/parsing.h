@@ -11,6 +11,29 @@
 # include "tools/list.h"
 # include "tools/env.h"
 
+# ifndef IN
+#  define IN 1
+# endif
+# ifndef OUT
+#  define OUT 0
+# endif
+
+typedef enum e_token_type
+{
+	TOK_WORD,
+	TOK_CONTROL_OPE,
+	TOK_REDIR_OPE
+}	t_token_type;
+
+typedef enum e_redir_type
+{
+	REDIR_IN,
+	REDIR_HEREDOC,
+	REDIR_OUT_TRUNC,
+	REDIR_OUT_APPEND,
+	REDIR_INDEX_MAX
+}	t_redir_type;
+
 typedef struct s_token
 {
 	char			*str;

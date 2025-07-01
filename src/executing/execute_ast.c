@@ -51,7 +51,7 @@ static void	_handle_ope(t_exec_data *d, t_ast *a, int std_in, int prev_in)
 {
 	int	pipe_fd[2];
 
-	if (a->s_ope.type == E_OPE_PIPE)
+	if (a->s_ope.type == OPE_PIPE)
 	{
 		if (pipe(pipe_fd) == -1)
 			return (perror("pipe"));
@@ -62,7 +62,7 @@ static void	_handle_ope(t_exec_data *d, t_ast *a, int std_in, int prev_in)
 			close(prev_in);
 		d->to_close = 0;
 		_exec_ast(d, a->s_ope.right, std_in, pipe_fd[PIPE_IN]);
-		if (a->s_ope.right->type == E_WORD)
+		if (a->s_ope.right->type == NODE_LEAF)
 			close(pipe_fd[PIPE_IN]);
 	}
 }
@@ -71,7 +71,7 @@ static void	_exec_ast(t_exec_data *d, t_ast *ast, int fd1, int fd2)
 {
 	if (!ast)
 		return ;
-	if (ast->type == E_WORD)
+	if (ast->type == NODE_LEAF)
 		_handle_leaf(d, ast, fd1, fd2);
 	else
 		_handle_ope(d, ast, fd1, fd2);
@@ -84,7 +84,7 @@ void	execute_ast(t_ctx *ctx, t_ast *ast)
 
 	data = make_exec_data(ctx);
 	toggle_signal(ctx, S_IGNORE);
-	if (ast->type == E_WORD && try_single_builtin(ctx, ast, \
+	if (ast->type == NODE_LEAF && try_single_builtin(ctx, ast, \
 		(char **)lst_to_array(*ctx->cmd, (t_list *)ast->s_leaf.func)))
 		return ;
 	_exec_ast(&data, ast, 0, 0);

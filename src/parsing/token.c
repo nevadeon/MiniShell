@@ -3,26 +3,26 @@
 t_redir_type	get_redir_type(char *s)
 {
 	if (str_equals(s, "<<"))
-		return (E_REDIR_HEREDOC);
+		return (REDIR_HEREDOC);
 	if (str_equals(s, ">>"))
-		return (E_REDIR_OUT_APPEND);
+		return (REDIR_OUT_APPEND);
 	if (str_equals(s, "<"))
-		return (E_REDIR_IN);
+		return (REDIR_IN);
 	if (str_equals(s, ">"))
-		return (E_REDIR_OUT_TRUNC);
-	return (E_REDIR_LAST_INDEX);
+		return (REDIR_OUT_TRUNC);
+	return (REDIR_INDEX_MAX);
 }
 
 t_token_type	get_token_type(char *s)
 {
 	if (str_equals(s, "|"))
-		return (E_CONTROL_OPE);
+		return (TOK_CONTROL_OPE);
 	if (str_equals(s, "<<")
 		|| str_equals(s, ">>")
 		|| str_equals(s, "<")
 		|| str_equals(s, ">"))
-		return (E_REDIR_OPE);
-	return (E_WORD);
+		return (TOK_REDIR_OPE);
+	return (TOK_WORD);
 }
 
 t_token	*new_token(t_alloc *alloc, char *str, bool expanded, t_token_type type)

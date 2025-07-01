@@ -24,27 +24,27 @@ void	test_tokenize(t_ctx *ctx)
 	input = str_dup(*ctx->cmd, "cmd >> \">>\" << < 'cmd '");
 	token_list = tokenize(ctx, &input);
 	assert(token_list);
-	assert(token_list->content->type == E_WORD);
+	assert(token_list->content->type == TOK_WORD);
 	assert(str_equals(token_list->content->str, "cmd"));
 
 	current = token_list->next;
-	assert(current && current->content->type == E_REDIR_OPE);
+	assert(current && current->content->type == TOK_REDIR_OPE);
 	assert(str_equals(current->content->str, ">>"));
 
 	current = current->next;
-	assert(current && current->content->type == E_WORD);
+	assert(current && current->content->type == TOK_WORD);
 	assert(str_equals(current->content->str, "\">>\""));
 
 	current = current->next;
-	assert(current && current->content->type == E_REDIR_OPE);
+	assert(current && current->content->type == TOK_REDIR_OPE);
 	assert(str_equals(current->content->str, "<<"));
 
 	current = current->next;
-	assert(current && current->content->type == E_REDIR_OPE);
+	assert(current && current->content->type == TOK_REDIR_OPE);
 	assert(str_equals(current->content->str, "<"));
 
 	current = current->next;
-	assert(current && current->content->type == E_WORD);
+	assert(current && current->content->type == TOK_WORD);
 	assert(str_equals(current->content->str, "'cmd '"));
 }
 
@@ -59,21 +59,21 @@ void	test_tokenize_pipes(t_ctx *ctx)
 	assert(token_list);
 
 	// First command
-	assert(token_list->content->type == E_WORD);
+	assert(token_list->content->type == TOK_WORD);
 	assert(str_equals(token_list->content->str, "ls"));
 
 	current = token_list->next;
-	assert(current && current->content->type == E_WORD);
+	assert(current && current->content->type == TOK_WORD);
 	assert(str_equals(current->content->str, "-la"));
 
 	// First pipe
 	current = current->next;
-	assert(current && current->content->type == E_CONTROL_OPE);
+	assert(current && current->content->type == TOK_CONTROL_OPE);
 	assert(str_equals(current->content->str, "|"));
 
 	// Second command
 	current = current->next;
-	assert(current && current->content->type == E_WORD);
+	assert(current && current->content->type == TOK_WORD);
 	assert(str_equals(current->content->str, "grep"));
 }
 
@@ -86,14 +86,14 @@ void	test_tokenize_quotes(t_ctx *ctx)
 	input = str_dup(*ctx->cmd, "echo 'hello world'");
 	token_list = tokenize(ctx, &input);
 	assert(token_list);
-	assert(token_list->next && token_list->next->content->type == E_WORD);
+	assert(token_list->next && token_list->next->content->type == TOK_WORD);
 	assert(str_equals(token_list->next->content->str, "'hello world'"));
 
 	// Test double quotes with variables
 	input = str_dup(*ctx->cmd, "echo \"hello $USER\"");
 	token_list = tokenize(ctx, &input);
 	assert(token_list);
-	assert(token_list->next && token_list->next->content->type == E_WORD);
+	assert(token_list->next && token_list->next->content->type == TOK_WORD);
 }
 
 void	test_tokenize_edge_cases(t_ctx *ctx)
@@ -115,7 +115,7 @@ void	test_tokenize_edge_cases(t_ctx *ctx)
 	input = str_dup(*ctx->cmd, "cmd > file >> append < input");
 	token_list = tokenize(ctx, &input);
 	assert(token_list);
-	assert(token_list->content->type == E_WORD);
+	assert(token_list->content->type == TOK_WORD);
 }
 
 void	test_tilde_expanding(t_ctx *ctx)
@@ -127,7 +127,7 @@ void	test_tilde_expanding(t_ctx *ctx)
 	input = str_dup(*ctx->cmd, "echo ~");
 	token_list = tokenize(ctx, &input);
 	tilde_expanding(ctx, token_list);
-	assert(token_list->next && token_list->next->content->type == E_WORD);
+	assert(token_list->next && token_list->next->content->type == TOK_WORD);
 	// Should expand to HOME environment variable
 	assert(token_list->next->content->str[0] == '/');
 
@@ -135,7 +135,7 @@ void	test_tilde_expanding(t_ctx *ctx)
 	input = str_dup(*ctx->cmd, "cd ~/repo");
 	token_list = tokenize(ctx, &input);
 	tilde_expanding(ctx, token_list);
-	assert(token_list->next && token_list->next->content->type == E_WORD);
+	assert(token_list->next && token_list->next->content->type == TOK_WORD);
 	// Should start with / and end with /repo
 	assert(token_list->next->content->str[0] == '/');
 	assert(str_contains(token_list->next->content->str, "/repo"));
@@ -144,7 +144,7 @@ void	test_tilde_expanding(t_ctx *ctx)
 	input = str_dup(*ctx->cmd, "ls ~root");
 	token_list = tokenize(ctx, &input);
 	tilde_expanding(ctx, token_list);
-	assert(token_list->next && token_list->next->content->type == E_WORD);
+	assert(token_list->next && token_list->next->content->type == TOK_WORD);
 	// Should expand to user's home directory
 	assert(token_list->next->content->str[0] == '/');
 
@@ -152,7 +152,7 @@ void	test_tilde_expanding(t_ctx *ctx)
 	input = str_dup(*ctx->cmd, "echo hello");
 	token_list = tokenize(ctx, &input);
 	tilde_expanding(ctx, token_list);
-	assert(token_list->next && token_list->next->content->type == E_WORD);
+	assert(token_list->next && token_list->next->content->type == TOK_WORD);
 	assert(str_equals(token_list->next->content->str, "hello"));
 }
 
