@@ -11,7 +11,7 @@ static void	_expand_var(t_ctx *ctx, char **str_ptr)
 	{
 		if ((*str_ptr)[index] == '$')
 			process_expanding(ctx, str_ptr, index + 1);
-		if (ctx->last_exit_code)
+		if (ctx->last_error_type)
 			return (throw_error(ctx, E_BAD_SUBSTITUTION, (*str_ptr)));
 		index++;
 	}
@@ -34,6 +34,8 @@ void	handle_heredoc(t_ctx *ctx, t_token *tok, t_ast *node)
 	char	*line;
 	int		fd[2];
 
+	if (node->leaf.redir[IN] != NO_REDIR)
+		close (node->leaf.redir[IN]);
 	init_handler_int(&_hdoc_sigint);
 	rl_getc_function = rl_getc;
 	while (1)
@@ -41,9 +43,12 @@ void	handle_heredoc(t_ctx *ctx, t_token *tok, t_ast *node)
 		line = readline(">");
 		if (!line)
 		{
-			if (ctx->last_exit_code == 131)
-				return (throw_error(ctx, E_HDOC_QUIT, tok->str));
-			return (ctx->last_exit_code = 130, (void)1);
+			if (ctx->last_exit_code == CTRL_D_TEMP_EXIT_CODE)
+			{
+				throw_error(ctx, E_HDOC_QUIT, tok->str);
+				break ;
+			}
+			return (throw_error(ctx, E_HDOC_INT, NULL));
 		}
 		if (str_equals(line, tok->str))
 			break ;
@@ -55,7 +60,6 @@ void	handle_heredoc(t_ctx *ctx, t_token *tok, t_ast *node)
 	if (pipe(fd) == -1)
 		return (throw_error(ctx, E_USE_ERRNO, "ERRNO ERROR"));
 	io_dprintf(fd[1], "%s", heredoc_string);
-	close(fd[1]);
-	node->leaf.redir[IN] = fd[0];
+	return (close(fd[1]), node->leaf.redir[IN] = fd[0], (void)1);
 }
 

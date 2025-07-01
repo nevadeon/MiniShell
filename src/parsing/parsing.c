@@ -11,7 +11,6 @@ t_ast	*parsing(t_ctx *ctx, char *inp)
 
 	if (!inp || inp[0] == '\0')
 		return (NULL);
-	ctx->last_error_type = E_NONE;
 	remove_comment(*ctx->cmd, &inp);
 	token_list = tokenize(ctx, &inp);
 	if (ctx->last_error_type)
@@ -24,9 +23,9 @@ t_ast	*parsing(t_ctx *ctx, char *inp)
 	wildcard_expanding(*ctx->cmd, token_list);
 	quote_removal(*ctx->cmd, token_list);
 	data = (t_ast_context){.tok_l = token_list};
-	// for (t_token_list *current = token_list; current; current = current->next)
-	// 	printf("%s ", current->content->str);
-	printf("\n");
+	if (ctx->last_error_type)
+		return (NULL);
+	ctx->last_error_type = 0;
 	ast = create_ast(ctx, &data);
 	print_ast(ast, 0);
 	if (ctx->last_error_type)

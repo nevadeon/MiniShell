@@ -1,6 +1,8 @@
 #ifndef PARSING_H
 # define PARSING_H
 
+# define NO_REDIR -2
+
 # include "forward.h"
 # include "allocators/allocator.h"
 # include <stdbool.h>
