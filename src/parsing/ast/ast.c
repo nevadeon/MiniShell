@@ -36,7 +36,7 @@ static t_ast	*_create_leaf(t_ctx *ctx, t_ast_context *data)
 
 	node = mem_alloc(*ctx->cmd, sizeof(t_ast));
 	node->type = NODE_LEAF;
-	node->leaf.redir[IN] = NO_REDIR
+	node->leaf.redir[IN] = NO_REDIR;
 	node->leaf.redir[OUT] = NO_REDIR;
 	node->leaf.func = NULL;
 	while (data->tok_l && (data->tok_l->content->type == TOK_WORD
