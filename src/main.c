@@ -21,7 +21,7 @@ void	handle_command(t_ctx *ctx, char *input)
 	if (!ast || ctx->last_error_type)
 		return ;
 	ctx->last_exit_code = 0;
-	// execute_ast(ctx, ast);
+	execute_ast(ctx, ast);
 	toggle_signal(ctx, S_PARENT);
 }
 

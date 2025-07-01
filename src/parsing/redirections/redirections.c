@@ -89,13 +89,13 @@ bool	handle_redir(t_ctx *ctx, t_token_list **tok_l, t_ast *node)
 	if (!(*tok_l))
 		return (throw_error(ctx, E_UNEXPECTED_TOKEN, "newline"), false);
 	tok = (*tok_l)->content;
-	if (redir_type == E_REDIR_IN)
+	if (redir_type == REDIR_IN)
 		_handle_in(ctx, tok, node);
 	else if (redir_type == REDIR_HEREDOC)
 		handle_heredoc(ctx, tok, node);
-	else if (redir_type == E_REDIR_OUT_TRUNC)
+	else if (redir_type == REDIR_OUT_TRUNC)
 		_handle_trunc(ctx, tok, node);
-	else if (redir_type == E_REDIR_OUT_APPEND)
+	else if (redir_type == REDIR_OUT_APPEND)
 		_handle_append(ctx, tok, node);
 	if (ctx->last_error_type)
 		return (false);

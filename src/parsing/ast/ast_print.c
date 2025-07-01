@@ -45,9 +45,9 @@ void	print_ast(t_ast *ast, int indent)
 	i = -1;
 	while (++i < indent)
 		printf("  ");
-	if (ast->type == TOK_WORD)
+	if (ast->type == NODE_LEAF)
 		_print_leaf(ast);
-	else if (ast->type == TOK_CONTROL_OPE)
+	else if (ast->type == NODE_BRANCH)
 	{
 		printf("Operator: |\n");
 		print_ast(ast->ope.left, indent + 1);

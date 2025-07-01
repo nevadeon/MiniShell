@@ -27,7 +27,7 @@ t_ast	*parsing(t_ctx *ctx, char *inp)
 		return (NULL);
 	ctx->last_error_type = 0;
 	ast = create_ast(ctx, &data);
-	print_ast(ast, 0);
+	// print_ast(ast, 0);
 	if (ctx->last_error_type)
 		return (NULL);
 	return (ast);
