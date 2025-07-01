@@ -14,6 +14,8 @@
 # define CMD_NAME 0
 # define PIPE_OUT 0
 # define PIPE_IN 1
+# define OUT 0
+# define IN 1
 
 # ifndef IN
 #  define IN 1
@@ -29,6 +31,13 @@ typedef enum e_error
 	E_UNEXPECTED_NODE_TYPE,
 }	t_error;
 
+typedef struct s_fds
+{
+	int	in;
+	int	out;
+	int	prev;
+}	t_fds;
+
 typedef struct s_pid_list
 {
 	struct s_pid_list	*next;
@@ -38,22 +47,19 @@ typedef struct s_pid_list
 typedef struct s_exec_data
 {
 	t_pid_list	*processes;
-	t_ctx		*c;
 	char		**paths;
-	int			to_close;
 }	t_exec_data;
 
 t_exec_data	make_exec_data(t_ctx *c);
 void		execute_ast(t_ctx *ctx, t_ast *ast);
-void		exec_cmd(t_ctx *ctx, char **env_paths, char **args);
-int			handle_input_redir(t_redir_list *redir, int pipe_fd);
-int			handle_output_redir(t_redir_list *redir, int pipe_fd);
-void		dup_close(int source_fd, int dest_fd);
+void		execute_command(t_ctx *ctx, char **env_paths, char **args);
+void		handle_redirections(int redir_fd[2], t_fds pipe_fd);
+bool		try_single_builtin(t_ctx *ctx, int redir_fd[2], char **args);
+bool		try_builtin(t_ctx *ctx, char **args);
+
+//tools
+void		dup2_close(int source_fd, int dest_fd);
+int			replace_std(int	redir_fd, int std_fileno);
 t_pid_list	*lst_pid_new(t_alloc *alloc, pid_t pid);
-bool		try_single_builtin(t_ctx *ctx, t_ast *ast, char **args);
-int			builtin_redir_in(t_redir_list *in);
-int			builtin_redir_out(t_redir_list *out);
-void		execve_on_path(\
-				t_ctx *ctx, char *path, char **args, int not_found_err);
 
 #endif

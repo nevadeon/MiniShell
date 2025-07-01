@@ -7,7 +7,7 @@ _| """ |_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|
 "`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'
 
 ==2905466== Invalid read of size 8
-==2905466==    at 0x404F84: exec_cmd (execute_cmd.c:81)
+==2905466==    at 0x404F84: execute_command (execute_cmd.c:81)
 ==2905466==    by 0x404AAB: _handle_leaf (execute_ast.c:35)
 ==2905466==    by 0x4049A5: _exec_ast (execute_ast.c:71)
 ==2905466==    by 0x404914: execute_ast (execute_ast.c:87)
@@ -19,7 +19,7 @@ _| """ |_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|
 ==2905466==
 ==2905466== Process terminating with default action of signal 11 (SIGSEGV)
 ==2905466==  Access not within mapped region at address 0x0
-==2905466==    at 0x404F84: exec_cmd (execute_cmd.c:81)
+==2905466==    at 0x404F84: execute_command (execute_cmd.c:81)
 ==2905466==    by 0x404AAB: _handle_leaf (execute_ast.c:35)
 ==2905466==    by 0x4049A5: _exec_ast (execute_ast.c:71)
 ==2905466==    by 0x404914: execute_ast (execute_ast.c:87)
