@@ -1,4 +1,4 @@
-#include "minishell.h"
+#include "executing.h"
 
 static t_exec_data	_make_exec_data(t_ctx *c, t_ast *root)
 {
@@ -13,7 +13,7 @@ static t_exec_data	_make_exec_data(t_ctx *c, t_ast *root)
 	return (data);
 }
 
-void	exec_recursive(t_exec_data *data, t_ast *ast, int fd1, int fd2)
+void	execute_ast_recursive(t_exec_data *data, t_ast *ast, int fd1, int fd2)
 {
 	if (!ast)
 		return ;
@@ -33,7 +33,7 @@ void	execute_ast(t_ctx *ctx, t_ast *ast)
 	if (ast->type == NODE_LEAF && try_single_builtin(ctx, ast->leaf.redir, \
 		(char **)lst_to_array(*ctx->cmd, (t_list *)ast->leaf.func)))
 		return ;
-	exec_recursive(&data, ast, NO_REDIR, NO_REDIR);
+	execute_ast_recursive(&data, ast, NO_REDIR, NO_REDIR);
 	while (data.processes)
 	{
 		waitpid(data.processes->pid, &status, 0);

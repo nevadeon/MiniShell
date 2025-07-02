@@ -21,7 +21,7 @@
 // 	{
 // 		if (pipe(pipe_fd) == -1)
 // 			return (perror("pipe"));
-// 		exec_recursive(ctx, data, ope->left, (t_fds){
+// 		execute_ast_recursive(ctx, data, ope->left, (t_fds){
 // 			.in = pipe_fd[OUT],
 // 			.out = next.in,
 // 			.to_close = pipe_fd[IN],
@@ -29,7 +29,7 @@
 // 		close(pipe_fd[OUT]);
 // 		if (next.in)
 // 			close(next.in);
-// 		exec_recursive(ctx, data, ope->right, (t_fds){
+// 		execute_ast_recursive(ctx, data, ope->right, (t_fds){
 // 			.in = pipe_fd[IN],
 // 			.out = next.out,
 // 			.to_close = NO_REDIR,
@@ -48,12 +48,12 @@ void	handle_ope(t_exec_data *data, t_ope *ope, int std_in, int prev_in)
 		if (pipe(pipe_fd) == -1)
 			return (perror("pipe"));
 		data->to_close = pipe_fd[IN];
-		exec_recursive(data, ope->left, pipe_fd[OUT], prev_in);
+		execute_ast_recursive(data, ope->left, pipe_fd[OUT], prev_in);
 		close(pipe_fd[OUT]);
 		if (prev_in)
 			close(prev_in);
 		data->to_close = NO_REDIR;
-		exec_recursive(data, ope->right, std_in, pipe_fd[IN]);
+		execute_ast_recursive(data, ope->right, std_in, pipe_fd[IN]);
 		if (ope->right->type == NODE_LEAF)
 			close(pipe_fd[IN]);
 	}
