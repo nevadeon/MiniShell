@@ -28,7 +28,7 @@ void	handle_command(t_ctx *ctx, char *input)
 		return ;
 	print_ast(ast, 0);
 	execute_ast(ctx, ast);
-	close_redirections(ast);
+	close_heredocs(ast);
 	toggle_signal(ctx, S_PARENT);
 }
 
@@ -81,7 +81,6 @@ int	main(int argc, __attribute__((unused)) char **argv, char **envp)
 	t_alloc				*alloc;
 
 	rl_catch_signals = 0;
-	rl_outstream = stderr;
 	if (argc != 1)
 		return (EXIT_FAILURE);
 	alloc = new_mgc_allocator(ARENA_BLOCK_SIZE);
