@@ -50,7 +50,7 @@ void	throw_error(t_ctx *ctx, t_shell_error err, char *arg)
 	if (err == E_HDOC_INT)
 		return ;
 	else if (err == E_CMD_NOT_FOUND)
-		io_dprintf(STDERR, "%s: %s\n", arg, g_err_msg[err]);
+		io_dprintf(STDERR, "bash: %s: %s\n", arg, g_err_msg[err]);
 	else if (err == E_USE_ERRNO)
 	{
 		ctx->last_exit_code = errno;
