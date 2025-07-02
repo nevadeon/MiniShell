@@ -9,16 +9,21 @@ static void	plstr(void *content)
 
 static void	predir(t_ast *ast)
 {
+	t_redir_list	*current;
 
-	printf(", in: %d", ast->leaf.redir[IN]);
-	// char *line;
-	// t_alloc *t = new_arena_allocator(ARENA_BLOCK_SIZE);
-	// printf("\ncontenu : ");
-	// while ((line = str_gnl(t, ast->leaf.redir[IN])) != NULL)
-	// 	printf("%s", line);
-	// printf("\n");
-	// free_allocator(&t);
-	printf(" out: %d", ast->leaf.redir[OUT]);
+	current = ast->leaf.redir_list;
+	while (current)
+	{
+		switch (current->type)
+		{
+			case REDIR_HEREDOC: printf(", HDOC: %d", current->heredoc); break;
+			case REDIR_IN: printf(", < %s", current->filename); break;
+			case REDIR_OUT_TRUNC: printf(", > %s", current->filename); break;
+			case REDIR_OUT_APPEND: printf(", >> %s", current->filename); break;
+			default : assert(false);
+		}
+		current = current->next;
+	}
 }
 
 static void	_print_leaf(t_ast *ast)

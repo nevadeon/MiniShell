@@ -14,13 +14,19 @@ void	increase_shlvl(t_ctx *ctx)
 
 void	handle_command(t_ctx *ctx, char *input)
 {
-	t_ast	*ast;
+	t_ast			*ast;
+	t_ast_context	data;
+	t_token_list	*token_list;
 
 	ctx->last_error_type = E_NONE;
-	ast = parsing(ctx, input);
+	token_list = parsing(ctx, input);
+	if (ctx->last_error_type)
+		return ;
+	data = (t_ast_context){.tok_l = token_list};
+	ast = create_ast(ctx, &data);
 	if (!ast || ctx->last_error_type)
 		return ;
-	ctx->last_exit_code = 0;
+	print_ast(ast, 0);
 	execute_ast(ctx, ast);
 	close_redirections(ast);
 	toggle_signal(ctx, S_PARENT);
@@ -30,12 +36,17 @@ void	input_loop(t_ctx *ctx)
 {
 	char	*input;
 	t_alloc	*alloc_cmd;
+	char	*prompt;
 
 	while (1)
 	{
 		alloc_cmd = new_mgc_allocator(ARENA_BLOCK_SIZE);
 		ctx->cmd = &alloc_cmd;
-		input = readline(readline_prompt(*ctx->cmd));
+		if (isatty(STDIN_FILENO))
+			prompt = readline_prompt(*ctx->cmd);
+		else
+			prompt = NULL;
+		input = readline(prompt);
 		if (!input)
 			break ;
 		if (input[0] != '\0')
@@ -44,7 +55,8 @@ void	input_loop(t_ctx *ctx)
 		free_allocator(ctx->cmd);
 		free(input);
 	}
-	printf("exit\n");
+	if (isatty(STDIN_FILENO))
+		printf("exit\n");
 	free_allocator(ctx->cmd);
 	free(input);
 }
@@ -69,6 +81,7 @@ int	main(int argc, __attribute__((unused)) char **argv, char **envp)
 	t_alloc				*alloc;
 
 	rl_catch_signals = 0;
+	rl_outstream = stderr;
 	if (argc != 1)
 		return (EXIT_FAILURE);
 	alloc = new_mgc_allocator(ARENA_BLOCK_SIZE);
