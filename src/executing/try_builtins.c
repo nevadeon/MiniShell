@@ -24,10 +24,22 @@ static const t_builtin_fn	g_builtin_fn[] = {
 static const size_t			g_array_size = \
 sizeof(g_builtin_name) / sizeof(g_builtin_name[0]);
 
+static int	_replace_fd(int src, int dest)
+{
+	int	src_temp;
+
+	if (src < 0 || dest < 0)
+		return (-1);
+	src_temp = dup(dest);
+	dup2(src, dest);
+	return (src_temp);
+}
+
 bool	try_single_builtin(t_ctx *ctx, int redir_fd[2], char **args)
 {
-	int		i;
-	t_fds	std_cpy;
+	int	i;
+	int	stdin_cpy;
+	int	stdout_cpy;
 
 	if (!args)
 		return (false);
@@ -36,13 +48,11 @@ bool	try_single_builtin(t_ctx *ctx, int redir_fd[2], char **args)
 	{
 		if (str_cmp(g_builtin_name[i], args[CMD_NAME]) == 0)
 		{
-			std_cpy.in = replace_std(redir_fd[IN], STDIN_FILENO);
-			std_cpy.out = replace_std(redir_fd[OUT], STDOUT_FILENO);
+			stdin_cpy = _replace_fd(redir_fd[IN], STDIN_FILENO);
+			stdout_cpy = _replace_fd(redir_fd[OUT], STDOUT_FILENO);
 			ctx->last_exit_code = g_builtin_fn[i](ctx, args);
-			if (std_cpy.in)
-				dup2_close(std_cpy.in, STDIN_FILENO);
-			if (std_cpy.out)
-				dup2_close(std_cpy.out, STDOUT_FILENO);
+			dup2_close(stdin_cpy, STDIN_FILENO);
+			dup2_close(stdout_cpy, STDOUT_FILENO);
 			return (true);
 		}
 	}
