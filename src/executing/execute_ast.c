@@ -48,6 +48,5 @@ void	execute_ast(t_ctx *ctx, t_ast *ast)
 			ctx->last_exit_code = WEXITSTATUS(status);
 		data.processes = data.processes->next;
 	}
-	close_redirections(ast);
 }
 // printf("PID: %data | exit_code: %data\n", data.processes->pid, exit_status);

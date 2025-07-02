@@ -22,6 +22,7 @@ void	handle_command(t_ctx *ctx, char *input)
 		return ;
 	ctx->last_exit_code = 0;
 	execute_ast(ctx, ast);
+	close_redirections(ast);
 	toggle_signal(ctx, S_PARENT);
 }
 
