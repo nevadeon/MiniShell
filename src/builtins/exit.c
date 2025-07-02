@@ -58,7 +58,7 @@ int	builtin_exit(t_ctx *ctx, char **args)
 	long long	status;
 	int			parsed;
 
-	printf("exit\n");
+	io_dprintf(STDERR, "exit\n");
 	if (!args[1])
 		cleanup_and_exit(ctx, (unsigned char)ctx->last_exit_code);
 	parsed = _parse_number(args[1], &status);

@@ -98,25 +98,35 @@ void	var_expanding(t_ctx *ctx, t_token_list *token_list)
 	size_t			index;
 	char			*s;
 	size_t			len;
+	char			quote_state;
 
 	current = token_list;
 	while (current)
 	{
 		index = 0;
+		quote_state = '\0';
 		while (current->content->type == TOK_WORD && !ctx->last_error_type)
 		{
 			s = current->content->str;
 			len = str_len(s);
 			if (index >= len)
 				break ;
-			str_escape(s, &index, '\'', '\'');
-			len = str_len(s);
-			if (index >= len)
-				break ;
-			if (s[index] == '$')
+			if ((s[index] == '\'' || s[index] == '"'))
+			{
+				if (quote_state == '\0')
+					quote_state = s[index];
+				else if (quote_state == s[index])
+					quote_state = '\0';
+				index++;
+				continue ;
+			}
+			if (s[index] == '$' && quote_state != '\'')
 			{
 				if (process_expanding(ctx, &current->content->str, index + 1))
+				{
 					current->content->expanded = true;
+					continue ;
+				}
 			}
 			index++;
 		}
