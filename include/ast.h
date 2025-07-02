@@ -8,6 +8,10 @@
 # include <stdbool.h>
 # include "allocators/allocator.h"
 
+# define IN 1
+# define OUT 0
+# define NO_REDIR -2
+
 typedef enum e_node_type
 {
 	NODE_LEAF,
@@ -27,6 +31,12 @@ typedef enum e_redir_type
 	REDIR_OUT_APPEND,
 	REDIR_INDEX_MAX
 }	t_redir_type;
+
+typedef struct s_str_list
+{
+	struct s_str_list	*next;
+	char				*content;
+}	t_str_list;
 
 typedef struct s_redir_list
 {
@@ -61,14 +71,6 @@ typedef struct s_ast
 		t_ope	ope;
 	};
 }	t_ast;
-
-typedef struct s_ast_context
-{
-	t_token_list	*tok_l;
-	t_ast			*root;
-	t_ast			*prev;
-	t_ast			*prev_ope;
-}	t_ast_context;
 
 t_ast		*create_ast(t_ctx *ctx, t_ast_context *data);
 void		print_ast(t_ast *ast, int indent);

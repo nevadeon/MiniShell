@@ -45,12 +45,6 @@
 # include "allocators/malloc_allocator.h"
 # include "allocators/mgc_allocator.h"
 
-typedef struct s_str_list
-{
-	struct s_str_list	*next;
-	char				*content;
-}	t_str_list;
-
 typedef enum e_shell_error
 {
 	E_NONE = 0,

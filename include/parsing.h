@@ -1,8 +1,6 @@
 #ifndef PARSING_H
 # define PARSING_H
 
-# define NO_REDIR -2
-
 # include "forward.h"
 # include "allocators/allocator.h"
 # include <stdbool.h>
@@ -33,6 +31,14 @@ typedef struct s_token_list
 	t_token				*content;
 }	t_token_list;
 
+typedef struct s_ast_context
+{
+	t_token_list	*tok_l;
+	t_ast			*root;
+	t_ast			*prev;
+	t_ast			*prev_ope;
+}	t_ast_context;
+
 bool			is_blank_meta(char c);
 bool			is_meta(char c);
 bool			is_ope(char c);
@@ -45,13 +51,12 @@ t_token			*new_token(t_alloc *alloc, char *str, \
 t_token_list	*parsing(t_ctx *ctx, char *input);
 void			remove_comment(t_alloc *alloc, char **input);
 t_token_list	*tokenize(t_ctx *ctx, char **input);
-void			print_token(t_token *t);
 void			tilde_expanding(t_ctx *ctx, t_token_list *token_list);
 void			var_expanding(t_ctx *ctx, t_token_list *token_list);
 void			word_splitting(t_ctx *ctx, t_token_list *token_list);
 void			wildcard_expanding(t_alloc *alloc, t_token_list *token_list);
 t_str_list		*compute_pattern(\
-	t_alloc *alloc, t_str_list *files, char *pattern);
+					t_alloc *alloc, t_str_list *files, char *pattern);
 void			quote_removal(t_alloc *alloc, t_token_list *token_list);
 void			print_ast(t_ast *ast, int indent);
 bool			is_var_name_valid(char *str);

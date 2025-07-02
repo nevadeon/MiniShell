@@ -9,8 +9,6 @@
 
 # define GNL_BUFFER_SIZE 4096
 
-typedef enum e_lifetime	t_lifetime;
-
 typedef struct s_replace
 {
 	char	**str;
