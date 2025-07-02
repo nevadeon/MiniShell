@@ -8,7 +8,7 @@
  *                       / \
  *                      2   1
  *
- * a pipe is created at every pipe branch fd1 the ast. The t_fds struct is
+ * a pipe is created at every pipe branch in the ast. The t_fds struct is
  * used to properly chose which fd will be used as stdin or stdout for the
  * next command
  */
@@ -23,15 +23,15 @@ void	handle_ope(t_ctx *ctx, t_exec_data *data, t_ope *ope, t_exec_fds next)
 			return (perror("pipe"));
 		execute_ast_recursive(ctx, data, ope->left, (t_exec_fds){
 			.fd1 = pipe_fd[OUT],
-			.fd2 = next.fd1,
+			.fd2 = next.fd2,
 			.to_close = pipe_fd[IN],
 		});
 		close(pipe_fd[OUT]);
-		if (next.fd1 > 0)
-			close(next.fd1);
+		if (next.fd2 > 0)
+			close(next.fd2);
 		execute_ast_recursive(ctx, data, ope->right, (t_exec_fds){
-			.fd1 = pipe_fd[IN],
-			.fd2 = next.fd2,
+			.fd1 = next.fd1,
+			.fd2 = pipe_fd[IN],
 			.to_close = NO_REDIR,
 		});
 		if (ope->right->type == NODE_LEAF)
