@@ -19,10 +19,30 @@ typedef enum e_ope_type
 	OPE_PIPE,
 }	t_ope_type;
 
+typedef enum e_redir_type
+{
+	REDIR_IN,
+	REDIR_HEREDOC,
+	REDIR_OUT_TRUNC,
+	REDIR_OUT_APPEND,
+	REDIR_INDEX_MAX
+}	t_redir_type;
+
+typedef struct s_redir_list
+{
+	struct s_redir_list	*next;
+	union
+	{
+		char	*filename;
+		int		heredoc;
+	};
+	t_redir_type		type;
+}	t_redir_list;
+
 typedef struct s_leaf
 {
-	t_str_list	*func;
-	int			redir[2];
+	t_str_list		*func;
+	t_redir_list	*redir_list;
 }	t_leaf;
 
 typedef struct s_ope

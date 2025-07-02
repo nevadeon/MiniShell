@@ -3,7 +3,9 @@
 
 # include <stdint.h>
 # include <stdarg.h>
-# include <unistd.h>
+# include <fcntl.h>
+# include <errno.h>
+# include <sys/stat.h>
 # include "tools/str.h"
 
 # define DEC "0123456789"
@@ -19,5 +21,6 @@ size_t	io_dputlbase(int fd, long n, char *base);
 size_t	io_dputulbase(int fd, uint64_t ul, char *base);
 void	io_dputendl(int fd, const char *s);
 void	io_dputnbr(int fd, int n);
+int		io_fopen(const char *pathname, int flags, ...);
 
 #endif

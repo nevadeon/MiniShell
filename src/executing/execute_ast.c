@@ -7,33 +7,34 @@ static t_exec_data	_make_exec_data(t_ctx *c, t_ast *root)
 	data = (t_exec_data){
 		.paths = str_split(*c->cmd, env_get_var_value(*c->env, "PATH"), ':'),
 		.root = root,
-		.to_close = NO_REDIR,
-		.c = c,
 	};
 	return (data);
 }
 
-void	execute_ast_recursive(t_exec_data *data, t_ast *ast, int fd1, int fd2)
+void	execute_ast_recursive(\
+	t_ctx *ctx, t_exec_data *data, t_ast *ast, t_exec_fds fds)
 {
 	if (!ast)
 		return ;
 	if (ast->type == NODE_LEAF)
-		handle_leaf(data, &ast->leaf, fd1, fd2);
+		handle_leaf(ctx, data, &ast->leaf, fds);
 	else
-		handle_ope(data, &ast->ope, fd1, fd2);
+		handle_ope(ctx, data, &ast->ope, fds);
 }
 
 void	execute_ast(t_ctx *ctx, t_ast *ast)
 {
 	t_exec_data	data;
+	t_exec_fds	fds;
 	int			status;
 
 	data = _make_exec_data(ctx, ast);
 	toggle_signal(ctx, S_IGNORE);
-	if (ast->type == NODE_LEAF && try_single_builtin(ctx, ast->leaf.redir, \
+	if (ast->type == NODE_LEAF && try_single_builtin(ctx, ast->leaf.redir_list, \
 		(char **)lst_to_array(*ctx->cmd, (t_list *)ast->leaf.func)))
 		return ;
-	execute_ast_recursive(&data, ast, NO_REDIR, NO_REDIR);
+	fds = (t_exec_fds){NO_REDIR, NO_REDIR, NO_REDIR};
+	execute_ast_recursive(ctx, &data, ast, fds);
 	while (data.processes)
 	{
 		waitpid(data.processes->pid, &status, 0);
