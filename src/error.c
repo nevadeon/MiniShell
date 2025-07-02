@@ -12,7 +12,7 @@ static const char	*g_err_msg[] = {
 [E_CMD_NOT_FOUND] = "command not found",
 [E_NOT_EXECUTABLE] = "cannot execute binary file: Exec format error",
 [E_ALLOC_FAIL] = "allocation failed",
-[E_HDOC_QUIT] = "here-document delimited by end-of-file (wanted `",
+[E_HDOC_QUIT] = "warning: here-document delimited by end-of-file (wanted `",
 [E_HDOC_INT] = "",
 [E_USE_ERRNO] = "",
 [E_UNKNOWN] = "",
@@ -45,26 +45,20 @@ void	throw_error(t_ctx *ctx, t_shell_error err, char *arg)
 {
 	assert(g_err_code_size == g_err_msg_size);
 	ctx->last_exit_code = g_err_code[err];
-	if (g_err_code[err] == 0)
-	{
-		io_dprintf(STDERR, "bash: warning: %s%s')\n", g_err_msg[err], arg);
-	}
-	else
-	{
+	if (g_err_code[err] != 0)
 		ctx->last_error_type = err;
-		if (err == E_HDOC_INT)
-			return ;
-		else if (err == E_CMD_NOT_FOUND)
-			io_dprintf(STDERR, "%s: %s\n", arg, g_err_msg[err]);
-		else if (err == E_USE_ERRNO)
-		{
-			ctx->last_exit_code = errno;
-			io_dprintf(STDERR, "bash: %s: %s\n", arg, strerror(errno));
-		}
-		else if (err == E_UNEXPECTED_TOKEN || err == E_UNCLOSED
-			|| err == E_UNHANDLED)
-			io_dprintf(STDERR, "bash: %s%s'\n", g_err_msg[err], arg);
-		else
-			io_dprintf(STDERR, "bash: %s: %s\n", arg, g_err_msg[err]);
+	if (err == E_HDOC_INT)
+		return ;
+	else if (err == E_CMD_NOT_FOUND)
+		io_dprintf(STDERR, "%s: %s\n", arg, g_err_msg[err]);
+	else if (err == E_USE_ERRNO)
+	{
+		ctx->last_exit_code = errno;
+		io_dprintf(STDERR, "bash: %s: %s\n", arg, strerror(errno));
 	}
+	else if (err == E_UNEXPECTED_TOKEN || err == E_UNCLOSED
+		|| err == E_UNHANDLED)
+		io_dprintf(STDERR, "bash: %s%s'\n", g_err_msg[err], arg);
+	else
+		io_dprintf(STDERR, "bash: %s: %s\n", arg, g_err_msg[err]);
 }

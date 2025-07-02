@@ -3,11 +3,9 @@
 #include "parsing.h"
 #include "stdio.h"
 
-t_ast	*parsing(t_ctx *ctx, char *inp)
+t_token_list	*parsing(t_ctx *ctx, char *inp)
 {
 	t_token_list	*token_list;
-	t_ast_context	data;
-	t_ast			*ast;
 
 	if (!inp || inp[0] == '\0')
 		return (NULL);
@@ -22,15 +20,9 @@ t_ast	*parsing(t_ctx *ctx, char *inp)
 	word_splitting(ctx, token_list);
 	wildcard_expanding(*ctx->cmd, token_list);
 	quote_removal(*ctx->cmd, token_list);
-	data = (t_ast_context){.tok_l = token_list};
 	if (ctx->last_error_type)
 		return (NULL);
-	ctx->last_error_type = 0;
-	ast = create_ast(ctx, &data);
-	// print_ast(ast, 0);
-	if (ctx->last_error_type)
-		return (NULL);
-	return (ast);
+	return (token_list);
 }
 
 /*
