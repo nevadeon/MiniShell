@@ -50,19 +50,17 @@ typedef struct s_exec_data
 }	t_exec_data;
 
 void		execute_ast(t_ctx *ctx, t_ast *ast);
-void		exec_recursive(\
+void		execute_ast_recursive(\
 				t_exec_data *data, t_ast *ast, int fd1, int fd2);
-void		handle_leaf(\
-				t_exec_data *data, t_leaf *leaf, int fd1, int fd2);
-void		handle_ope(t_exec_data *data, t_ope *ope, int fd1, int fd2);
 void		execute_command(t_ctx *ctx, char **env_paths, char **args);
+void		handle_leaf(t_exec_data *data, t_leaf *leaf, int fd1, int fd2);
+void		handle_ope(t_exec_data *data, t_ope *ope, int fd1, int fd2);
 void		handle_redirections(int redir_fd[2], int pipe_out, int pipe_in, int to_close);
 bool		try_single_builtin(t_ctx *ctx, int redir_fd[2], char **args);
 bool		try_builtin(t_ctx *ctx, char **args);
 
 //tools
 void		dup2_close(int source_fd, int dest_fd);
-int			replace_std(int	redir_fd, int std_fileno);
 t_pid_list	*lst_pid_new(t_alloc *alloc, pid_t pid);
 void		close_redirections(t_ast *ast);
 

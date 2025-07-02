@@ -1,4 +1,4 @@
-#include "minishell.h"
+#include "executing.h"
 
 //Adding elements is safe, changing the order is not
 static const char			*g_builtin_name[] = {
@@ -26,13 +26,13 @@ sizeof(g_builtin_name) / sizeof(g_builtin_name[0]);
 
 static int	_replace_fd(int src, int dest)
 {
-	int	src_temp;
+	int	dest_temp;
 
 	if (src < 0 || dest < 0)
 		return (-1);
-	src_temp = dup(dest);
+	dest_temp = dup(dest);
 	dup2(src, dest);
-	return (src_temp);
+	return (dest_temp);
 }
 
 bool	try_single_builtin(t_ctx *ctx, int redir_fd[2], char **args)
