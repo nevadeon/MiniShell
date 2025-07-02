@@ -38,7 +38,7 @@ static t_ast	*_create_leaf(t_ctx *ctx, t_ast_context *data)
 	node->type = NODE_LEAF;
 	node->leaf.redir_list = NULL;
 	node->leaf.func = NULL;
-	while (data->tok_l && (data->tok_l->content->type == TOK_WORD
+	while (data->tok_l && (data->tok_l->content->type == TOK_WORD \
 		|| data->tok_l->content->type == TOK_REDIR_OPE))
 	{
 		if (data->tok_l->content->type == TOK_WORD)

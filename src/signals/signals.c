@@ -11,10 +11,10 @@ int	rl_getc(FILE *stream)
 
 	(void)stream;
 	if (read(0, &c, 1) <= 0)
-		return EOF;
+		return (EOF);
 	if (c == CTRL_D)
 		g_ctx->last_exit_code = CTRL_D_TEMP_EXIT_CODE;
-	return (unsigned char)c;
+	return ((unsigned char)c);
 }
 
 void	handle_sigint(int signal, siginfo_t *info, void *ucontext)

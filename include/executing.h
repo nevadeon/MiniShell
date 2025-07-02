@@ -16,13 +16,6 @@
 typedef void	(*t_redir_open_fn)(\
 	t_ctx *ctx, t_redir_list *list, t_redir_data *redir);
 
-typedef enum e_error
-{
-	OK,
-	E_PIPE,
-	E_UNEXPECTED_NODE_TYPE,
-}	t_error;
-
 typedef struct s_exec_fds
 {
 	int	out;
