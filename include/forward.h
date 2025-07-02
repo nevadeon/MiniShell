@@ -17,5 +17,6 @@ typedef struct s_token			t_token;
 typedef struct s_token_list		t_token_list;
 typedef struct s_ast_context	t_ast_context;
 typedef struct s_ctx			t_ctx;
+typedef struct s_redir_fds		t_redir_data;
 
 #endif

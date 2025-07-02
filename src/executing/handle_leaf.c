@@ -18,7 +18,7 @@ void	handle_leaf(\
 
 	pid = fork();
 	if (pid == -1)
-	return (perror("fork"));
+		return (perror("fork"));
 	if (pid == 0)
 	{
 		toggle_signal(ctx, S_CHILD);
@@ -34,8 +34,8 @@ void	handle_leaf(\
 	}
 	else
 	{
-		lst_add_front((t_list **) &data->processes,
-		(t_list *) lst_pid_new(*ctx->cmd, pid));
+		lst_add_front((t_list **) &data->processes, \
+			(t_list *) lst_pid_new(*ctx->cmd, pid));
 	}
 }
 
