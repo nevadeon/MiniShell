@@ -34,7 +34,7 @@ int	handle_heredoc(t_ctx *ctx, char *delim)
 	char	*line;
 	int		fd[2];
 
-	heredoc_string = NULL;
+	heredoc_string = str_dup(*ctx->cmd, "");
 	init_handler_int(&_hdoc_sigint);
 	rl_getc_function = rl_getc;
 	while (1)

@@ -48,9 +48,11 @@ int	builtin_cd(t_ctx *ctx, char **args)
 	if (access(path, X_OK) == 0)
 	{
 		if (chdir(path))
-			return (_print_error(ctx, "no such file or directory", path));
+			return (_print_error(ctx, "No such file or directory", path));
 	}
-	else
+	else if (errno == ENOENT)
+		return (_print_error(ctx, "No such file or directory", path));
+	else if (errno == EACCES)
 		return (_print_error(ctx, "permission denied", path));
 	env_set_var_value(ctx, str_vjoin(*ctx->prog, 2, "OLDPWD=", cwd));
 	if (getcwd(cwd, sizeof(cwd)) == NULL)
