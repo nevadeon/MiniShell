@@ -52,8 +52,10 @@ static void	_try_env_paths(t_ctx *ctx, char **env_paths, char **args)
 
 void	execute_command(t_ctx *ctx, char **env_paths, char **args)
 {
-	if (!args)
+	if (!args || !args[CMD_NAME])
 		return ;
+	if (args[CMD_NAME][0] == '\0')
+		return (throw_error(ctx, E_CMD_NOT_FOUND, args[CMD_NAME]));
 	if (str_chr(args[CMD_NAME], '/'))
 		return (_try_absolute_path(ctx, args));
 	if (!env_paths)
