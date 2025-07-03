@@ -35,11 +35,17 @@ static t_replace	*\
 		r->start = index - 1;
 		r->str = s;
 		if (!str_escape(*s, &index, '{', '}'))
-			return (throw_error(ctx, E_UNCLOSED, "{"), NULL);
+		{
+			throw_error(ctx, E_UNCLOSED, "{");
+			return (NULL);
+		}
 		r->end = index;
 		var_name = str_extract(*ctx->cmd, *r->str, r->start + 2, r->end - 1);
 		if (!is_var_name_valid(var_name))
-			return (throw_error(ctx, E_BAD_SUBSTITUTION, *s), NULL);
+		{
+			throw_error(ctx, E_BAD_SUBSTITUTION, *s);
+			return (NULL);
+		}
 		r->rep = env_get_var_value(*ctx->env, var_name);
 		return (r);
 	}
@@ -90,46 +96,4 @@ bool	process_expanding(t_ctx *ctx, char **str_ptr, size_t index)
 		}
 	}
 	return (expanded);
-}
-
-void	var_expanding(t_ctx *ctx, t_token_list *token_list)
-{
-	t_token_list	*current;
-	size_t			index;
-	char			*s;
-	size_t			len;
-	char			quote_state;
-
-	current = token_list;
-	while (current)
-	{
-		index = 0;
-		quote_state = '\0';
-		while (current->content->type == TOK_WORD && !ctx->last_error_type)
-		{
-			s = current->content->str;
-			len = str_len(s);
-			if (index >= len)
-				break ;
-			if ((s[index] == '\'' || s[index] == '"'))
-			{
-				if (quote_state == '\0')
-					quote_state = s[index];
-				else if (quote_state == s[index])
-					quote_state = '\0';
-				index++;
-				continue ;
-			}
-			if (s[index] == '$' && quote_state != '\'')
-			{
-				if (process_expanding(ctx, &current->content->str, index + 1))
-				{
-					current->content->expanded = true;
-					continue ;
-				}
-			}
-			index++;
-		}
-		current = current->next;
-	}
 }
