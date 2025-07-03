@@ -1,5 +1,4 @@
-#include "signals.h"
-#include "tools/str.h"
+#include "minishell.h"
 
 #define CTRL_D 4
 
@@ -39,16 +38,6 @@ void	init_handler_int(void *func)
 	sigint_handler.sa_flags = SA_SIGINFO;
 	sigint_handler.sa_sigaction = func;
 	sigaction(SIGINT, &sigint_handler, NULL);
-}
-
-void	init_handler_quit(void *func)
-{
-	struct sigaction	sigquit_handler;
-
-	str_memset(&sigquit_handler, 0, sizeof(struct sigaction));
-	sigquit_handler.sa_flags = SA_SIGINFO;
-	sigquit_handler.sa_handler = func;
-	sigaction(SIGQUIT, &sigquit_handler, NULL);
 }
 
 void	init_handler_pipe(void *func)

@@ -76,5 +76,6 @@ typedef struct s_ctx
 
 char	*readline_prompt(t_alloc *alloc);
 void	throw_error(t_ctx *ctx, t_shell_error err, char *arg);
+void	init_handler_quit(void *func);
 
 #endif

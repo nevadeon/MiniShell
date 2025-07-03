@@ -30,10 +30,11 @@ static void	_hdoc_sigint(int signal, siginfo_t *info, void *ucontext)
 
 int	handle_heredoc(t_ctx *ctx, char *delim)
 {
-	char	*heredoc_string = NULL;
+	char	*heredoc_string;
 	char	*line;
 	int		fd[2];
 
+	heredoc_string = NULL;
 	init_handler_int(&_hdoc_sigint);
 	rl_getc_function = rl_getc;
 	while (1)
@@ -60,4 +61,3 @@ int	handle_heredoc(t_ctx *ctx, char *delim)
 	io_dprintf(fd[1], "%s", heredoc_string);
 	return (close(fd[1]), fd[0]);
 }
-
