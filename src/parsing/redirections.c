@@ -47,7 +47,8 @@ static int	_read_heredoc_lines(t_ctx *ctx, char *delim, char **heredoc_string)
 		}
 		if (str_equals(line, delim))
 			break ;
-		*heredoc_string = str_vjoin(*(ctx->cmd), 3, *heredoc_string, line, "\n");
+		*heredoc_string = str_vjoin(*(ctx->cmd),
+				3, *heredoc_string, line, "\n");
 		free(line);
 	}
 	return (0);

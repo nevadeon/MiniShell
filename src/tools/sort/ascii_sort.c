@@ -11,7 +11,6 @@ int	ascii_sort(void *a, void *b)
 	return (str_cmp(str1, str2));
 }
 
-
 static unsigned char	ascii_tolower_uc(unsigned char c)
 {
 	if (c >= 'A' && c <= 'Z')
