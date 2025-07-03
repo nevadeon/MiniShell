@@ -1,6 +1,11 @@
 #include "tools/path.h"
 #include "tools/sort.h"
 
+static t_list	*sort_list(t_list *list)
+{
+	return (ft_qsort(list, (int (*)(void *, void *))ascii_lexic_cmd));
+}
+
 t_list	*path_get_dir_content(t_alloc *alloc, char *path)
 {
 	t_list			*list;
@@ -27,5 +32,5 @@ t_list	*path_get_dir_content(t_alloc *alloc, char *path)
 			lst_add_back(&list, lst_new(alloc, (void *)file_path));
 	}
 	closedir(rep);
-	return (ft_qsort(list, ascii_sort));
+	return (sort_list(list));
 }

@@ -18,5 +18,6 @@ typedef struct s_partition
 
 t_list	*ft_qsort(t_list *list, int (*f)(void *, void *));
 int		ascii_sort(void *a, void *b);
+int		ascii_lexic_cmd(const char *a, const char *b);
 
 #endif
